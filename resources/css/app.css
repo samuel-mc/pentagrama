@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+:root {
+    --light_pink: #ff6cd7;
+    --dark_pink: #ff00b9;
+    --purple_p: #8e00ff;
+    --white_p: #f8f4fb;
+    --black_p: #000000;
+    --black_p_75: #00000075;
+}
+
+.not-serif-light {
+    font-family: "Noto Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings:
+        "wdth"100;
+}
+
+.not-serif-regular {
+    font-family: "Noto Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "wdth"100;
+}
+
+.not-serif-bold {
+    font-family: "Noto Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-variation-settings:
+        "wdth"100;
+}
+
+
+
+.audiowide-regular {
+    font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.roboto-thin {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.roboto-light {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.roboto-regular {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.roboto-medium {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.roboto-bold {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.roboto-black {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.roboto-thin-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+}
+
+.roboto-light-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.roboto-regular-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.roboto-medium-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.roboto-bold-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.roboto-black-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}
+
+
+.menu--item {
+    font-family: "Noto Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    margin: 0 12px;
+    border-bottom: 4px solid transparent;
+    transition: all ease-in-out 0.3s;
+}
+
+.menu--item:hover {
+    border-bottom: 4px solid var(--light_pink);
+    transition: all ease-in-out 0.3s;
+}
+
+.hidden--menu {
+    transform: translateY(-150%);
+}
+
+textarea {
+    resize: none;
+}
+
+.bg--gradient-pink {
+    background: rgb(0,0,0);
+background: radial-gradient(circle, rgba(0,0,0,1) 48%, rgba(137,0,100,1) 100%, rgba(255,0,185,1) 100%);
+}
+
+.bg--pattern {
+    background-image: url('../../public/img/bg.jpg');
+}
+
+.splide__arrow.splide__arrow--prev {
+    display: none;
+}
+
+.splide__arrow.splide__arrow--next {
+    display: none;
+}
