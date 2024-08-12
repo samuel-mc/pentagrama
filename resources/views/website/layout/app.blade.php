@@ -32,10 +32,10 @@
                         <a href="/home">Inicio</a>
                     </li>
                     <li class="menu--item">
-                        <a href="">Cátedras</a>
+                        <a href="/#catedras">Cátedras</a>
                     </li>
                     <li class="menu--item">
-                        <a href="">Nosotros</a>
+                        <a href="/about">Nosotros</a>
                     </li>
                     <li class="menu--item">
                         <a href="/faq">Preguntas frecuentes</a>
@@ -66,10 +66,10 @@
                     <a class="text-black_p hover:text-light_pink transition-all" href="/home">Inicio</a>
                 </li>
                 <li class="my-2">
-                    <a class="text-black_p hover:text-light_pink transition-all" href="">Cátedras</a>
+                    <a class="text-black_p hover:text-light_pink transition-all" href="/#catedras">Cátedras</a>
                 </li>
                 <li class="my-2">
-                    <a class="text-black_p hover:text-light_pink transition-all" href="">Nosotros</a>
+                    <a class="text-black_p hover:text-light_pink transition-all" href="/about">Nosotros</a>
                 </li>
                 <li class="my-2">
                     <a class="text-black_p hover:text-light_pink transition-all" href="/faq">Preguntas frecuentes</a>
@@ -115,10 +115,10 @@
                             <a class="text-black_p_75 hover:text-black_p transition-all" href="/home">Inicio</a>
                         </li>
                         <li class="mx-2">
-                            <a class="text-black_p_75 hover:text-black_p transition-all" href="">Cátedras</a>
+                            <a class="text-black_p_75 hover:text-black_p transition-all" href="/#catedras">Cátedras</a>
                         </li>
                         <li class="mx-2">
-                            <a class="text-black_p_75 hover:text-black_p transition-all" href="">Nosotros</a>
+                            <a class="text-black_p_75 hover:text-black_p transition-all" href="/about">Nosotros</a>
                         </li>
                         <li class="mx-2">
                             <a class="text-black_p_75 hover:text-black_p transition-all" href="">Preguntas frecuentes</a>

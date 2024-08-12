@@ -27,10 +27,26 @@
     </section>
 
     <!-- Cursos -->
-    <section class="max-w-7xl mx-auto py-10 px-6">
+    <section class="max-w-7xl mx-auto py-10 px-6" id="catedras">
         <header class="text-center">
             <h2 class="text-4xl text-purple_p not-serif-bold my-5 mb-10">Nuestras cátedras</h2>
         </header>
+        <div class="my-6">
+            <ul class="flex justify-center">
+                <li class="flex items-center mx-4">
+                    <img src="{{ asset('img/icons/corchea.png') }}" alt="corazon" class="w-4 h-4">
+                    <p class="text-3xl text-black_p not-serif-regular">Niños</p>
+                </li>
+                <li class="flex items-center mx-4">
+                    <img src="{{ asset('img/icons/corchea.png') }}" alt="corazon" class="w-4 h-4">
+                    <p class="text-3xl text-black_p not-serif-regular">Jóvenes</p>
+                </li>
+                <li class="flex items-center mx-4">
+                    <img src="{{ asset('img/icons/corchea.png') }}" alt="corazon" class="w-4 h-4">
+                    <p class="text-3xl text-black_p not-serif-regular">Adultos</p>
+                </li>
+            </ul>
+        </div>
         <main class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-10">
             @foreach($courses as $course)
             <div class="text-center rounded border border-purple_p shadow py-4 sm:py-12 px-2">
@@ -75,12 +91,13 @@
     </section>
 
     <!-- Images -->
-    <section>
+    <!-- <section>
         <div class="grid grid-cols-2 lg:grid-cols-4">
             @for($i = 1; $i <= 8; $i++) <img src="{{ asset('img/img' . $i . '.jpg') }}" alt="img{{ $i }}" class="w-full aspect-video object-cover">
                 @endfor
         </div>
-    </section>
+    </section> -->
+    @include("components.images")
 
     <!-- Contact -->
     <section class="bg-purple_p px-6 py-10">

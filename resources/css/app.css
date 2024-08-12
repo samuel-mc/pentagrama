@@ -13,6 +13,10 @@
     --black_p_75: #00000075;
 }
 
+body {
+    scroll-behavior: smooth;
+}
+
 .not-serif-light {
     font-family: "Noto Serif", serif;
     font-optical-sizing: auto;
