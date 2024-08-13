@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\HowFoundUs;
 use App\Models\Course;
+use App\Models\Age;
 
-define("linksAdmin", [
-    (object) ['url' => '/admin', 'name' => 'Dashboard', 'icon' => 'home.png'],
-    (object) ['url' => '/admin/profesores', 'name' => 'Profesores', 'icon' => 'profesor.png'],
-    (object) ['url' => '/admin/info-adicional', 'name' => 'Información adicional', 'icon' => 'info.png'],
-]);
+// define("linksAdmin", [
+//     (object) ['url' => '/admin', 'name' => 'Dashboard', 'icon' => 'home.png'],
+//     (object) ['url' => '/admin/profesores', 'name' => 'Profesores', 'icon' => 'profesor.png'],
+//     (object) ['url' => '/admin/info-adicional', 'name' => 'Información adicional', 'icon' => 'info.png'],
+// ]);
 
 class AdminAditionalInfoController extends Controller
 {
@@ -23,10 +24,11 @@ class AdminAditionalInfoController extends Controller
         $title = 'Información adicional';
         $name = 'Elias Cordova';
         $rol = 'Admin';
-        $links = linksAdmin;
+        $links = app('adminLinks');
         $linksAditionalInfo = [
             (object) ['url' => '/admin/info-adicional/catedras', 'name' => 'Cátedras', 'icon' => 'course.png'],
             (object) ['url' => '/admin/info-adicional/como-nos-encontraste', 'name' => '¿Cómo nos encontraste?', 'icon' => 'search.png'],
+            (object) ['url' => '/admin/info-adicional/edades', 'name' => 'Edades', 'icon' => 'age.png'],
         ];
         $items = HowFoundUs::all();
         return view('academia.admin.catalogs', compact('title', 'name', 'rol', 'links', 'linksAditionalInfo'));
@@ -39,7 +41,7 @@ class AdminAditionalInfoController extends Controller
         $title = '¿Cómo nos encontraste?';
         $name = 'Elias Cordova';
         $rol = 'Admin';
-        $links = linksAdmin;
+        $links = app('adminLinks');
         $items = HowFoundUs::orderBy('active', 'desc')->orderBy("how", 'asc')->get();
         return view('academia.admin.how-found-us', compact('title', 'name', 'rol', 'links', 'items'));
     }
@@ -51,7 +53,7 @@ class AdminAditionalInfoController extends Controller
         $title = 'Agregar ¿Cómo nos encontraste?';
         $name = 'Elias Cordova';
         $rol = 'Admin';
-        $links = linksAdmin;
+        $links = app('adminLinks');
         return view('academia.admin.add-how-found-us', compact('title', 'name', 'rol', 'links'));
     }
 
@@ -78,7 +80,7 @@ class AdminAditionalInfoController extends Controller
         $title = 'Editar ¿Cómo nos encontraste?';
         $name = 'Elias Cordova';
         $rol = 'Admin';
-        $links = linksAdmin;
+        $links = app('adminLinks');
         $item = HowFoundUs::find($id);
         return view('academia.admin.edit-how-found-us', compact('title', 'name', 'rol', 'links', 'item'));
     }
@@ -105,7 +107,7 @@ class AdminAditionalInfoController extends Controller
         $title = 'Catedrás';
         $name = 'Elias Cordova';
         $rol = 'Admin';
-        $links = linksAdmin;
+        $links = app('adminLinks');
         $items = Course::orderBy('name', 'asc')->get();
         return view('academia.admin.courses', compact('title', 'name', 'rol', 'links', 'items'));
     }
@@ -117,7 +119,7 @@ class AdminAditionalInfoController extends Controller
         $title = 'Agregar Cátedra';
         $name = 'Elias Cordova';
         $rol = 'Admin';
-        $links = linksAdmin;
+        $links = app('adminLinks');
         return view('academia.admin.add-course', compact('title', 'name', 'rol', 'links'));
     }
 
@@ -145,7 +147,7 @@ class AdminAditionalInfoController extends Controller
         $title = 'Editar Cátedra';
         $name = 'Elias Cordova';
         $rol = 'Admin';
-        $links = linksAdmin;
+        $links = app('adminLinks');
         $item = Course::find($id);
         return view('academia.admin.edit-course', compact('title', 'name', 'rol', 'links', 'item'));
     }
@@ -163,5 +165,50 @@ class AdminAditionalInfoController extends Controller
         $item->description = $request->descripcion;
         $item->save();
         return redirect('/admin/info-adicional/catedras');
+    }
+
+    /**
+     * Display the "Edades" index.
+     */
+    public function edades() {
+        $title = 'Edades';
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $links = app('adminLinks');
+        $items = Age::orderBy('min_age', 'asc')->get();
+        return view('academia.admin.ages', compact('title', 'name', 'rol', 'links', 'items'));
+    }
+
+    /**
+     * Display the form to add a new "Edad".
+     */
+    public function addEdad() {
+        $title = 'Agregar Edad';
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $links = app('adminLinks');
+        return view('academia.admin.add-age', compact('title', 'name', 'rol', 'links'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function saveEdad(Request $request) {
+        $message = [
+            'nombre.unique' => 'El nombre ya existe, prueba con uno diferente.',
+        ];
+        $request->validate([
+            'nombre' => 'unique:ages,name',
+        ], $message);
+
+        $item = new Age();
+        $item->name = $request->nombre;
+        $item->description = $request->descripcion;
+        $item->min_age = $request->edad_minima;
+        $item->max_age = $request->edad_maxima;
+
+        $item->save();
+        return redirect('/admin/info-adicional/edades');
+
     }
 }

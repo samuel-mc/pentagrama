@@ -50,5 +50,12 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editCatedra']);
             Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateCatedra']);
         });
+        Route::group(['prefix' => 'edades'], function () {
+            Route::get('/', [AdminAditionalInfoController::class, 'edades']);
+            Route::get('/agregar', [AdminAditionalInfoController::class, 'addEdad']);
+            Route::post('/agregar', [AdminAditionalInfoController::class, 'saveEdad']);
+            Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editEdad']);
+            Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateEdad']);
+        });
     });
 });

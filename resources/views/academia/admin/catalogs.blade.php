@@ -1,7 +1,7 @@
 @extends("academia.layout.app")
 
 @section("content")
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
     @foreach($linksAditionalInfo as $infoItem)
     <div>
         <a href="{{$infoItem->url}}" class="flex flex-col items-center justify-center border-2 border-light_pink rounded py-4 px-2 hover:bg-light_pink transition-all">

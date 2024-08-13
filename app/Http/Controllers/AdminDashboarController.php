@@ -4,12 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-define("linksAdmin", [
-    (object) ['url' => '/admin', 'name' => 'Dashboard', 'icon' => 'home.png'],
-    (object) ['url' => '/admin/profesores', 'name' => 'Profesores', 'icon' => 'profesor.png'],
-    (object) ['url' => '/admin/info-adicional', 'name' => 'Información adicional', 'icon' => 'info.png'],
-]);
-
 class AdminDashboarController extends Controller
 {
     /**
@@ -20,7 +14,7 @@ class AdminDashboarController extends Controller
         $title = 'Dashboard';
         $name = 'Elias Cordova';
         $rol = 'Admin';
-        $links = linksAdmin;
+        $links = app('adminLinks');;
         return view('academia.admin.dashboard', compact('title', 'name', 'rol', 'links'));
     }
 
