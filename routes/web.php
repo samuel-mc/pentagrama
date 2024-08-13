@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,11 @@ Route::get('/home', function () {
 });
 Route::get('/faq', [HomeController::class, 'faq']);
 Route::get('/about', [HomeController::class, 'about']);
+
+// Section for add teachers, staff and students
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/', [AdminController::class, 'index']);
+    Route::get('/profesores', [AdminController::class, 'teachers']);
+    Route::get('/profesores/agregar', [AdminController::class, 'addTeacher']);
+    Route::post('/profesores/agregar', [AdminController::class, 'saveTeacher']);
+});
