@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Models\Student;
 
 class AdminStudentsController extends Controller
 {
@@ -15,6 +17,13 @@ class AdminStudentsController extends Controller
         $name = 'Elias Cordova';
         $rol = 'Admin';
         $links = app('adminLinks');
-        return view('academia.admin.students', compact('title', 'name', 'rol', 'links'));
+        $students = Student::orderBy('name', 'asc')->get();
+        foreach ($students as $student) {
+            $formatedPaymentDate = Carbon::parse($student->paymentsData->payment_date)->format('d/m');
+            $student->formatedPaymentDate = $formatedPaymentDate;
+            $formattedCreatedAt = Carbon::parse($student->created_at)->format('d/m/Y');
+            $student->formattedCreatedAt = $formattedCreatedAt;
+        }
+        return view('academia.admin.students', compact('title', 'name', 'rol', 'links', 'students'));
     }
 }

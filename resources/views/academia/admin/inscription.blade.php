@@ -47,6 +47,14 @@
                 </select>
             </div>
         </div>
+        <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Foto de perfil</h2>
+        <div class="grid grid-cols-3">
+            <div class="w-full flex items-start col-span-2">
+                <div id="imgDiv"></div>
+                <input type="file" placeholder="Foto" class="input w-full" accept="image/*" id="foto">
+                <input type="hidden" name="foto" id="fotoB64">
+            </div>
+        </div>
 
         <!-- Datos del representante -->
         <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Representante</h2>
@@ -200,6 +208,28 @@
 
     const handleCancel = () => {
         window.location.href = "{{ url()->previous() }}";
+    };
+
+    const uploadField = document.getElementById("foto");
+
+    uploadField.onchange = function() {
+        if (this.files[0].size > 2097152) {
+            alert("La foto es muy grande. Debe ser menor a 2MB.");
+            this.value = "";
+        } else {
+            const reader = new FileReader();
+            const imgDiv = document.getElementById("imgDiv");
+            imgDiv.innerHTML = "";
+            const img = document.createElement("img");
+            img.setAttribute("src", URL.createObjectURL(this.files[0]));
+            img.setAttribute("alt", "user");
+            img.setAttribute("class", "w-20 rounded mr-10");
+            imgDiv.appendChild(img);
+            reader.onload = function() {
+                document.getElementById("fotoB64").value = reader.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
     };
 </script>
 

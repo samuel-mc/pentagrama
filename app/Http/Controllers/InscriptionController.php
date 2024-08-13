@@ -44,6 +44,7 @@ class InscriptionController extends Controller
             $student->gender = $request->genero;
             $student->modality = $request->modalidad;
             $student->user_id = $user->id;
+            $student->photo = $request->foto;
             $student->save();
 
             $representative = new Representative();
@@ -67,6 +68,7 @@ class InscriptionController extends Controller
             $studentPaymentsData->save();
 
         });
-
+        
+        return redirect('/admin/estudiantes');
     }
 }

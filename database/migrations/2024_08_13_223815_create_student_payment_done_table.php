@@ -11,18 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('student_payment_done', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('last_name');
-            $table->timestamp('birthdate');
-            $table->string('gender');
-            $table->string('modality');
-            $table->longText('photo')->nullable();
+            $table->double('amount');
+            $table->foreignId('student_payments_data_id')->references('id')->on('student_payments_data');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->boolean('active')->default(true);
-            $table->foreignId('user_id')->references('id')->on('users');
         });
     }
 
@@ -31,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('student_payment_done');
     }
 };

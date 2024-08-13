@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('student_payments_data', function (Blueprint $table) {
             $table->id();
             $table->string('payment_method');
-            $table->string('monthly_payment');
-            $table->string('inscription_payment');
+            $table->double('monthly_payment');
+            $table->double('inscription_payment');
             $table->timestamp('payment_date');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
