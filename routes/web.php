@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminDashboarController;
+use App\Http\Controllers\AdminTeachersMagmentController;
+use App\Http\Controllers\AdminAditionalInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +26,25 @@ Route::get('/about', [HomeController::class, 'about']);
 
 // Section for add teachers, staff and students
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', [AdminController::class, 'index']);
-    Route::get('/profesores', [AdminController::class, 'teachers']);
-    Route::get('/profesores/agregar', [AdminController::class, 'addTeacher']);
-    Route::post('/profesores/agregar', [AdminController::class, 'saveTeacher']);
+    Route::get('/', [AdminDashboarController::class, 'index']);
+    Route::group(['prefix' => 'profesores'], function () {
+        Route::get('/', [AdminTeachersMagmentController::class, 'index']);
+        Route::get('/agregar', [AdminTeachersMagmentController::class, 'addTeacher']);
+        Route::post('/agregar', [AdminTeachersMagmentController::class, 'saveTeacher']);
+        Route::get('/editar/{id}', [AdminTeachersMagmentController::class, 'editTeacher']);
+        Route::post('/editar/{id}', [AdminTeachersMagmentController::class, 'updateTeacher']);
+    });
+    Route::group(['prefix' => 'info-adicional'], function () {
+        Route::get('/', [AdminAditionalInfoController::class, 'index']);
+        Route::group(['prefix' => 'como-nos-encontraste'], function () {
+            Route::get('/', [AdminAditionalInfoController::class, 'comoNosEncontraste']);
+            Route::get('/agregar', [AdminAditionalInfoController::class, 'addComoNosEncontraste']);
+            Route::post('/agregar', [AdminAditionalInfoController::class, 'saveComoNosEncontraste']);
+            Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editComoNosEncontraste']);
+            Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateComoNosEncontraste']);
+        });
+        Route::post('/agregar', [AdminAditionalInfoController::class, 'saveInfo']);
+        Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editInfo']);
+        Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateInfo']);
+    });
 });

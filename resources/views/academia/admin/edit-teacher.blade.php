@@ -4,35 +4,38 @@
 <div>
     <div id="errors">
     </div>
-    <form action="/admin/profesores/agregar" method="POST" id="formAddProfesor">
+    <form action="/admin/profesores/editar/{{$teacher->id}}" method="POST" id="formAddProfesor">
         @csrf
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
-            <input type="text" placeholder="Nombre" name="nombre" class="input">
-            <input type="text" placeholder="Apellido" name="apellido" class="input">
-            <input type="text" placeholder="Cédula de identidad" name="cedula" class="input">
+            <input type="text" placeholder="Nombre" name="nombre" class="input" value="{{$teacher->name}}">
+            <input type="text" placeholder="Apellido" name="apellido" class="input" value="{{$teacher->last_name}}">
+            <input type="text" placeholder="Cédula de identidad" name="cedula" class="input" value="{{$teacher->id_card}}">
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
-            <input type="date" placeholder="Fecha de nacimiento" name="fechaNacimiento" class="input">
-            <input type="text" placeholder="Dirección" name="direccion" class="input">
-            <input type="text" placeholder="Número de WhatsApp" name="numeroWhatsApp" class="input">
+            <input type="date" placeholder="Fecha de nacimiento" name="fechaNacimiento" class="input" value="{{$teacher->formattedBirthday}}">
+            <input type="text" placeholder="Dirección" name="direccion" class="input" value="{{$teacher->address}}">
+            <input type="text" placeholder="Número de WhatsApp" name="numeroWhatsApp" class="input" value="{{$teacher->whatsapp_number}}">
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
-            <input type="text" placeholder="Número de teléfono en caso de emergencia" name="numeroEmergencia" class="input">
+            <input type="text" placeholder="Número de teléfono en caso de emergencia" name="numeroEmergencia" class="input" value="{{$teacher->another_number}}">
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
-            <input type="text" placeholder="Correo electrónico" name="correo" class="input">
-            <input type="password" placeholder="Contraseña" name="contrasena" class="input">
-        </div>
+        <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
+            <input type="text" placeholder="Correo electrónico" name="correo" class="input" value="{{$teacher->email}}">
+            <input type="password" placeholder="Contraseña" name="contrasena" class="input" value="{{$teacher->name}}">
+        </div> -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
             <input type="file" placeholder="Foto" class="input" accept="image/*" id="foto">
-            <input type="hidden" name="foto" id="fotoB64">
-            <div id="imgDiv"></div>
+            <input type="hidden" name="foto" id="fotoB64" value="{{$teacher->photo}}">
+            <div id="imgDiv">
+                <img src="{{$teacher->photo}}" alt="user" class="w-20 rounded">
+            </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
+
             <div class="flex items-center">
                 <span class="text-lg roboto-regular mr-3">Activo</span>
                 <label class="switch">
-                    <input type="checkbox" disabled checked>
+                    <input type="checkbox" name="active" @checked($teacher->active) >
                     <span class="slider"></span>
                 </label>
             </div>
@@ -58,7 +61,7 @@
             const img = document.createElement("img");
             img.setAttribute("src", URL.createObjectURL(this.files[0]));
             img.setAttribute("alt", "user");
-            img.setAttribute("class", "w-24 rounded");
+            img.setAttribute("class", "w-20 rounded");
             imgDiv.appendChild(img);
             reader.onload = function() {
                 document.getElementById("fotoB64").value = reader.result;
@@ -121,6 +124,7 @@
     const handleCancel = () => {
         window.location.href = "/admin/profesores";
     };
+
 </script>
 
 @endsection

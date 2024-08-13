@@ -41,7 +41,7 @@
                 </div>
             </section>
         </header>
-        <main class="bg-white px-10 py-4 mb-4 rounded-2xl rounded-bl-2xl shadow">
+        <main class="bg-white px-10 py-4 pt-10 mb-4 rounded-2xl rounded-bl-2xl shadow">
             @yield("content")
         </main>
     </section>

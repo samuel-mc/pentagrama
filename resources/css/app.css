@@ -148,8 +148,8 @@ textarea {
 }
 
 .bg--gradient-pink {
-    background: rgb(0,0,0);
-background: radial-gradient(circle, rgba(0,0,0,1) 48%, rgba(137,0,100,1) 100%, rgba(255,0,185,1) 100%);
+    background: rgb(0, 0, 0);
+    background: radial-gradient(circle, rgba(0, 0, 0, 1) 48%, rgba(137, 0, 100, 1) 100%, rgba(255, 0, 185, 1) 100%);
 }
 
 .bg--pattern {
@@ -207,4 +207,58 @@ background: radial-gradient(circle, rgba(0,0,0,1) 48%, rgba(137,0,100,1) 100%, r
 .input:focus {
     border: var(--light_pink) 2px solid;
     transition: all ease-in-out 0.3s;
+}
+
+/* From Uiverse.io by mrhyddenn */
+/* The switch - the box around the slider */
+.switch {
+    font-size: 17px;
+    position: relative;
+    display: inline-block;
+    width: 62px;
+    height: 35px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 1;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    background: #fff;
+    transition: .4s;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.9em;
+    width: 1.9em;
+    border-radius: 16px;
+    left: 1.2px;
+    top: 0;
+    bottom: 0;
+    background-color: white;
+    box-shadow: 0 2px 5px #999999;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: var(--light_pink);
+    border: 1px solid transparent;
+}
+
+input:checked+.slider:before {
+    transform: translateX(1.5em);
 }
