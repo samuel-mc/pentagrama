@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\HowFoundUs;
+use App\Models\Course;
 
 define("linksAdmin", [
     (object) ['url' => '/admin', 'name' => 'Dashboard', 'icon' => 'home.png'],
@@ -24,6 +25,7 @@ class AdminAditionalInfoController extends Controller
         $rol = 'Admin';
         $links = linksAdmin;
         $linksAditionalInfo = [
+            (object) ['url' => '/admin/info-adicional/catedras', 'name' => 'Cátedras', 'icon' => 'course.png'],
             (object) ['url' => '/admin/info-adicional/como-nos-encontraste', 'name' => '¿Cómo nos encontraste?', 'icon' => 'search.png'],
         ];
         $items = HowFoundUs::all();
@@ -99,4 +101,67 @@ class AdminAditionalInfoController extends Controller
     /**
      * Display the "Catedrás" index.
      */
+    public function catedras() {
+        $title = 'Catedrás';
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $links = linksAdmin;
+        $items = Course::orderBy('name', 'asc')->get();
+        return view('academia.admin.courses', compact('title', 'name', 'rol', 'links', 'items'));
+    }
+
+    /**
+     * Display the form to add a new "Cátedra".
+     */
+    public function addCatedra() {
+        $title = 'Agregar Cátedra';
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $links = linksAdmin;
+        return view('academia.admin.add-course', compact('title', 'name', 'rol', 'links'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function saveCatedra(Request $request) {
+        $message = [
+            'nombre.unique' => 'El nombre ya existe, prueba con uno diferente.',
+        ];
+        $request->validate([
+            'nombre' => 'unique:courses,name',
+        ], $message);
+        $item = new Course();
+        $item->name = $request->nombre;
+        $item->description = $request->descripcion;
+        $item->save();
+        return redirect('/admin/info-adicional/catedras');
+    }
+
+    /**
+     * Display the form to edit a "Cátedra".
+     */
+    public function editCatedra($id) {
+        $title = 'Editar Cátedra';
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $links = linksAdmin;
+        $item = Course::find($id);
+        return view('academia.admin.edit-course', compact('title', 'name', 'rol', 'links', 'item'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateCatedra(Request $request, $id) {
+        $error = DB::table('courses')->where('name', $request->nombre)->where('id', '!=', $id)->get();
+        if (count($error) > 0) {
+            return redirect()->back()->with('error', 'El nombre ya existe, prueba con uno diferente.');
+        }
+        $item = Course::find($id);
+        $item->name = $request->nombre;
+        $item->description = $request->descripcion;
+        $item->save();
+        return redirect('/admin/info-adicional/catedras');
+    }
 }

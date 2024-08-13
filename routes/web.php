@@ -43,8 +43,12 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editComoNosEncontraste']);
             Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateComoNosEncontraste']);
         });
-        Route::post('/agregar', [AdminAditionalInfoController::class, 'saveInfo']);
-        Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editInfo']);
-        Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateInfo']);
+        Route::group(['prefix' => 'catedras'], function () {
+            Route::get('/', [AdminAditionalInfoController::class, 'catedras']);
+            Route::get('/agregar', [AdminAditionalInfoController::class, 'addCatedra']);
+            Route::post('/agregar', [AdminAditionalInfoController::class, 'saveCatedra']);
+            Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editCatedra']);
+            Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateCatedra']);
+        });
     });
 });
