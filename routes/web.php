@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminDashboarController;
 use App\Http\Controllers\AdminTeachersMagmentController;
 use App\Http\Controllers\AdminAditionalInfoController;
+use App\Http\Controllers\InscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,5 +58,9 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editEdad']);
             Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateEdad']);
         });
+    });
+    Route::group(['prefix' => 'inscripcion'], function () {
+        Route::get('/', [InscriptionController::class, 'index']);
+        Route::post('/', [InscriptionController::class, 'save']);
     });
 });
