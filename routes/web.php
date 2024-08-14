@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminTeachersMagmentController;
 use App\Http\Controllers\AdminAditionalInfoController;
 use App\Http\Controllers\AdminStudentsController;
 use App\Http\Controllers\InscriptionController;
+use App\Http\Controllers\AdminPersonalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,5 +67,10 @@ Route::group(['prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'estudiantes'], function () {
         Route::get('/', [AdminStudentsController::class, 'index']);
+    });
+    Route::group(['prefix' => 'personal'], function () {
+        Route::get('/', [AdminPersonalController::class, 'index']);
+        Route::get('/agregar', [AdminPersonalController::class, 'create']);
+        Route::post('/agregar', [AdminPersonalController::class, 'store']);
     });
 });

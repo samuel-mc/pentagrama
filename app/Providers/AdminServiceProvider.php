@@ -18,6 +18,7 @@ class AdminServiceProvider extends ServiceProvider
                 (object) ['url' => '/admin/estudiantes', 'name' => 'Estudiantes', 'icon' => 'students.png'],
                 (object) ['url' => '/admin/profesores', 'name' => 'Profesores', 'icon' => 'profesor.png'],
                 (object) ['url' => '/admin/info-adicional', 'name' => 'Información adicional', 'icon' => 'info.png'],
+                (object) ['url' => '/admin/personal', 'name' => 'Personal', 'icon' => 'personal.png'],
             ];
         });
     }
