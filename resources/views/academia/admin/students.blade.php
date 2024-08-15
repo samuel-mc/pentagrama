@@ -21,7 +21,7 @@
                     <th class="py-2 px-2">Horario</th>
                     <th class="py-2 px-2">Estado</th>
                     <th class="py-2 px-2">Fecha de ingreso</th>
-                    <th class="py-2 px-2">Ficha inscripción</th>
+                    <th class="py-2 px-2">Ver detalles</th>
                     <th class="py-2 px-2">Bitácora</th>
                 </tr>
             </thead>
@@ -39,7 +39,7 @@
                     <td class="py-1 px-2 {{ $student->active ? "text-green-500" : "text-red-500" }}">{{ $student->active ? "Activo" : "Inactivo" }}</td>
                     <td class="py-1 px-2">{{ $student->formattedCreatedAt }}</td>
                     <td class="py-1 px-2">
-                        <a href="#" class="text-dark_pink hover:text-purple_p transition-all">
+                        <a href="/admin/estudiantes/{{$student->id}}" class="text-dark_pink hover:text-purple_p transition-all">
                             Ver
                         </a>
                     </td>

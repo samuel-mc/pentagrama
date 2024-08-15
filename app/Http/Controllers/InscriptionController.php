@@ -30,6 +30,12 @@ class InscriptionController extends Controller
      */
     public function save(Request $request)
     {
+        $message = [
+            'correo.unique' => 'El correo ya se encuentra registrado, prueba con uno diferente.',
+        ];
+        $request->validate([
+            'correo' => 'unique:users,email',
+        ], $message);
         DB::transaction(function () use ($request) {
             // dd($request->all());
             $user = new User();
