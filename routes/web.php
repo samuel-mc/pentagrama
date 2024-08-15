@@ -67,6 +67,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'estudiantes'], function () {
         Route::get('/', [AdminStudentsController::class, 'index']);
+        Route::get('/detail/{id}', [AdminStudentsController::class, 'studentDetail']);
     });
     Route::group(['prefix' => 'personal'], function () {
         Route::get('/', [AdminPersonalController::class, 'index']);

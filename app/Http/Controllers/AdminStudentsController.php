@@ -26,4 +26,19 @@ class AdminStudentsController extends Controller
         }
         return view('academia.admin.students', compact('title', 'name', 'rol', 'links', 'students'));
     }
+
+    /**
+     * Display the student detail.
+     */
+    public function studentDetail($id) {
+        $title = 'Detalle';
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $links = app('adminLinks');
+        // $student = Student::find($id);
+        // $formattedCreatedAt = Carbon::parse($student->created_at)->format('d/m/Y');
+        // $student->formattedCreatedAt = $formattedCreatedAt;
+        $student = new Student();
+        return view('academia.admin.detail-student', compact('title', 'name', 'rol', 'links', 'student'));
+    }
 }
