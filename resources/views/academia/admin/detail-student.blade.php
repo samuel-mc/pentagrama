@@ -17,33 +17,87 @@
         <div class="flex items-center">
             <img src="{{ asset('img/icons/avatar.png') }}" alt="user" class="w-12">
         </div>
-        @include("components.detail-item", ["label" => "Usuario", "value" => "smedina"])
-        @include("components.detail-item", ["label" => "Nombre", "value" => "Samuel"])
-        @include("components.detail-item", ["label" => "Apellidos", "value" => "García Guzmán"])
-        @include("components.detail-item", ["label" => "Fecha de nacimiento", "value" => "12/12/1999"])
-        @include("components.detail-item", ["label" => "Género", "value" => "Masculino"])
-        @include("components.detail-item", ["label" => "Modalidad", "value" => "Regular"])
-    </section>
-    <section class="mb-10">
-        <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Datos del representante</h2>
-        <div class="flex flex-wrap">
-            @include("components.detail-item", ["label" => "¿Cómo conoció el programa?", "value" => "Facebook"])
-            @include("components.detail-item", ["label" => "Nombre", "value" => "Samuel"])
-            @include("components.detail-item", ["label" => "Apellidos", "value" => "García Guzmán"])
-            @include("components.detail-item", ["label" => "Cédula de identidad", "value" => "123456789"])
-            @include("components.detail-item", ["label" => "Número de whatsapp", "value" => "123456789"])
-            @include("components.detail-item", ["label" => "Número de emergencia", "value" => "123456789"])
-            @include("components.detail-item", ["label" => "Ocupación", "value" => "Estudiante"])
-            @include("components.detail-item", ["label" => "Dirección", "value" => "Calle 2, casa 2"])
+        <div class="mx-4 my-2">
+            <h3 class="text-sm text-dark_pink">Usuario</h3>
+            <p class="text-xl text-black_p">{{$student->user->email}}</p>
+        </div>
+        <div class="mx-4 my-2">
+            <h3 class="text-sm text-dark_pink">Nombre</h3>
+            <p class="text-xl text-black_p">{{$student->name}}</p>
+        </div>
+        <div class="mx-4 my-2">
+            <h3 class="text-sm text-dark_pink">Apellidos</h3>
+            <p class="text-xl text-black_p">{{$student->last_name}}</p>
+        </div>
+        <div class="mx-4 my-2">
+            <h3 class="text-sm text-dark_pink">Fecha de nacimiento</h3>
+            <p class="text-xl text-black_p">{{$student->formatedBirthdate}}</p>
+        </div>
+        <div class="mx-4 my-2">
+            <h3 class="text-sm text-dark_pink">Género</h3>
+            <p class="text-xl text-black_p">{{$student->gender}}</p>
+        </div>
+        <div class="mx-4 my-2">
+            <h3 class="text-sm text-dark_pink">Modalidad</h3>
+            <p class="text-xl text-black_p">{{$student->modality}}</p>
         </div>
     </section>
     <section class="mb-10">
-        <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Pago</h2>
+        <h2 class="text-2xl not-serif-regular text-purple_p my-4">Datos del representante</h2>
         <div class="flex flex-wrap">
-            @include("components.detail-item", ["label" => "Método de pago", "value" => "Pago móvil"])
-            @include("components.detail-item", ["label" => "Monto mensual", "value" => "100.000 Bs"])
-            @include("components.detail-item", ["label" => "Inscripción", "value" => "50.000 Bs"])
-            @include("components.detail-item", ["label" => "Fecha", "value" => "12/12/2021"])
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">¿Cómo conoció el programa?</h3>
+                <p class="text-xl text-black_p">{{$student->representative->howFoundUs->how}}</p>
+            </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Nombre</h3>
+                <p class="text-xl text-black_p">{{$student->representative->name}}</p>
+            </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Apellidos</h3>
+                <p class="text-xl text-black_p">{{$student->representative->last_name}}</p>
+            </div>
+                        <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Cédula de identidad</h3>
+                <p class="text-xl text-black_p">{{$student->representative->id_card}}</p>
+            </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Número de whatsapp</h3>
+                <p class="text-xl text-black_p">{{$student->representative->whatsapp_number}}</p>
+            </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Número de emergencia</h3>
+                <p class="text-xl text-black_p">{{$student->representative->another_number}}</p>
+            </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Ocupación</h3>
+                <p class="text-xl text-black_p">{{$student->representative->occupation}}</p>
+            </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Dirección</h3>
+                <p class="text-xl text-black_p">{{$student->representative->address}}</p>
+            </div>
+        </div>
+    </section>
+    <section class="mb-10">
+        <h2 class="text-2xl not-serif-regular text-purple_p my-4">Pago</h2>
+        <div class="flex flex-wrap">
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Método de pago</h3>
+                <p class="text-xl text-black_p">{{$student->paymentsData->payment_method}}</p>
+            </div>
+                        <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Monto mensual</h3>
+                <p class="text-xl text-black_p">{{$student->paymentsData->monthly_payment}}</p>
+            </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Inscripción</h3>
+                <p class="text-xl text-black_p">{{$student->paymentsData->inscription_payment}}</p>
+            </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">Fecha</h3>
+                <p class="text-xl text-black_p">{{$student->formatedPaymentDate}}</p>
+            </div>
         </div>
     </section>
 </div>

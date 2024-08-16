@@ -21,8 +21,8 @@
                     <th class="py-2 px-2">Horario</th>
                     <th class="py-2 px-2">Estado</th>
                     <th class="py-2 px-2">Fecha de ingreso</th>
-                    <th class="py-2 px-2">Ver detalles</th>
-                    <th class="py-2 px-2">Bitácora</th>
+                    <th class="py-2 px-2"></th>
+                    <!-- <th class="py-2 px-2">Bitácora</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -40,14 +40,14 @@
                     <td class="py-1 px-2">{{ $student->formattedCreatedAt }}</td>
                     <td class="py-1 px-2">
                         <a href="/admin/estudiantes/{{$student->id}}" class="text-dark_pink hover:text-purple_p transition-all">
-                            Ver
+                            Ver detalles
                         </a>
                     </td>
-                    <td class="py-1 px-2">
+                    <!-- <td class="py-1 px-2">
                         <a href="#" class="text-dark_pink hover:text-purple_p transition-all">
                             Ver
                         </a>
-                    </td>
+                    </td> -->
                 </tr>
                 @endforeach
             </tbody>

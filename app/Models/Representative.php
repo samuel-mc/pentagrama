@@ -13,4 +13,9 @@ class Representative extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function howFoundUs()
+    {
+        return $this->belongsTo(HowFoundUs::class);
+    }
 }

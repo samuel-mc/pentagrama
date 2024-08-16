@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminAditionalInfoController;
 use App\Http\Controllers\AdminStudentsController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\AdminPersonalController;
+use App\Http\Controllers\AdminGroupsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,11 +68,18 @@ Route::group(['prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'estudiantes'], function () {
         Route::get('/', [AdminStudentsController::class, 'index']);
-        Route::get('/detail/{id}', [AdminStudentsController::class, 'studentDetail']);
+        Route::get('/{id}', [AdminStudentsController::class, 'studentDetail']);
+        Route::get('{id}/pagos', [AdminStudentsController::class, 'studentPayments']);
+        Route::get('{id}/pagos/agregar', [AdminStudentsController::class, 'addPayment']);
     });
     Route::group(['prefix' => 'personal'], function () {
         Route::get('/', [AdminPersonalController::class, 'index']);
         Route::get('/agregar', [AdminPersonalController::class, 'create']);
         Route::post('/agregar', [AdminPersonalController::class, 'store']);
+    });
+    Route::group(['prefix' => 'grupos'], function () {
+        Route::get('/', [AdminGroupsController::class, 'index']);
+        Route::get('/agregar', [AdminGroupsController::class, 'addGroup']);
+        Route::post('/agregar', [AdminGroupsController::class, 'saveGroup']);
     });
 });

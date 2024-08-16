@@ -36,6 +36,9 @@ class InscriptionController extends Controller
         $request->validate([
             'correo' => 'unique:users,email',
         ], $message);
+
+        $studentId = null;
+
         DB::transaction(function () use ($request) {
             // dd($request->all());
             $user = new User();
@@ -73,8 +76,9 @@ class InscriptionController extends Controller
             $studentPaymentsData->payment_date = $request->fechaPago;
             $studentPaymentsData->save();
 
+            $studentId = $student->id;
         });
         
-        return redirect('/admin/estudiantes');
+        return redirect('/admin/estudiantes/' . $studentId);
     }
 }
