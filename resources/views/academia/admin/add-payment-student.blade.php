@@ -7,11 +7,10 @@
     <form action="/admin/estudiantes/{{$student->id}}/pagos/agregar" method="post" id="formPaymentStudent">
         @csrf
         <section class="flex flex-wrap my-4">
-            <input name="student_payment_data_id" value="{{$student->paymentsData->id}}" hidden>
+            <input type="text" name="student_id" value="{{$student->id}}" hidden>
             <div class="mx-4 my-2">
                 <h3 class="text-sm mb-1 text-light_pink">Estudiante</h3>
                 <input type="text" placeholder="Estudiante" name="nombreEstudiante" class="input h-fit" disabled id="fechaPagpStudent" value="{{$student->name}} {{$student->last_name}}">
-                <input type="text" name="student_id" value="{{$student->id}}" hidden>
             </div>
             <div class="mx-4 my-2">
                 <h3 class="text-sm mb-1 text-light_pink">Fecha de pago</h3>

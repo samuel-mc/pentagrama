@@ -61,16 +61,7 @@ class AdminStudentsController extends Controller
         $rol = 'Admin';
         $title = 'Pagos: ' . $student->name . ' ' . $student->last_name;
         $links = app('adminLinks');
-        $pagos = StudentPaymentDone::join('student_payments_data as pdata', 'pdata.id', '=', 'student_payment_done.id')
-            ->where('pdata.student_id', 1)
-            ->select('student_payment_done.*')
-            ->get();
-        if (!is_null($pagos) && is_array($pagos)) {
-            // Format the date
-            $pagos = $pagos;
-        } else {
-            $pagos = [];
-        }
+        $pagos = StudentPaymentDone::where('student_id', $id)->get();
         return view('academia.admin.payments-student', compact('title', 'name', 'rol', 'links', 'pagos', 'student'));
     }
 
@@ -105,7 +96,7 @@ class AdminStudentsController extends Controller
         DB::transaction(function () use ($request) {
             $studentPaymentDone = new StudentPaymentDone();
             $studentPaymentDone->amount = $request->montoPagado;
-            $studentPaymentDone->student_payments_data_id = $request->student_payment_data_id;
+            $studentPaymentDone->student_id = $request->student_id;
             $studentPaymentDone->type_id = $request->payment_type;
             $studentPaymentDone->method_id = $request->payment_method;
             $studentPaymentDone->amount_paid = $request->montoTotal;

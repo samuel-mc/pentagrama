@@ -24,4 +24,9 @@ class Student extends Model
         return $this->hasOne(StudentPaymentsData::class);
     }
 
+    public function paymentsDone()
+    {
+        return $this->hasMany(StudentPaymentDone::class);
+    }
+
 }

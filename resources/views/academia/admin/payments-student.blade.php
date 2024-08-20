@@ -9,7 +9,7 @@
     </div>
     @if(count($pagos) > 0)
     <div class="my-4">
-    
+        
     </div>
     @else
     <div class="my-4">
