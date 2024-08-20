@@ -3,9 +3,11 @@
 @section("content")
 <div>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-6 px-4 py-10">
-        <button class="btn btn--primary">
-            Pagos
-        </button>
+        <a href="/admin/estudiantes/{{$student->id}}/pagos" class="w-full">
+            <button class="btn btn--primary" class="w-full">
+                Pagos
+            </button>
+        </a>
         <button class="btn btn--primary">
             Bitácora
         </button>

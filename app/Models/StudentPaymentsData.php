@@ -13,4 +13,9 @@ class StudentPaymentsData extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function paymentsDone()
+    {
+        return $this->hasMany(StudentPaymentDone::class);
+    }
 }

@@ -14,4 +14,9 @@ class StudentPaymentDone extends Model
     {
         return $this->belongsTo(StudentPaymentType::class, 'student_payment_types_id');
     }
+
+    public function paymentData()
+    {
+        return $this->belongsTo(StudentPaymentsData::class);
+    }
 }
