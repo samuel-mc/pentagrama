@@ -96,11 +96,11 @@
     @if(count($payment->studentPaymentDoneItems) > 0)
     <section>
         <header>
-            <h2 class="text-2xl text-light_pink roboto-bold text-center">Desglose de pagos</h2>
+            <h2 class="text-2xl text-light_pink roboto-bold text-center my-4">Desglose de pagos</h2>
         </header>
-        <main class="grid grid-cols-1 md:grid-cols-2">
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @foreach($payment->studentPaymentDoneItems as $item)
-            <div class="grid grid-cols-1 md:grid-cols-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 border border-2 rounded p-4">
                 <div>
                     <div class="mx-4 my-2">
                         <h3 class="text-sm mb-1 text-light_pink">Fecha de pago</h3>
@@ -137,8 +137,7 @@
     @endif
 
     <section class="text-end my-10">
-        <button class="roboto-bold btn btn--secondary" type="button" onclick="handleCancel()">Cancelar</button>
-        <button class="roboto-bold btn btn--primary" type="submit">Guardar</button>
+        <button class="roboto-bold btn btn--secondary" type="button" onclick="handleCancel()">Regresar</button>
     </section>
     </form>
 

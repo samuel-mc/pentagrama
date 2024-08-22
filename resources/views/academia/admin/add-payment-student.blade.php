@@ -76,6 +76,10 @@
 </div>
 
 <script>
+    const handleCancel = () => {
+        window.location.href = "/admin/estudiantes/{{$student->id}}/pagos";
+    }
+
     const handleTipoPago = () => {
         let selectPaymentType = document.getElementById("selectPaymentType");
         let selectedPaymentType = selectPaymentType.options[selectPaymentType.selectedIndex].getAttribute("value-name");

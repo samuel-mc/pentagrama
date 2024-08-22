@@ -65,7 +65,9 @@ class AdminStudentsController extends Controller
         $pagos = StudentPaymentDone::where('student_id', $id)->get();
         $pagos->map(function ($pago) {
             $pago->date = Carbon::parse($pago->created_at)->format('d/m/Y');
-            $pago->due_date = Carbon::parse($pago->due_date)->format('d/m/Y');
+            if ($pago->due_date != null) {
+                $pago->due_date = Carbon::parse($pago->due_date)->format('d/m/Y');
+            }
             $pago->amountPaid = $pago->studentPaymentDoneItems->sum('amount_paid');
             $pago->amountDue = $pago->amount - $pago->amountPaid;
             return $pago;
@@ -118,7 +120,6 @@ class AdminStudentsController extends Controller
                 $student_payment_done_id = $request->student_payment_donte_id;
             }
 
-
             $itm = new StudentPaymentDoneItem();
 
             $itm->method_id = $request->payment_method;
@@ -128,6 +129,12 @@ class AdminStudentsController extends Controller
             $itm->reference = $request->referencia;
             $itm->student_payment_done_id = $student_payment_done_id;
             $itm->save();
+
+            if ($request->student_payment_donte_id != null) {
+                $studentPaymentDone = StudentPaymentDone::find($student_payment_done_id);
+                $studentPaymentDone->is_paid = $request->montoRestante == 0;
+                $studentPaymentDone->save();
+            }
 
         });
 

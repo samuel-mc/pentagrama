@@ -29,7 +29,7 @@
                     <td>{{$pago->amountPaid}}</td>
                     <td>{{$pago->amountDue}}</td>
                     <td>{{$pago->rate}}</td>
-                    <td>{{$pago->due_date}}</td>
+                    <td class="text-red-500"><span @class(["hidden"  => $pago->is_paid])>{{$pago->due_date}}</span></td>
                     <td class="flex justify-center py-2">
                         <a href="/admin/estudiantes/pagos/detalle/{{$pago->id}}" class="bg-white hover:bg-light_pink transition-all rounded p-2 shadow">
                             <img src="{{ asset('img/icons/see.png') }}" alt="edit" class="w-6">
