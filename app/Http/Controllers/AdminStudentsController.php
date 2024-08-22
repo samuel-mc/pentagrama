@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\StudentPaymentDone;
 use App\Models\StudentPaymentMethods;
 use App\Models\StudentPaymentType;
+use App\Models\StudentPaymentDoneItem;
 
 class AdminStudentsController extends Controller
 {
@@ -62,6 +63,14 @@ class AdminStudentsController extends Controller
         $title = 'Pagos: ' . $student->name . ' ' . $student->last_name;
         $links = app('adminLinks');
         $pagos = StudentPaymentDone::where('student_id', $id)->get();
+        $pagos->map(function ($pago) {
+            $pago->date = Carbon::parse($pago->created_at)->format('d/m/Y');
+            $pago->due_date = Carbon::parse($pago->due_date)->format('d/m/Y');
+            $pago->amountPaid = $pago->studentPaymentDoneItems->sum('amount_paid');
+            $pago->amountDue = $pago->amount - $pago->amountPaid;
+            return $pago;
+        });
+        // dd($pagos->first()->studentPaymentType);
         return view('academia.admin.payments-student', compact('title', 'name', 'rol', 'links', 'pagos', 'student'));
     }
 
@@ -94,20 +103,61 @@ class AdminStudentsController extends Controller
     public function savePayment(Request $request) {
         // dd($request->all());
         DB::transaction(function () use ($request) {
-            $studentPaymentDone = new StudentPaymentDone();
-            $studentPaymentDone->amount = $request->montoPagado;
-            $studentPaymentDone->student_id = $request->student_id;
-            $studentPaymentDone->type_id = $request->payment_type;
-            $studentPaymentDone->method_id = $request->payment_method;
-            $studentPaymentDone->amount_paid = $request->montoTotal;
-            $studentPaymentDone->amount_due = $request->montoRestante;
-            $studentPaymentDone->due_date = $request->pay_before;
-            $studentPaymentDone->voucher = $request->capture_photo;
-            $studentPaymentDone->voucher_date = $request->capture_date;
-            $studentPaymentDone->save();
+            $student_payment_done_id = null;
+            if ($request->student_payment_donte_id == null) {
+                $studentPaymentDone = new StudentPaymentDone();
+                $studentPaymentDone->amount = $request->montoPagado;
+                $studentPaymentDone->student_id = $request->student_id;
+                $studentPaymentDone->type_id = $request->payment_type;
+                $studentPaymentDone->rate = $request->tasa;
+                $studentPaymentDone->is_paid = $request->montoRestante == 0;
+                $studentPaymentDone->due_date = $request->pay_before;
+                $studentPaymentDone->save();
+                $student_payment_done_id = $studentPaymentDone->id;
+            } else {
+                $student_payment_done_id = $request->student_payment_donte_id;
+            }
+
+
+            $itm = new StudentPaymentDoneItem();
+
+            $itm->method_id = $request->payment_method;
+            $itm->amount_paid = $request->montoPagado;
+            $itm->voucher = $request->capture_photo;
+            $itm->voucher_date = $request->capture_date;
+            $itm->reference = $request->referencia;
+            $itm->student_payment_done_id = $student_payment_done_id;
+            $itm->save();
 
         });
 
         return redirect("/admin/estudiantes/{$request->student_id}/pagos");
+    }
+
+    /**
+     * Display the detail of the payment.
+     */
+    public function detailPayment($paymentId) {
+        // dd($paymentId);
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $title = 'Detalle de Pago';
+        $links = app('adminLinks');
+        $payment = StudentPaymentDone::find($paymentId);
+        $student = Student::find($payment->student_id);
+
+        $payment->amountPaid = $payment->studentPaymentDoneItems->sum('amount_paid');
+        $payment->amountDue = $payment->amount - $payment->amountPaid;
+        $payment->dueDate = Carbon::parse($payment->due_date)->format('d/m/Y');
+
+        $payment->studentPaymentDoneItems->map(function ($item) {
+            $item->formattedCreatedAt = Carbon::parse($item->created_at)->format('d/m/Y');
+            $item->formattedVoucherDate = Carbon::parse($item->voucher_date)->format('d/m/Y');
+            return $item;
+        });
+
+        $paymentTypes = StudentPaymentType::where('active', true)->get();
+        $paymentMethods = StudentPaymentMethods::where('active', true)->get();
+        return view('academia.admin.detail-payment-student', compact('title', 'name', 'rol', 'links', 'payment', 'student', 'paymentTypes', 'paymentMethods'));
     }
 }

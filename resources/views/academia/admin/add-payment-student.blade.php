@@ -133,7 +133,8 @@
             errors.push("La fecha del capture es requerida.");
         }
 
-        if (formData.get("pay_before") === "") {
+        const montoRestante = document.getElementById("montoRestante").value;
+        if (formData.get("pay_before") === "" && montoRestante > 0) {
             errors.push("La fecha de pago es requerida.");
         }
 

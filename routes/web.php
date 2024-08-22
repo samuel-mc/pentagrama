@@ -72,6 +72,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('{id}/pagos', [AdminStudentsController::class, 'studentPayments']);
         Route::get('{id}/pagos/agregar', [AdminStudentsController::class, 'addPayment']);
         Route::post('{id}/pagos/agregar', [AdminStudentsController::class, 'savePayment']);
+        Route::get('/pagos/detalle/{paymentId}', [AdminStudentsController::class, 'detailPayment']);
     });
     Route::group(['prefix' => 'personal'], function () {
         Route::get('/', [AdminPersonalController::class, 'index']);

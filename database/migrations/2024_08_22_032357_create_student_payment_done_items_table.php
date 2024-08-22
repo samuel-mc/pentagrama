@@ -11,25 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-
-        //Remove the foreign key student_payment_types_id
-        Schema::table('student_payment_done', function (Blueprint $table) {
-            $table->dropForeign(['student_payment_types_id']);
-        });
-
-        //Remove the column student_payment_types_id
-        Schema::table('student_payment_done', function (Blueprint $table) {
-            $table->dropColumn('student_payment_types_id');
-        });
-
-        //Add columns
-        Schema::table('student_payment_done', function (Blueprint $table) {
+        Schema::create('student_payment_done_items', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('method_id')->references('id')->on('student_payment_methods');
             $table->decimal('amount_paid');
-            $table->decimal('amount_due')->nullable();
             $table->date('due_date')->nullable();
             $table->longText('voucher')->nullable();
             $table->date('voucher_date')->nullable();
+            $table->string('reference');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+            $table->boolean('active')->default(true);
+            $table->foreignId('student_payment_done_id')->references('id')->on('student_payment_done');
         });
     }
 
@@ -38,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('student_payment_done_items');
     }
 };

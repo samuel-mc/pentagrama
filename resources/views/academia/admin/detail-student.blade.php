@@ -4,7 +4,7 @@
 <div>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-6 px-4 py-10">
         <a href="/admin/estudiantes/{{$student->id}}/pagos" class="w-full">
-            <button class="btn btn--primary" class="w-full">
+            <button class="btn btn--primary w-full">
                 Pagos
             </button>
         </a>

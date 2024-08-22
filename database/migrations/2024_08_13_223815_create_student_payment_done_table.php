@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->double('amount');
             $table->foreignId('student_id')->references('id')->on('students');
+            $table->decimal('rate');
+            $table->boolean('is_paid')->default(false);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->boolean('active')->default(true);
