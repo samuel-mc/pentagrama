@@ -25,6 +25,10 @@ class InscriptionController extends Controller
         return view('academia.admin.inscription', compact('title', 'name', 'rol', 'links', 'howFoundUs'));
     }
 
+    private function setFirstLettersUpper($text) {
+        return ucwords(strtolower($text));
+    }
+
     /**
      * Save the inscription.
      */
@@ -38,17 +42,17 @@ class InscriptionController extends Controller
         ], $message);
 
         $studentId = null;
-
+        
         DB::transaction(function () use ($request) {
             // dd($request->all());
             $user = new User();
             $user->email = $request->correo;
             $user->password = bcrypt($request->contrasena);
             $user->save();
-
+            
             $student = new Student();
-            $student->name = $request->nombre;
-            $student->last_name = $request->apellidos;
+            $student->name = $this->setFirstLettersUpper($request->nombre);
+            $student->last_name = $this->setFirstLettersUpper($request->apellidos);
             $student->birthdate = $request->fecha_nacimiento;
             $student->gender = $request->genero;
             $student->modality = $request->modalidad;
@@ -57,8 +61,8 @@ class InscriptionController extends Controller
             $student->save();
 
             $representative = new Representative();
-            $representative->name = $request->nombre_representante;
-            $representative->last_name = $request->apellidos_representante;
+            $representative->name = $this->setFirstLettersUpper($request->nombre_representante);
+            $representative->last_name = $this->setFirstLettersUpper($request->apellidos_representante);
             $representative->id_card = $request->cedula_representante;
             $representative->whatsapp_number = $request->whatsapp_representante;
             $representative->another_number = $request->telefono_emergencia_representante;
@@ -70,7 +74,6 @@ class InscriptionController extends Controller
 
             $studentPaymentsData = new StudentPaymentsData();
             $studentPaymentsData->student_id = $student->id;
-            $studentPaymentsData->payment_method = $request->metodo_pago;
             $studentPaymentsData->monthly_payment = $request->monto;
             $studentPaymentsData->inscription_payment = $request->inscripcion;
             $studentPaymentsData->payment_date = $request->fechaPago;

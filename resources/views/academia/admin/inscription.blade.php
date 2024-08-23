@@ -26,10 +26,20 @@
         <!-- Datos del estudiante -->
         <h2 class="text-2xl not-serif-regular text-dark_pink mb-4">Estudiante</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-2">
-            <input type="text" placeholder="Nombre" name="nombre" class="input">
-            <input type="text" placeholder="Apellidos" name="apellidos" class="input">
-            <input type="date" placeholder="Fecha de nacimiento" name="fecha_nacimiento" class="input">
             <div>
+                <h3 class="text-sm mb-1 text-light_pink">Nombre</h3>
+                <input type="text" placeholder="Nombre" name="nombre" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Apellidos</h3>
+                <input type="text" placeholder="Apellidos" name="apellidos" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Fecha de nacimiento</h3>
+                <input type="date" placeholder="Fecha de nacimiento" name="fecha_nacimiento" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Género</h3>
                 <select name="genero" id="genero" class="input w-full">
                     <option value="" class="text-gray-400">Género</option>
                     <option value="Masculino">Masculino</option>
@@ -37,10 +47,10 @@
                     <option value="Otro">Otro</option>
                 </select>
             </div>
-            <!-- TODO: Preguntar por catedra a cursar -->
             <div>
+                <h3 class="text-sm mb-1 text-light_pink">Modalidad</h3>
                 <select name="modalidad" id="modalidad" class="input w-full">
-                    <option value="">Modalidad</option>
+                    <option value="">Seleccionar una modalidad</option>
                     <option value="Regular">Regular</option>
                     <option value="Becado">Becado</option>
                     <option value="Intercambio">Intercambio</option>
@@ -60,42 +70,72 @@
         <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Representante</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-2">
             <div>
+                <h3 class="text-sm mb-1 text-light_pink">¿Cómo nos encontraste?</h3>
                 <select name="como_nos_encontraste" id="como_nos_encontraste" class="input w-full">
-                    <option value="">¿Cómo conoció el programa?</option>
+                    <option value="">Selecciona una opción</option>
                     @foreach($howFoundUs as $how)
                     <option value="{{ $how->id }}">{{ $how->how }}</option>
                     @endforeach
                 </select>
             </div>
-            <input type="text" placeholder="Nombre" name="nombre_representante" class="input">
-            <input type="text" placeholder="Apellidos" name="apellidos_representante" class="input">
-            <input type="text" placeholder="Cédula de identidad" name="cedula_representante" class="input">
-            <input type="phone" placeholder="Número de whatsapp" name="whatsapp_representante" class="input">
-            <input type="phome" placeholder="Número de teléfono en caso de emergencia" name="telefono_emergencia_representante" class="input">
-            <input type="text" placeholder="Ocupación" name="ocupacion_representante" class="input">
-            <input type="text" placeholder="Dirección" name="direccion_representante" class="input">
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Nombre</h3>
+                <input type="text" placeholder="Nombre" name="nombre_representante" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Apellidos</h3>
+                <input type="text" placeholder="Apellidos" name="apellidos_representante" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Cédula de identidad</h3>
+                <input type="text" placeholder="Cédula de identidad" name="cedula_representante" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Número de whatsapp</h3>
+                <input type="phone" placeholder="Número de whatsapp" name="whatsapp_representante" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Número de teléfono en caso de emergencia</h3>
+                <input type="phome" placeholder="Número de teléfono en caso de emergencia" name="telefono_emergencia_representante" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Ocupación</h3>
+                <input type="text" placeholder="Ocupación" name="ocupacion_representante" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Dirección</h3>
+                <input type="text" placeholder="Dirección" name="direccion_representante" class="input w-full">
+            </div>
         </div>
 
         <!-- Datos del pago -->
         <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Pago</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-2">
             <div>
-                <select name="metodo_pago" id="metodo_pago" class="input w-full">
-                    <option value="">Método de pago</option>
-                    <option value="Pago móvil">Pago móvil</option>
-                    <option value="Efectivo">Efectivo</option>
-                </select>
+                <h3 class="text-sm mb-1 text-light_pink">Monto mensual</h3>
+                <input type="number" placeholder="Monto mensual" name="monto" class="input  w-full">
             </div>
-            <input type="number" placeholder="Monto mensual" name="monto" class="input">
-            <input type="number" placeholder="Inscripción" name="inscripcion" class="input">
-            <input type="date" placeholder="Fecha de pago mensual" name="fechaPago" class="input">
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Inscripción</h3>
+                <input type="number" placeholder="Inscripción" name="inscripcion" class="input  w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Fecha de pago mensual</h3>
+                <input type="date" placeholder="Fecha de pago mensual" name="fechaPago" class="input  w-full">
+            </div>
         </div>
 
         <!-- Datos de login -->
         <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Login</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-2">
-            <input type="email" placeholder="Correo electrónico" name="correo" class="input">
-            <input type="password" placeholder="Contraseña" name="contrasena" class="input">
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Correo electrónico</h3>
+                <input type="email" placeholder="Correo electrónico" name="correo" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Contraseña</h3>
+                <input type="password" placeholder="Contraseña" name="contrasena" class="input w-full">
+            </div>
         </div>
 
         <div class="text-end my-10">
@@ -162,10 +202,6 @@
 
         if (formData.get("direccion_representante") === "") {
             errors.push("La dirección del representante es requerida.");
-        }
-
-        if (formData.get("metodo_pago") === "") {
-            errors.push("El método de pago es requerido.");
         }
 
         if (formData.get("monto") === "") {
