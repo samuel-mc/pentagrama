@@ -100,7 +100,7 @@
         </header>
         <main class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @foreach($payment->studentPaymentDoneItems as $item)
-            <div class="grid grid-cols-1 md:grid-cols-2 border border-2 rounded p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 border-2 rounded p-4">
                 <div>
                     <div class="mx-4 my-2">
                         <h3 class="text-sm mb-1 text-light_pink">Fecha de pago</h3>

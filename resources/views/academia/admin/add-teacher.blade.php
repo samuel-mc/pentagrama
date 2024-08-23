@@ -7,26 +7,54 @@
     <form action="/admin/profesores/agregar" method="POST" id="formAddProfesor">
         @csrf
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
-            <input type="text" placeholder="Nombre" name="nombre" class="input">
-            <input type="text" placeholder="Apellido" name="apellido" class="input">
-            <input type="text" placeholder="Cédula de identidad" name="cedula" class="input">
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
-            <input type="date" placeholder="Fecha de nacimiento" name="fechaNacimiento" class="input">
-            <input type="text" placeholder="Dirección" name="direccion" class="input">
-            <input type="text" placeholder="Número de WhatsApp" name="numeroWhatsApp" class="input">
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
-            <input type="text" placeholder="Número de teléfono en caso de emergencia" name="numeroEmergencia" class="input">
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Nombre</h3>
+                <input type="text" placeholder="Nombre" name="nombre" class="input w-full">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Apellido</h3>
+                <input type="text" placeholder="Apellido" name="apellido" class="input">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Cédula de identidad</h3>
+                <input type="text" placeholder="Cédula de identidad" name="cedula" class="input">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Fecha de nacimiento</h3>
+                <input type="date" placeholder="Fecha de nacimiento" name="fechaNacimiento" class="input">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Dirección</h3>
+                <input type="text" placeholder="Dirección" name="direccion" class="input">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Número de WhatsApp</h3>
+                <input type="text" placeholder="Número de WhatsApp" name="numeroWhatsApp" class="input">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Número de teléfono en caso de emergencia</h3>
+                <input type="text" placeholder="Número de teléfono en caso de emergencia" name="numeroEmergencia" class="input">
+            </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
-            <input type="text" placeholder="Correo electrónico" name="correo" class="input">
-            <input type="password" placeholder="Contraseña" name="contrasena" class="input">
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Correo electrónico</h3>
+                <input type="text" placeholder="Correo electrónico" name="correo" class="input">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Contraseña</h3>
+                <input type="password" placeholder="Contraseña" name="contrasena" class="input">
+            </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
-            <input type="file" placeholder="Foto" class="input" accept="image/*" id="foto">
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Foto</h3>
+                <input type="file" placeholder="Foto" class="input" accept="image/*" id="foto">
+            </div>
             <input type="hidden" name="foto" id="fotoB64">
-            <div id="imgDiv"></div>
+            <div class="flex items-center">
+                <div id="imgDiv"></div>
+            </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
             <div class="flex items-center">
