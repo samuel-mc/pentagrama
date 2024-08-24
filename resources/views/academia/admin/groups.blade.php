@@ -13,7 +13,6 @@
                     <th class="py-2">Nombre</th>
                     <th class="py-2">Profesor</th>
                     <th class="py-2">Cátedra</th>
-                    <th class="py-2">Categorías</th>
                     <th class="py-2"></th>
                 </tr>
             </thead>

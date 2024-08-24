@@ -22,7 +22,7 @@
                 @foreach($teachers as $teacher)
                 <tr class="roboto-regular text-center text-lg">
                     <td>{{ $teacher->name }} {{ $teacher->last_name }}</td>
-                    <td></td>
+                    <td>{{$teacher->courses}}</td>
                     <td></td>
                     <td></td>
                     <td class="flex justify-center py-2">

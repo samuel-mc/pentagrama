@@ -26,7 +26,12 @@ class AdminTeachersMagmentController extends Controller
         $name = 'Elias Cordova';
         $rol = 'Admin';
         $links = linksAdmin;
-        $teachers = DB::table('teachers')->paginate(1);
+        $teachers = Teacher::where('active', 1)->get();
+        $teachers->map(function ($teacher) {
+            $teacher->courses = $teacher->groups->map(function ($group) {
+                return $group->course->name;
+            })->unique()->implode(', ');
+        });
         return view('academia.admin.teachers', compact('title', 'name', 'rol', 'links', 'teachers'));
     }
 
