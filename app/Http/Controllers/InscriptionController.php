@@ -74,9 +74,7 @@ class InscriptionController extends Controller
 
             $studentPaymentsData = new StudentPaymentsData();
             $studentPaymentsData->student_id = $student->id;
-            $studentPaymentsData->monthly_payment = $request->monto;
             $studentPaymentsData->inscription_payment = $request->inscripcion;
-            $studentPaymentsData->payment_date = $request->fechaPago;
             $studentPaymentsData->save();
 
             $studentId = $student->id;

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +12,7 @@ use App\Models\StudentPaymentDone;
 use App\Models\StudentPaymentMethods;
 use App\Models\StudentPaymentType;
 use App\Models\StudentPaymentDoneItem;
+use App\Models\StudentsGroup;
 
 class AdminStudentsController extends Controller
 {
@@ -167,4 +170,44 @@ class AdminStudentsController extends Controller
         $paymentMethods = StudentPaymentMethods::where('active', true)->get();
         return view('academia.admin.detail-payment-student', compact('title', 'name', 'rol', 'links', 'payment', 'student', 'paymentTypes', 'paymentMethods'));
     }
+
+    /**
+     * Display the groups of a student.
+     */
+    public function studentGroups($id) {
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $title = 'Grupos';
+        $links = app('adminLinks');
+        $groupsByStudent = StudentsGroup::where('id_student', $id)->get();
+        // dd($groupsByStudent);
+        return view('academia.admin.student-groups', compact('title', 'name', 'rol', 'links', 'id', 'groupsByStudent'));
+    }
+
+    /**
+     * Display the add group form.
+     */
+    public function addGroup($id) {
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $title = 'Agregar Grupo';
+        $links = app('adminLinks');
+        $groupsByStudent = DB::table('students_groups')->where('id_student', $id)->where('active', '1')->pluck('id_group');
+        $groups = Group::where('active', true)->whereNotIn('id', $groupsByStudent)->get();
+        return view('academia.admin.add-student-group', compact('title', 'name', 'rol', 'links', 'id', 'groups'));
+    }
+
+    /**
+     * Store the group.
+     */
+    public function saveGroup(Request $request) {
+        DB::table('students_groups')->insert([
+            'id_student' => $request->student_id,
+            'id_group' => $request->group_id,
+            'monthly_payment' => $request->monthly_payment,
+            'payment_date' => $request->payment_date
+        ]);
+        return redirect("/admin/estudiantes/{$request->student_id}/grupos");
+    }
+        
 }

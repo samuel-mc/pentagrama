@@ -109,19 +109,11 @@
         </div>
 
         <!-- Datos del pago -->
-        <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Pago</h2>
+        <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Inscripción</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-2">
-            <div>
-                <h3 class="text-sm mb-1 text-light_pink">Monto mensual</h3>
-                <input type="number" placeholder="Monto mensual" name="monto" class="input  w-full">
-            </div>
             <div>
                 <h3 class="text-sm mb-1 text-light_pink">Inscripción</h3>
                 <input type="number" placeholder="Inscripción" name="inscripcion" class="input  w-full">
-            </div>
-            <div>
-                <h3 class="text-sm mb-1 text-light_pink">Fecha de pago mensual</h3>
-                <input type="date" placeholder="Fecha de pago mensual" name="fechaPago" class="input  w-full">
             </div>
         </div>
 
@@ -204,16 +196,8 @@
             errors.push("La dirección del representante es requerida.");
         }
 
-        if (formData.get("monto") === "") {
-            errors.push("El monto es requerido.");
-        }
-
         if (formData.get("inscripcion") === "") {
             errors.push("La inscripción es requerida.");
-        }
-
-        if (formData.get("fechaPago") === "") {
-            errors.push("La fecha de pago es requerida.");
         }
 
         if (formData.get("correo") === "") {
@@ -238,7 +222,6 @@
             errorDiv.appendChild(errorList);
             return;
         }
-        console.log(formData);
         this.submit();
     });
 

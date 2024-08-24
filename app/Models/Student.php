@@ -29,4 +29,9 @@ class Student extends Model
         return $this->hasMany(StudentPaymentDone::class);
     }
 
+    public function studentsGroup()
+    {
+        return $this->hasMany(StudentsGroup::class);
+    }
+
 }

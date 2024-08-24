@@ -20,4 +20,8 @@ class Group extends Model
     public function age() {
         return $this->belongsTo(Age::class);
     }
+
+    public function studentsGroup() {
+        return $this->hasMany(StudentsGroup::class);
+    }
 }
