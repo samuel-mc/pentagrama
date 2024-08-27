@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminStudentsController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\AdminPersonalController;
 use App\Http\Controllers\AdminGroupsController;
+use App\Http\Controllers\AdminUsuariosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,4 +88,6 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/agregar', [AdminGroupsController::class, 'addGroup']);
         Route::post('/agregar', [AdminGroupsController::class, 'saveGroup']);
     });
+    // users
+    Route::get('/usuarios', [AdminUsuariosController::class, 'index']);
 });
