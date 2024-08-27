@@ -29,9 +29,9 @@ class Student extends Model
         return $this->hasMany(StudentPaymentDone::class);
     }
 
-    public function studentsGroup()
+    public function studentsGroups()
     {
-        return $this->hasMany(StudentsGroup::class);
+        return $this->hasMany(StudentsGroup::class, 'id_student', 'id');
     }
 
 }

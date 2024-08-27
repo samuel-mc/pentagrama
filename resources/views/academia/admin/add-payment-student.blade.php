@@ -2,67 +2,88 @@
 
 @section("content")
 <div>
-<div id="errors">
-</div>
+    <div id="errors">
+    </div>
     <form action="/admin/estudiantes/{{$student->id}}/pagos/agregar" method="post" id="formPaymentStudent">
         @csrf
-        <section class="flex flex-wrap my-4">
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <input type="text" name="student_id" value="{{$student->id}}" hidden>
+            <input type="text" id="montoAPagar" name="montoAPagar" hidden>
             <div class="mx-4 my-2">
                 <h3 class="text-sm mb-1 text-light_pink">Estudiante</h3>
                 <input type="text" placeholder="Estudiante" name="nombreEstudiante" class="input h-fit" disabled id="fechaPagpStudent" value="{{$student->name}} {{$student->last_name}}">
             </div>
             <div class="mx-4 my-2">
+                <h3 class="text-sm mb-1 text-light_pink">Tipo de pago</h3>
+                <select name="payment_type" class="input w-full" onchange="handleTipoPago()" id="selectPaymentType">
+                    <option value="">Tipo de pago</option>
+                    @foreach($paymentTypes as $paymentType)
+                    <option value="{{ $paymentType->id }}" value-name="{{ $paymentType->name }}">{{ $paymentType->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mx-4 my-2 hidden" id="divGrupo">
+                <h3 class="text-sm mb-1 text-light_pink">Grupo</h3>
+                <select name="grupoAPagar" id="grupoAPagar" class="input w-full" onchange="handleChangeGroup()">
+                    <option value="">Seleccionar un grupo</option>
+                    @foreach ($student->studentsGroups as $studentsGroup)
+                    <option value="{{$studentsGroup->id}}" monto-mensual="{{$studentsGroup->monthly_payment}}" fecha-pago="{{$studentsGroup->payment_date}}">{{$studentsGroup->group->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mx-4 my-2 hidden" id="divFechaPago">
                 <h3 class="text-sm mb-1 text-light_pink">Fecha de pago</h3>
                 <input type="text" placeholder="Fecha de pago" name="fechaPagoStudent" class="input h-fit" disabled id="fechaPagoStudent" value="{{$student->formattedPaymentDate}}">
             </div>
-            <div class="mx-4 my-2">
+            <div class="mx-4 my-2 hidden" id="divMontoMensual">
                 <h3 class="text-sm mb-1 text-light_pink">Monto mensual</h3>
                 <input type="text" placeholder="Monto mensual" name="montoMensualStudent" class="input h-fit" disabled id="montoMensualStudent" value="{{$student->paymentsData->monthly_payment}}">
             </div>
-            <div class="mx-4 my-2">
+            <div class="mx-4 my-2 hidden" id="divInscripcion">
                 <h3 class="text-sm mb-1 text-light_pink">Inscripción</h3>
                 <input type="text" placeholder="Inscripción" name="montoInscripcionStudent" class="input h-fit" disabled id="montoInscripcionStudent" value="{{$student->paymentsData->inscription_payment}}">
             </div>
         </section>
-        <section class="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <select name="payment_type" class="input" onchange="handleTipoPago()" id="selectPaymentType">
-                <option value="">Tipo de pago</option>
-                @foreach($paymentTypes as $paymentType)
-                <option value="{{ $paymentType->id }}" value-name="{{ $paymentType->name }}">{{ $paymentType->name }}</option>
-                @endforeach
-            </select>
-            <select name="payment_method" class="input">
-                <option value="">Método de pago</option>
-                @foreach($paymentMethods as $paymentMethod)
-                <option value="{{ $paymentMethod->id }}">{{ $paymentMethod->name }}</option>
-                @endforeach
-            </select>
-            <input type="number" placeholder="Monto que paga" name="montoPagado" id="montoPagado" class="input w-full" onchange="handleMontoRestante()">
-            <input type="numer" placeholder="Tasa en bs" name="tasa" class="input">
-            <input type="text" placeholder="Referencia" name="referencia" class="input">
+        <section class="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            <div class="mx-4 my-2">
+                <h3 class="text-sm mb-1 text-light_pink">Método de pago</h3>
+                <select name="payment_method" class="input w-full">
+                    <option value="">Método de pago</option>
+                    @foreach($paymentMethods as $paymentMethod)
+                    <option value="{{ $paymentMethod->id }}">{{ $paymentMethod->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm mb-1 text-light_pink">Monto que paga</h3>
+                <input type="number" placeholder="Monto que paga" name="montoPagado" id="montoPagado" class="input w-full" onkeyup="handleMontoRestante()">
+            </div>
+            <div class="mx-2 my-2">
+                <h3 class="text-sm mb-1 text-light_pink">Tasa en bs</h3>
+                <input type="number" placeholder="Tasa en bs" name="tasa" class="input">
+            </div>
+            <div class="mx-2 my-2">
+                <h3 class="text-sm mb-1 text-light_pink">Referencia</h3>
+                <input type="text" placeholder="Referencia" name="referencia" class="input">
+            </div>
         </section>
-        <section class="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
+        <section class="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            <div class="mx-4 my-2">
                 <h3 class="text-sm mb-1 text-light_pink">Foto del capture</h3>
                 <input type="file" class="input w-full" id="voucher">
                 <input type="text" name="capture_photo" hidden id="capturePhoto">
             </div>
-            <div>
+            <div class="mx-4 my-2">
                 <h3 class="text-sm mb-1 text-light_pink">Fecha del capture</h3>
                 <input type="date" name="capture_date" class="input w-full">
             </div>
         </section>
-        <section class="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-end gap-4">
-            <div>
-                <h3 class="text-sm mb-1 text-light_pink">Monto a pagar</h3>
-                <input type="text" placeholder="Monto a pagar" name="montoTotal" class="input w-full" readonly id="montoAPagar" value="0">
-            </div>
-            <div>
+        <section class="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-end">
+            <div class="mx-4 my-2">
                 <h3 class="text-sm mb-1 text-light_pink">Monto restante</h3>
                 <input type="text" placeholder="Monto restante" name="montoRestante" class="input w-full" readonly id="montoRestante" value="0">
             </div>
-            <div>
+            <div class="mx-4 my-2">
                 <h3 class="text-sm mb-1 text-light_pink">Pagar antes del</h3>
                 <input type="date" name="pay_before" class="input w-full">
             </div>
@@ -72,7 +93,7 @@
             <button class="roboto-bold btn btn--primary" type="submit">Guardar</button>
         </section>
     </form>
-    
+
 </div>
 
 <script>
@@ -81,20 +102,62 @@
     }
 
     const handleTipoPago = () => {
-        let selectPaymentType = document.getElementById("selectPaymentType");
-        let selectedPaymentType = selectPaymentType.options[selectPaymentType.selectedIndex].getAttribute("value-name");
-        let montoAPagar = document.getElementById("montoAPagar");
+        const selectPaymentType = document.getElementById("selectPaymentType");
+        const selectedPaymentType = selectPaymentType.options[selectPaymentType.selectedIndex].getAttribute("value-name");
 
         console.log(selectedPaymentType);
 
-        if (selectedPaymentType === 'Inscripción') {
-            montoAPagar.value = document.getElementById("montoInscripcionStudent").value;
-        } else if (selectedPaymentType === 'Mensualidad') {
-            montoAPagar.value = document.getElementById("montoMensualStudent").value;
-        } else {
-            montoAPagar.value = 0;
+        const divGrupo = document.getElementById("divGrupo");
+        const divMontoMensual = document.getElementById("divMontoMensual");
+        const divInscripcion = document.getElementById("divInscripcion");
+        const divFechaPago = document.getElementById("divFechaPago");
+
+        const montoAPagar = document.getElementById("montoAPagar");
+        const montoPagado = document.getElementById("montoPagado");
+        const montoRestante = document.getElementById("montoRestante");
+        const fechaPagoStudent = document.getElementById("fechaPagoStudent");
+        const grupoAPagar = document.getElementById("grupoAPagar");
+
+        montoPagado.value = 0;
+        montoRestante.value = 0;
+        fechaPagoStudent.value = "";
+        grupoAPagar.value = "";
+
+        if (!selectedPaymentType) {
+            divGrupo.classList.add("hidden");
+            divMontoMensual.classList.add("hidden");
+            divInscripcion.classList.add("hidden");
+            divFechaPago.classList.add("hidden");
+
+            montoAPagar.value = "";
+            return;
         }
-        handleMontoRestante();
+        
+        if (selectedPaymentType === 'Inscripción') {
+            divGrupo.classList.add("hidden");
+            divMontoMensual.classList.add("hidden");
+            divInscripcion.classList.remove("hidden");
+            divFechaPago.classList.add("hidden");
+            montoAPagar.value = document.getElementById("montoInscripcionStudent").value;
+        }
+
+        if (selectedPaymentType === 'Mensualidad') {
+            divGrupo.classList.remove("hidden");
+            divMontoMensual.classList.remove("hidden");
+            divInscripcion.classList.add("hidden");
+            divFechaPago.classList.remove("hidden");
+            montoAPagar.value = "";
+        }
+
+        if (selectedPaymentType === 'Otro') {
+            divGrupo.classList.add("hidden");
+            divMontoMensual.classList.add("hidden");
+            divInscripcion.classList.add("hidden");
+            divFechaPago.classList.add("hidden");
+            montoAPagar.value = "";
+        }
+        
+
     }
 
     const handleMontoRestante = () => {
@@ -105,6 +168,24 @@
         montoRestante.value = (montoAPagar - montoPagado) > 0 ? montoAPagar - montoPagado : 0;
     }
 
+    const handleChangeGroup = () =>{
+        const grupoAPagar = document.getElementById("grupoAPagar");
+        const montoMensualStudent = document.getElementById("montoMensualStudent");
+        const fechaPagoStudent = document.getElementById("fechaPagoStudent");
+
+        const montoAPagar = document.getElementById("montoAPagar");
+        const montoPagado = document.getElementById("montoPagado");
+
+        const montoMensual = grupoAPagar.options[grupoAPagar.selectedIndex].getAttribute("monto-mensual");
+        const fechaPago = grupoAPagar.options[grupoAPagar.selectedIndex].getAttribute("fecha-pago");
+
+        montoMensualStudent.value = montoMensual;
+        fechaPagoStudent.value = fechaPago;
+        montoAPagar.value = montoMensual;
+        montoPagado.value = 0;
+
+    }
+
     const formPaymentStudent = document.getElementById("formPaymentStudent");
 
     formPaymentStudent.addEventListener("submit", function(event) {
@@ -113,6 +194,8 @@
 
         const formData = new FormData(formPaymentStudent);
         const errors = [];
+
+
         if (formData.get("payment_type") === "") {
             errors.push("El tipo de pago es requrido.");
         }

@@ -12,11 +12,11 @@
         </div>
         <div class="mx-4 my-2">
             <h3 class="text-sm mb-1 text-light_pink">Monto mensual</h3>
-            <input type="text" class="input h-fit" disabled value="{{$student->paymentsData->monthly_payment}}">
+            <input type="text" class="input h-fit" disabled value="{{$payment->amount}} $">
         </div>
         <div class="mx-4 my-2">
             <h3 class="text-sm mb-1 text-light_pink">Inscripción</h3>
-            <input type="text" class="input h-fit" disabled value="{{$student->paymentsData->inscription_payment}}">
+            <input type="text" class="input h-fit" disabled value="{{$student->paymentsData->inscription_payment}} $">
         </div>
         <div class="mx-4 my-2">
             <h3 class="text-sm mb-1 text-light_pink">Tipo de pago</h3>
@@ -24,7 +24,7 @@
         </div>
         <div class="mx-4 my-2">
             <h3 class="text-sm mb-1 text-light_pink">Monto pagado</h3>
-            <input type="text" class="input h-fit" disabled value="{{$payment->amountPaid}}">
+            <input type="text" class="input h-fit" disabled value="{{$payment->amountPaid}} $">
         </div>
         <div class="mx-4 my-2">
             <h3 class="text-sm mb-1 text-light_pink">Tasa en bs</h3>

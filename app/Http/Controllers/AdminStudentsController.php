@@ -90,16 +90,18 @@ class AdminStudentsController extends Controller
         $title = 'Agregar Pago: ' . $student->name . ' ' . $student->last_name;
         $formattedPaymentDate = Carbon::parse($student->paymentsData->payment_date)->format('d/m');
         $student->formattedPaymentDate = $formattedPaymentDate;
-        //obviar el pago de inscripcion
-        // $hasInscriptionPayment = StudentPaymentDone::where('student_id', $student->id)->where('student_payment_types_id', 'Inscripción')->first();
 
         $hasInscriptionPayment = StudentPaymentDone::join('student_payment_types as type', 'type.id', '=', 'student_payment_done.type_id')
         ->where('type.name', 'Inscripción')
         ->select('student_payment_done.*')
         ->get();
+        
         $paymentTypes = count($hasInscriptionPayment) > 0 ? StudentPaymentType::where('active', true)->where('name', '!=', 'Inscripción')->get() : StudentPaymentType::where('active', true)->get();
         $paymentMethods = StudentPaymentMethods::where('active', true)->get();
-        return view('academia.admin.add-payment-student', compact('title', 'name', 'rol', 'links', 'student', 'paymentTypes', 'paymentMethods'));
+        $groupsByStudent = $student->studentsGroups->map(function ($group) {
+            $group->payment_date = Carbon::parse($group->payment_date)->format('d/m/Y');
+        });
+        return view('academia.admin.add-payment-student', compact('title', 'name', 'rol', 'links', 'student', 'paymentTypes', 'paymentMethods', 'groupsByStudent'));
     }
 
     /**
@@ -111,12 +113,13 @@ class AdminStudentsController extends Controller
             $student_payment_done_id = null;
             if ($request->student_payment_donte_id == null) {
                 $studentPaymentDone = new StudentPaymentDone();
-                $studentPaymentDone->amount = $request->montoPagado;
+                $studentPaymentDone->amount = $request->montoAPagar; // monto a pagar
                 $studentPaymentDone->student_id = $request->student_id;
                 $studentPaymentDone->type_id = $request->payment_type;
                 $studentPaymentDone->rate = $request->tasa;
-                $studentPaymentDone->is_paid = $request->montoRestante == 0;
+                $studentPaymentDone->is_paid = $request->montoRestante == 0 || $request->payment_type == 3;
                 $studentPaymentDone->due_date = $request->pay_before;
+                $studentPaymentDone->group_id = $request->grupoAPagar;
                 $studentPaymentDone->save();
                 $student_payment_done_id = $studentPaymentDone->id;
             } else {
@@ -126,7 +129,7 @@ class AdminStudentsController extends Controller
             $itm = new StudentPaymentDoneItem();
 
             $itm->method_id = $request->payment_method;
-            $itm->amount_paid = $request->montoPagado;
+            $itm->amount_paid = $request->montoPagado; // monto que ha sido pagado
             $itm->voucher = $request->capture_photo;
             $itm->voucher_date = $request->capture_date;
             $itm->reference = $request->referencia;
