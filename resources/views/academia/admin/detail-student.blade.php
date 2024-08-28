@@ -53,10 +53,6 @@
         <h2 class="text-2xl not-serif-regular text-purple_p my-4">Datos del representante</h2>
         <div class="flex flex-wrap">
             <div class="mx-4 my-2">
-                <h3 class="text-sm text-dark_pink">¿Cómo conoció el programa?</h3>
-                <p class="text-xl text-black_p">{{$student->representative->howFoundUs->how}}</p>
-            </div>
-            <div class="mx-4 my-2">
                 <h3 class="text-sm text-dark_pink">Nombre</h3>
                 <p class="text-xl text-black_p">{{$student->representative->name}}</p>
             </div>
@@ -84,10 +80,14 @@
                 <h3 class="text-sm text-dark_pink">Dirección</h3>
                 <p class="text-xl text-black_p">{{$student->representative->address}}</p>
             </div>
+            <div class="mx-4 my-2">
+                <h3 class="text-sm text-dark_pink">¿Cómo conoció el programa?</h3>
+                <p class="text-xl text-black_p">{{$student->representative->howFoundUs->how}}</p>
+            </div>
         </div>
     </section>
     <section class="mb-10">
-        <h2 class="text-2xl not-serif-regular text-purple_p my-4">Pago</h2>
+        <h2 class="text-2xl not-serif-regular text-purple_p my-4">Últimos pagos</h2>
         <div class="flex flex-wrap">
             <div class="mx-4 my-2">
                 <h3 class="text-sm text-dark_pink">Método de pago</h3>

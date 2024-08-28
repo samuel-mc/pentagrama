@@ -70,6 +70,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'estudiantes'], function () {
         Route::get('/', [AdminStudentsController::class, 'index']);
         Route::get('/{id}', [AdminStudentsController::class, 'studentDetail']);
+        Route::post('/{id}/password', [AdminStudentsController::class, 'updatePassword'])->name('admin.estudiantes.password');
         Route::get('{id}/pagos', [AdminStudentsController::class, 'studentPayments']);
         Route::get('{id}/pagos/agregar', [AdminStudentsController::class, 'addPayment']);
         Route::post('{id}/pagos/agregar', [AdminStudentsController::class, 'savePayment']);
@@ -90,4 +91,6 @@ Route::group(['prefix' => 'admin'], function () {
     });
     // users
     Route::get('/usuarios', [AdminUsuariosController::class, 'index']);
+    Route::get('/cuentas', [AdminStudentsController::class, 'accounts'])->name('admin.cuentas');
+    Route::get('/cuentas/{id}', [AdminStudentsController::class, 'accountDetail'])->name('admin.cuentas.detalle');
 });

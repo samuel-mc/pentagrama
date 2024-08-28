@@ -35,6 +35,15 @@ class AdminStudentsController extends Controller
         return view('academia.admin.students', compact('title', 'name', 'rol', 'links', 'students'));
     }
 
+    public function updatePassword(Request $request) {
+        // dd($request);
+        $student = Student::find($request->id);
+        $student->user->password = bcrypt($request->password);
+        $student->user->save();
+        //redirect to previous page with success message
+        return redirect()->back()->with('success', 'Contraseña actualizada correctamente');
+    }
+
     /**
      * Display the student detail.
      */
@@ -211,6 +220,70 @@ class AdminStudentsController extends Controller
             'payment_date' => $request->payment_date
         ]);
         return redirect("/admin/estudiantes/{$request->student_id}/grupos");
+    }
+
+    /**
+     * Display the acounts list.
+     */
+
+    public function accounts(Request $request) {
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $title = 'Cuentas';
+        $links = app('adminLinks');
+
+        $students = [];
+
+        $searchValue = $request->name ?? "";
+
+        if ($request->has("name")) {
+            $students = Student::where('name', 'like', '%' . $request->name . '%')->orWhere('last_name', 'like', '%' . $request->name . '%')->orderBy('last_name', 'asc')->get();
+        } else {
+            $students = Student::orderBy('name', 'asc')->get();
+        }
+
+        $students->map(function ($student) {
+            $student->courses = join(', ', $student->studentsGroups->map(function ($group) {
+                return $group->group->course->name;
+            })->toArray());
+            return $student;
+        });
+
+        return view('academia.admin.accounts', compact('title', 'name', 'rol', 'links', 'students', 'searchValue'));
+    }
+
+    public function accountDetail($id) {
+        $name = 'Elias Cordova';
+        $rol = 'Admin';
+        $title = 'Detalle de Cuenta';
+        $links = app('adminLinks');
+        $student = Student::find($id);
+
+        $student->formatedBirthdate = Carbon::parse($student->birthdate)->format('d/m/Y');
+        $student->age = Carbon::parse($student->birthdate)->age;
+        $student->courses = join(', ', $student->studentsGroups->map(function ($group) {
+            return $group->group->course->name;
+        })->toArray());
+
+        $student->studentsGroups = $student->studentsGroups->map(function ($group) {
+            $group->formattedPaymentDate = Carbon::parse($group->payment_date)->format('d/m/Y');
+            return $group;
+        });
+
+        $student->paymentsDone = $student->paymentsDone->map(function ($payment) {
+            $payment->date = Carbon::parse($payment->created_at)->format('d/m/Y');
+            $payment->method = join(', ', $payment->studentPaymentDoneItems->map(function ($item) {
+                return $item->studentPaymentMethods->name;
+            })->toArray());
+            $payment->amountTotal = $payment->studentPaymentDoneItems->sum('amount_paid');
+            $payment->amounts = join(', ', $payment->studentPaymentDoneItems->map(function ($item) {
+                return $item->amount_paid;
+            })->toArray());
+            $payment->validate = $payment->is_paid;
+            return $payment;
+        })->take(1);
+
+        return view('academia.admin.detail-account', compact('title', 'name', 'rol', 'links', 'student'));
     }
         
 }
