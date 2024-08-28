@@ -15,7 +15,7 @@
         <tbody>
             @foreach($users as $user)
             <tr class="roboto-regular text-center text-lg">
-                <td>
+                <td class="py-2">
                     @if ($user->personal)
                         {{ $user->personal->name }} {{ $user->personal->last_name }}
                     @elseif ($user->student)
@@ -24,7 +24,7 @@
                         {{ $user->teacher->name }} {{ $user->teacher->last_name }}
                     @endif
                 </td>
-                <td>
+                <td class="py-2">
                     @if ($user->personal)
                         Administrador
                     @elseif ($user->student)
@@ -33,10 +33,10 @@
                         Profesor
                     @endif
                 </td>
-                <td>
+                <td class="py-2">
                     {{ $user->email }}
                 </td>
-                <td>
+                <td class="py-2">
                     {{ $user->last_login }}
                 </td>
                 <!-- <td class="flex justify-center py-2">
