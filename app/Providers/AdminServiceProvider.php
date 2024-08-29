@@ -24,6 +24,15 @@ class AdminServiceProvider extends ServiceProvider
                 (object) ['url' => '/admin/info-adicional', 'name' => 'Información adicional', 'icon' => 'info.png'],
             ];
         });
+
+        $this->app->singleton('receptionistLinks', function() {
+            return [
+                (object) ['url' => '/admin', 'name' => 'Dashboard', 'icon' => 'home.png'],
+                (object) ['url' => '/admin/estudiantes', 'name' => 'Estudiantes', 'icon' => 'students.png'],
+                (object) ['url' => '/admin/asistencia', 'name' => 'Asistencia', 'icon' => 'attendence.png'],
+                (object) ['url' => '/admin/inscripcion', 'name' => 'Incripción', 'icon' => 'inscripcion.png'],               
+            ];
+        });
     }
 
     /**

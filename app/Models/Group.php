@@ -22,6 +22,10 @@ class Group extends Model
     }
 
     public function studentsGroup() {
-        return $this->hasMany(StudentsGroup::class);
+        return $this->hasMany(StudentsGroup::class, 'id_group');
+    }
+
+    public function schedules() {
+        return $this->hasMany(Schedule::class);
     }
 }

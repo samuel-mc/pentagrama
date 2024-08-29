@@ -10,6 +10,7 @@ use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\AdminPersonalController;
 use App\Http\Controllers\AdminGroupsController;
 use App\Http\Controllers\AdminUsuariosController;
+use App\Http\Controllers\ReceptionistAttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,4 +94,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/usuarios', [AdminUsuariosController::class, 'index']);
     Route::get('/cuentas', [AdminStudentsController::class, 'accounts'])->name('admin.cuentas');
     Route::get('/cuentas/{id}', [AdminStudentsController::class, 'accountDetail'])->name('admin.cuentas.detalle');
+    Route::group(['prefix' => 'asistencia'], function () {
+        Route::get('/', [ReceptionistAttendanceController::class, 'index']);
+        Route::post('/', [ReceptionistAttendanceController::class, 'registerAttendance']) ->name('admin.asistencia.registrar');
+    });
 });
