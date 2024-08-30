@@ -7,10 +7,10 @@
                     id="attendenceStudents">{{$attendenceStudents}}</span>
             </button>
             <button class="btn btn--primary" onclick="handleShowMain('teachers')">Profesores
-                <span id="attendenteTeachers">{{$attendenceTeachers}}</span>
+                <span id="attendenceTeachers">{{$attendenceTeachers}}</span>
             </button>
         </header>
-        <main class="my-4 py-4 hidden" id="mainStudents">
+        <main class="my-4 py-4" id="mainStudents">
             <h2 class="text-center text-2xl roboto-bold my-5">Asistencia de estudiantes</h2>
             <table class="w-full">
                 <thead class="border-b-2 border-b-light_pink">
@@ -30,7 +30,7 @@
                         <td class="py-1">{{ $student->name }}</td>
                         <td class="py-1">{{ $student->course }}</td>
                         <td class="py-1">{{ $student->teacher }}</td>
-                        <td class="py-1"></td>
+                        <td class="py-1 text-light_pink">{{$student->teacherSubstitute}}</td>
                         <td class="flex justify-center py-2"
                             id="attendenceTd_{{$student->student_id}}_{{$student->course_id}}">
                             @if ($student->asistencia)
@@ -47,7 +47,7 @@
                 </tbody>
             </table>
         </main>
-        <main class="my-4 py-4" id="mainTeachers">
+        <main class="my-4 py-4 hidden" id="mainTeachers">
             <h2 class="text-center text-2xl roboto-bold my-5">Asistencia de profesores</h2>
             <table class="w-full">
                 <thead class="border-b-2 border-b-light_pink">
@@ -89,12 +89,12 @@
                             @endif
                         </td>
                         <td class="flex justify-center py-2"
-                            id="attendenceTd_{{$teacher->teacher_id}}_{{$teacher->course_id}}">
+                            id="attendenceTeacherTd_{{$teacher->teacher_id}}_{{$teacher->course_id}}">
                             @if ($teacher->asistencia)
                                 <img src="{{ asset('img/icons/attendenceTrue.png') }}" alt="check" class="w-6">
                             @else
                                 <button class="bg-white hover:bg-light_pink transition-all rounded p-2 shadow"
-                                        onclick="handleRegisterAttendance('{{$teacher->teacher_id}}', '{{$teacher->course_id}}')">
+                                        onclick="handleRegisterTeacherAttendance('{{$teacher->teacher_id}}', '{{$teacher->course_id}}')">
                                     <img src="{{ asset('img/icons/check.png') }}" alt="check" class="w-6">
                                 </button>
                             @endif
@@ -121,7 +121,6 @@
         }
 
         const handleRegisterAttendance = (studentId, groupId) => {
-            console.log(studentId, groupId);
             const data = {
                 student_id: studentId,
                 group_id: groupId
@@ -142,6 +141,34 @@
                     const attendenceStudentsValue = attendenceStudents.innerHTML;
                     const currentAttendenceStudents = attendenceStudentsValue.split("/")[0];
                     attendenceStudents.innerHTML = `${parseInt(currentAttendenceStudents) + 1}/${attendenceStudentsValue.split("/")[1]}`;
+                })
+                .catch(error => console.error(error));
+        }
+
+        const handleRegisterTeacherAttendance = (teacherId, groupId) => {
+            const data = {
+                teacher_id: teacherId,
+                group_id: groupId
+            }
+            fetch("{{ route('admin.asistencia.profesor') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const td = document.getElementById(`attendenceTeacherTd_${teacherId}_${groupId}`);
+                    td.innerHTML = `<img src="{{ asset('img/icons/attendenceTrue.png') }}" alt="check" class="w-6">`;
+                    const attendanceTeachers = document.getElementById("attendenceTeachers");
+                    const attendanceTeachersValue = attendanceTeachers.innerHTML;
+                    const currentAttendenceTeachers = attendanceTeachersValue.split("/")[0];
+                    const maxAttendenceTeachers = attendanceTeachersValue.split("/")[1];
+                    if (currentAttendenceTeachers < maxAttendenceTeachers) {
+                        attendanceTeachers.innerHTML = `${parseInt(currentAttendenceTeachers) + 1}/${attendanceTeachersValue.split("/")[1]}`;
+                    }
                 })
                 .catch(error => console.error(error));
         }
@@ -178,9 +205,7 @@
                         td.innerHTML = selectAddSubs.options[selectAddSubs.selectedIndex].getAttribute("value-name");
                     })
                     .catch(error => console.error(error));
-
             }
-
         }
     </script>
 

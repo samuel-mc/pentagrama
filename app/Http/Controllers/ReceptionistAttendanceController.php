@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\AttendanceStudentGroup;
+use App\Models\AttendanceTeacherGroup;
 use App\Models\Schedule;
 use App\DTO\ScheduleDTO;
 use App\Models\Teacher;
 use App\Models\TeacherSubstitute;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +46,15 @@ class ReceptionistAttendanceController extends Controller
                     FROM attendance_student_groups asg
                     WHERE asg.student_id = s2.id
                     AND asg.date = "' . $currentDay . '"
-                ) THEN TRUE ELSE FALSE END as asistencia')
+                ) THEN TRUE ELSE FALSE END as asistencia'),
+                DB::raw('CASE WHEN EXISTS (
+                    SELECT 1
+                    FROM teacher_substitutes ts
+                    WHERE ts.teacher_id = t.id
+                    AND ts.group_id = g.id
+                    AND ts.date = "' . $currentDay . '"
+                ) THEN (
+        	        SELECT CONCAT(t.name, " ", t.last_name) FROM teachers t2 WHERE t2.id = t.id) ELSE null END as substitute')
             )
             ->orderBy('s.start_hour')
             ->get();
@@ -88,7 +98,8 @@ class ReceptionistAttendanceController extends Controller
                 $item->name,
                 $item->teacher_id,
                 $item->teacher,
-                $item->asistencia
+                $item->asistencia,
+                $item->substitute
             );
         });
 
@@ -126,9 +137,9 @@ class ReceptionistAttendanceController extends Controller
     /**
      * Add a substitute teacher
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function addSubstituteTeacher(Request $request): \Illuminate\Http\JsonResponse
+    public function addSubstituteTeacher(Request $request): JsonResponse
     {
         $substitute = new TeacherSubstitute();
         $substitute->teacher_id = $request->teacher_id;
@@ -138,5 +149,20 @@ class ReceptionistAttendanceController extends Controller
         $substitute->save();
         return response()->json(['success' => true, 'data' => $substitute]);
 
+    }
+
+    /**
+     * Register the attendance of a teacher
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function registerTeacherAttendance(Request $request): JsonResponse
+    {
+        $attendance = new AttendanceTeacherGroup();
+        $attendance->teacher_id = $request->teacher_id;
+        $attendance->group_id = $request->group_id;
+        $attendance->date = Carbon::now();
+        $attendance->save();
+        return response()->json(['success' => true, 'data' => $attendance]);
     }
 }

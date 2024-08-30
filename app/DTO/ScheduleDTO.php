@@ -10,8 +10,9 @@ class ScheduleDTO {
     public $teacher_id;
     public $teacher;
     public $asistencia;
+    public $teacherSubstitute;
 
-    public function __construct($hour, $course_id, $course, $student_id, $name, $teacher_id, $teacher, $asistencia)
+    public function __construct($hour, $course_id, $course, $student_id, $name, $teacher_id, $teacher, $asistencia, $substitute)
     {
         $this->hour = $hour;
         $this->course_id = $course_id;
@@ -21,5 +22,6 @@ class ScheduleDTO {
         $this->teacher_id = $teacher_id;
         $this->teacher = $teacher;
         $this->asistencia = $asistencia;
+        $this->teacherSubstitute = $substitute;
     }
 }

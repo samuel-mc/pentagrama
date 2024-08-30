@@ -97,6 +97,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'asistencia'], function () {
         Route::get('/', [ReceptionistAttendanceController::class, 'index']);
         Route::post('/', [ReceptionistAttendanceController::class, 'registerAttendance']) ->name('admin.asistencia.registrar');
+        Route::post('/profesor', [ReceptionistAttendanceController::class, 'registerTeacherAttendance']) ->name('admin.asistencia.profesor');
         Route::post('/suplente', [ReceptionistAttendanceController::class, 'addSubstituteTeacher']) ->name('admin.asistencia.suplente');
     });
 });
