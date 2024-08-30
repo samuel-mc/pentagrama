@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\AttendanceStudentGroup;
 use App\Models\Schedule;
 use App\DTO\ScheduleDTO;
+use App\Models\Teacher;
+use App\Models\TeacherSubstitute;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,8 +19,9 @@ class ReceptionistAttendanceController extends Controller
         $name = 'Elias Cordova';
         $rol = 'Admin';
         $links = app('receptionistLinks');
+        $currentDay = Carbon::now()->format('Y-m-d');
         $currentDayOfWeek = Carbon::now()->dayOfWeek;
-        $results = DB::table('schedules as s')
+        $resultsStudents = DB::table('schedules as s')
             ->join('groups as g', 'g.id', '=', 's.group_id')
             ->join('courses as c', 'g.course_id', '=', 'g.id')
             ->join('ages as a', 'g.age_id', '=', 'a.id')
@@ -37,15 +40,46 @@ class ReceptionistAttendanceController extends Controller
                 't.id as teacher_id',
                 DB::raw('CONCAT(t.name, " ", t.last_name) as teacher'),
                 DB::raw('CASE WHEN EXISTS (
-                    SELECT 1 
-                    FROM attendance_student_groups asg 
-                    WHERE asg.student_id = s2.id 
+                    SELECT 1
+                    FROM attendance_student_groups asg
+                    WHERE asg.student_id = s2.id
+                    AND asg.date = "' . $currentDay . '"
                 ) THEN TRUE ELSE FALSE END as asistencia')
             )
             ->orderBy('s.start_hour')
             ->get();
 
-        $studentsToday = $results->map(function ($item) {
+        $resultsTeaches = DB::table('schedules as s')
+            ->join('groups as g', 'g.id', '=', 's.group_id')
+            ->join('courses as c', 'g.course_id', '=', 'g.id')
+            ->join('ages as a', 'g.age_id', '=', 'a.id')
+            ->join('teachers as t', 'g.teacher_id', '=', 't.id')
+            ->where('s.day_of_week', $currentDayOfWeek)
+            ->where('t.active', 1)
+            ->select(
+                's.start_hour as hour',
+                'g.id as course_id',
+                DB::raw('CONCAT(g.name, " - ", c.name, " - ", a.name) as course'),
+                't.id as teacher_id',
+                DB::raw('CONCAT(t.name, " ", t.last_name) as teacher'),
+                DB::raw('CASE WHEN EXISTS (
+                    SELECT 1
+                    FROM attendance_teacher_groups asg
+                    WHERE asg.teacher_id = t.id
+                    AND asg.date = "' . $currentDay . '"
+                ) THEN TRUE ELSE FALSE END as asistencia'),
+                DB::raw('CASE WHEN EXISTS (
+                    SELECT 1
+                    FROM teacher_substitutes ts
+                    WHERE ts.teacher_id = t.id
+                    AND ts.group_id = g.id
+                    AND ts.date = "' . $currentDay . '"
+                ) THEN (
+        	        SELECT CONCAT(t.name, " ", t.last_name) FROM teachers t2 WHERE t2.id = t.id) ELSE null END as substitute'))
+            ->orderBy('s.start_hour')
+            ->get();
+
+        $studentsToday = $resultsStudents->map(function ($item) {
             return new ScheduleDTO(
                 $item->hour,
                 $item->course_id,
@@ -64,13 +98,20 @@ class ReceptionistAttendanceController extends Controller
 
         $attendenceStudents = $studentsWhoAttended->count() . '/' . $studentsToday->count();
 
-        return view('academia.receptionist.attendance', compact('title', 'name', 'rol', 'links', 'studentsToday', 'attendenceStudents'));
+        $teachersWhoAttended = $resultsTeaches->filter(function ($item) {
+            return $item->asistencia;
+        });
+        $attendenceTeachers = $teachersWhoAttended->count() . '/' . $resultsTeaches->count();
+
+        $teachersSubstitute = Teacher::where('active', 1)->get();
+
+        return view('academia.receptionist.attendance', compact('title', 'name', 'rol', 'links', 'studentsToday', 'attendenceStudents', 'resultsTeaches', 'attendenceTeachers', 'teachersSubstitute'));
     }
 
     /**
      * Save the attendance of a student
-     * @param \Illuminate\Http\Request $request
-     * @return mixed|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return
      */
     public function registerAttendance(Request $request)
     {
@@ -80,5 +121,22 @@ class ReceptionistAttendanceController extends Controller
         $attendance->date = Carbon::now();
         $attendance->save();
         return response()->json(['success' => true, 'data' => $attendance]);
+    }
+
+    /**
+     * Add a substitute teacher
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addSubstituteTeacher(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $substitute = new TeacherSubstitute();
+        $substitute->teacher_id = $request->teacher_id;
+        $substitute->substitute_id = $request->substitute_id;
+        $substitute->group_id = $request->group_id;
+        $substitute->date = Carbon::now();
+        $substitute->save();
+        return response()->json(['success' => true, 'data' => $substitute]);
+
     }
 }
