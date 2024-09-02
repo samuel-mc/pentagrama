@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReceptionistScheduleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminDashboarController;
@@ -87,7 +88,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
     Route::group(['prefix' => 'grupos'], function () {
         Route::get('/', [AdminGroupsController::class, 'index']);
-        Route::get('/agregar', [AdminGroupsController::class, 'addGroup']);
+        Route::get('/agregar', [AdminGroupsController::class, 'addGroup'])->name('admin.grupos.agregar');
         Route::post('/agregar', [AdminGroupsController::class, 'saveGroup']);
     });
     // users
@@ -100,4 +101,5 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/profesor', [ReceptionistAttendanceController::class, 'registerTeacherAttendance']) ->name('admin.asistencia.profesor');
         Route::post('/suplente', [ReceptionistAttendanceController::class, 'addSubstituteTeacher']) ->name('admin.asistencia.suplente');
     });
+    Route::get('/recepcionista/horarios', [ReceptionistScheduleController::class, 'index']);
 });
