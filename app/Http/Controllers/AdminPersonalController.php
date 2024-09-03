@@ -36,7 +36,7 @@ class AdminPersonalController extends Controller
             $personal = new Personal();
             if ($request->need_login == '1') {
                 $user = new User();
-                $user->email = $request->correo;
+                $user->username = $request->username;
                 $user->password = bcrypt($request->contrasena);
                 $user->save();
                 $personal->user_id = $user->id;

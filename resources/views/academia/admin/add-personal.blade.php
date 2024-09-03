@@ -43,7 +43,7 @@
             <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Login</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-2">
                 <input type="need_login" hidden name="need_login" id="needLogin">
-                <input type="email" placeholder="Correo electrónico" name="correo" class="input">
+                <input type="text" placeholder="Username" name="username" class="input">
                 <input type="password" placeholder="Contraseña" name="contrasena" class="input">
             </div>
         </div>
@@ -86,8 +86,8 @@
         }
 
         if (formData.get("need_login") === "1") {
-            if (formData.get("correo") === "") {
-                errors.push("El correo es requerido.");
+            if (formData.get("username") === "") {
+                errors.push("El username es requerido.");
             }
 
             if (formData.get("contrasena") === "") {
