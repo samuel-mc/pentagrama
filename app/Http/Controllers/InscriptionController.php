@@ -42,14 +42,14 @@ class InscriptionController extends Controller
         ], $message);
 
         $studentId = null;
-        
+
         DB::transaction(function () use ($request) {
             // dd($request->all());
             $user = new User();
-            $user->email = $request->correo;
+            $user->username = $request->username;
             $user->password = bcrypt($request->contrasena);
             $user->save();
-            
+
             $student = new Student();
             $student->name = $this->setFirstLettersUpper($request->nombre);
             $student->last_name = $this->setFirstLettersUpper($request->apellidos);
@@ -79,7 +79,7 @@ class InscriptionController extends Controller
 
             $studentId = $student->id;
         });
-        
+
         return redirect('/admin/estudiantes/' . $studentId);
     }
 }

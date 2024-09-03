@@ -121,8 +121,8 @@
         <h2 class="text-2xl not-serif-regular text-dark_pink my-4">Login</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-2">
             <div>
-                <h3 class="text-sm mb-1 text-light_pink">Correo electrónico</h3>
-                <input type="email" placeholder="Correo electrónico" name="correo" class="input w-full">
+                <h3 class="text-sm mb-1 text-light_pink">Username</h3>
+                <input type="text" placeholder="Username" name="username" class="input w-full">
             </div>
             <div>
                 <h3 class="text-sm mb-1 text-light_pink">Contraseña</h3>
