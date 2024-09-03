@@ -56,7 +56,7 @@ class AdminTeachersMagmentController extends Controller
         DB::transaction(function () use ($request) {
             // Crear el usuario
             $user = new User();
-            $user->email  = $request->correo;
+            $user->username  = $request->username;
             $user->password = bcrypt($request->contrasena);
             $user->save();
 

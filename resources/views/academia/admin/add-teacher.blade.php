@@ -39,7 +39,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
             <div>
                 <h3 class="text-sm mb-1 text-light_pink">Correo electrónico</h3>
-                <input type="text" placeholder="Correo electrónico" name="correo" class="input">
+                <input type="text" placeholder="Username" name="username" class="input">
             </div>
             <div>
                 <h3 class="text-sm mb-1 text-light_pink">Contraseña</h3>
@@ -122,8 +122,8 @@
         if (formData.get("numeroEmergencia") === "") {
             errors.push("El número de teléfono en caso de emergencia es requerido.");
         }
-        if (formData.get("correo") === "") {
-            errors.push("El correo electrónico es requerido.");
+        if (formData.get("username") === "") {
+            errors.push("El username electrónico es requerido.");
         }
         if (formData.get("contrasena") === "") {
             errors.push("La contraseña es requerida.");
