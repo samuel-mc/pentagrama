@@ -4,7 +4,7 @@
 <div>
     <div id="errors">
     </div>
-    <form action="/admin/profesores/agregar" method="POST" id="formAddProfesor">
+    <form action="/admin/profesores/agregar" method="POST" id="formAddProfesor" enctype="multipart/form-data">
         @csrf
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
             <div>
@@ -49,9 +49,9 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
             <div>
                 <h3 class="text-sm mb-1 text-light_pink">Foto</h3>
-                <input type="file" placeholder="Foto" class="input" accept="image/*" id="foto">
+                <input type="file" placeholder="Foto" class="input" accept="image/*" id="foto" name="foto">
             </div>
-            <input type="hidden" name="foto" id="fotoB64">
+{{--            <input type="hidden" name="foto" id="fotoB64">--}}
             <div class="flex items-center">
                 <div id="imgDiv"></div>
             </div>

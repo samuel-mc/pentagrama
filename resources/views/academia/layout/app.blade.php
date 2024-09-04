@@ -37,7 +37,7 @@
                     <h3 class="text-md roboto-regular text-dark_pink">{{$rol}}</h3>
                 </div>
                 <div>
-                    <img src="{{ asset('img/icons/avatar.png') }}" alt="user" class="w-12">
+                    <img src="{{ asset($photo) }}" alt="user" class="w-12">
                 </div>
             </section>
         </header>

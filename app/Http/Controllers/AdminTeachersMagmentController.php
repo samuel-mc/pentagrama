@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Models\Teacher;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 define("linksAdmin", [
     (object) ['url' => '/admin', 'name' => 'Dashboard', 'icon' => 'home.png'],
@@ -52,8 +53,11 @@ class AdminTeachersMagmentController extends Controller
      */
     public function saveTeacher(Request $request)
     {
-        // dd($request->all());
-        DB::transaction(function () use ($request) {
+
+        $fileName = Str::uuid() . '.' . $request->foto->extension();
+        $request->foto->move(public_path('img/users/teachers'), $fileName);
+
+        DB::transaction(function () use ($request, $fileName) {
             // Crear el usuario
             $user = new User();
             $user->username  = $request->username;
@@ -70,7 +74,7 @@ class AdminTeachersMagmentController extends Controller
             $teacher->whatsapp_number = $request->numeroWhatsApp;
             $teacher->another_number = $request->numeroEmergencia;
             $teacher->user_id = $user->id;
-            $teacher->photo = $request->foto;
+            $teacher->photo = $fileName;
             $teacher->save();
         });
 

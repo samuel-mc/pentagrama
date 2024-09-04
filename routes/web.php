@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminPersonalController;
 use App\Http\Controllers\AdminGroupsController;
 use App\Http\Controllers\AdminUsuariosController;
 use App\Http\Controllers\ReceptionistAttendanceController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,13 +34,14 @@ Route::get('/about', [HomeController::class, 'about']);
 
 // Section for add teachers, staff and students
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', [AdminDashboarController::class, 'index']);
+    Route::get('/', [AdminDashboarController::class, 'index'])->middleware(['auth', 'user.role'])->name('admin.dashboard');
     Route::group(['prefix' => 'profesores'], function () {
         Route::get('/', [AdminTeachersMagmentController::class, 'index']);
         Route::get('/agregar', [AdminTeachersMagmentController::class, 'addTeacher']);
         Route::post('/agregar', [AdminTeachersMagmentController::class, 'saveTeacher']);
         Route::get('/editar/{id}', [AdminTeachersMagmentController::class, 'editTeacher']);
         Route::post('/editar/{id}', [AdminTeachersMagmentController::class, 'updateTeacher']);
+        Route::get('/dashboard', [DashboardController::class, 'displayTeacherDashboard']);
     });
     Route::group(['prefix' => 'info-adicional'], function () {
         Route::get('/', [AdminAditionalInfoController::class, 'index']);
@@ -103,3 +105,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
     Route::get('/recepcionista/horarios', [ReceptionistScheduleController::class, 'index']);
 });
+
+Route::get('/login', [App\Http\Controllers\LoginController::class, 'index'])->name('login');
+Route::post('/login', [App\Http\Controllers\LoginController::class, 'login']);
+Route::get('/logout', [App\Http\Controllers\LoginController::class, 'logout'])->name('logout');

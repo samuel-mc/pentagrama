@@ -7,25 +7,37 @@
     <form action="/admin/grupos/agregar" method="post" id="groupForm">
         @csrf
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-2">
-            <input type="text" placeholder="Nombre" name="name" class="input">
-            <select name="teacher" class="input">
-                <option value="">Selecciona un profesor</option>
-                @foreach($teachers as $teacher)
-                <option value="{{ $teacher->id }}">{{ $teacher->name }} {{$teacher->last_name}}</option>
-                @endforeach
-            </select>
-            <select name="course" class="input">
-                <option value="">Selecciona una cátedra</option>
-                @foreach($courses as $course)
-                <option value="{{ $course->id }}">{{ $course->name }}</option>
-                @endforeach
-            </select>
-            <select name="age" class="input">
-                <option value="">Selecciona una edad</option>
-                @foreach($ages as $age)
-                <option value="{{ $age->id }}">{{ $age->name }}</option>
-                @endforeach
-            </select>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Nombre del grupo</h3>
+                <input type="text" placeholder="Nombre" name="name" class="input">
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Profesor</h3>
+                <select name="teacher" class="input">
+                    <option value="">Selecciona un profesor</option>
+                    @foreach($teachers as $teacher)
+                    <option value="{{ $teacher->id }}">{{ $teacher->name }} {{$teacher->last_name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Cátedra</h3>
+                <select name="course" class="input">
+                    <option value="">Selecciona una cátedra</option>
+                    @foreach($courses as $course)
+                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <h3 class="text-sm mb-1 text-light_pink">Edad</h3>
+                <select name="age" class="input">
+                    <option value="">Selecciona una edad</option>
+                    @foreach($ages as $age)
+                    <option value="{{ $age->id }}">{{ $age->name }} ({{$age->description}}) - {{$age->min_age}} a {{$age->max_age}} años</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <div class="my-5">
             <h2 class="text-2xl text-purple_p not-serif-regular">Horario</h2>
