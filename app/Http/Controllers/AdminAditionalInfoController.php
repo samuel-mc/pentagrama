@@ -32,6 +32,7 @@ class AdminAditionalInfoController extends Controller
             (object) ['url' => '/admin/info-adicional/catedras', 'name' => 'Cátedras', 'icon' => 'course.png'],
             (object) ['url' => '/admin/info-adicional/como-nos-encontraste', 'name' => '¿Cómo nos encontraste?', 'icon' => 'search.png'],
             (object) ['url' => '/admin/info-adicional/edades', 'name' => 'Edades', 'icon' => 'age.png'],
+            (object) ['url' => '/admin/info-adicional/horarios-disponibles', 'name' => 'Horarios disponibles', 'icon' => 'time.png'],
         ];
         $items = HowFoundUs::all();
         return view('academia.admin.catalogs', compact('title', 'name', 'rol', 'links', 'linksAditionalInfo', 'photo'));

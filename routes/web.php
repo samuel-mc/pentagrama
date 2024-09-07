@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminScheduleController;
 use App\Http\Controllers\CourseByTeacherController;
 use App\Http\Controllers\ReceptionistScheduleController;
+use App\Http\Controllers\TimeSlotsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminDashboarController;
@@ -67,6 +68,11 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/agregar', [AdminAditionalInfoController::class, 'saveEdad']);
             Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editEdad'])->middleware(['auth', 'user.role']);
             Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateEdad']);
+        });
+        Route::group(['prefix' => 'horarios-disponibles'], function () {
+            Route::get('/', [TimeSlotsController::class, 'index'])->middleware(['auth', 'user.role'])->name('admin.horarios-disponibles');
+            Route::get('/agregar', [TimeSlotsController::class, 'addCatalogoHorario'])->middleware(['auth', 'user.role']);
+            Route::post('/agregar', [TimeSlotsController::class, 'saveCatalogoHorario']);
         });
     });
     Route::group(['prefix' => 'inscripcion'], function () {
