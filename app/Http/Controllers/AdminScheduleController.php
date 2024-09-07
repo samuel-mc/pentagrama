@@ -20,19 +20,26 @@ class AdminScheduleController extends Controller
         $this->scheduleService = $scheduleService;
     }
 
+    public function goTo()
+    {
+        return redirect()->route('admin.horarios', ['studentId' => "1"]);
+    }
+
     public function index(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
+//        dd($request->all());
         $title = 'Horario';
         $name = $request->name;
         $rol = $request->rol;
         $links = $request->links;
         $photo = $request->photo;
 
+        $selectedStudent = $request->studentId;
 
         $schedule = $this->scheduleService->getScheduleAdmin();
         $days = $this->scheduleService->getScheduleDays();
 
-        return view('academia.admin.admin-schedules', compact('title', 'name', 'rol', 'links', 'photo', 'schedule', 'days'));
+        return view('academia.admin.admin-schedules', compact('title', 'name', 'rol', 'links', 'photo', 'schedule', 'days', 'selectedStudent'));
     }
 
     public function addSchedule(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
@@ -49,10 +56,11 @@ class AdminScheduleController extends Controller
 
         $selectedDay = $request->day + 1;
         $selectedHour = $request->hour;
+        $selectedStudent = $request->selectedStudent;
 
 //        dd($selectedDay, $selectedHour);
 
-        return view('academia.admin.add-schedule', compact('title', 'name', 'rol', 'links', 'photo', 'students', 'courses', 'days', 'selectedDay', 'selectedHour'));
+        return view('academia.admin.add-schedule', compact('title', 'name', 'rol', 'links', 'photo', 'students', 'courses', 'days', 'selectedDay', 'selectedHour', 'selectedStudent'));
     }
 
     public function saveSchedule(Request $request)

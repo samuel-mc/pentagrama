@@ -12,7 +12,7 @@
                 <select name="student" id="student" class="input w-full" onchange="validateIfGroupExists()">
                     <option value="">Seleccione un estudiante</option>
                     @foreach($students as $student)
-                        <option value="{{$student->id}}">{{$student->name}} {{$student->last_name}}</option>
+                        <option value="{{$student->id}}" {{$selectedStudent == $student->id ? 'selected' : ''}}>{{$student->name}} {{$student->last_name}}</option>
                     @endforeach
                 </select>
             </div>

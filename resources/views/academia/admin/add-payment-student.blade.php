@@ -4,7 +4,7 @@
 <div>
     <div id="errors">
     </div>
-    <form action="/admin/estudiantes/{{$student->id}}/pagos/agregar" method="post" id="formPaymentStudent">
+    <form action="/admin/estudiantes/{{$student->id}}/pagos/agregar" method="post" id="formPaymentStudent" enctype="multipart/form-data">
         @csrf
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <input type="text" name="student_id" value="{{$student->id}}" hidden>
@@ -26,8 +26,8 @@
                 <h3 class="text-sm mb-1 text-light_pink">Grupo</h3>
                 <select name="grupoAPagar" id="grupoAPagar" class="input w-full" onchange="handleChangeGroup()">
                     <option value="">Seleccionar un grupo</option>
-                    @foreach ($student->studentsGroups as $studentsGroup)
-                    <option value="{{$studentsGroup->id}}" monto-mensual="{{$studentsGroup->monthly_payment}}" fecha-pago="{{$studentsGroup->payment_date}}">{{$studentsGroup->group->name}}</option>
+                    @foreach ($courseByStudent as $course)
+                    <option value="{{$course->id}}" monto-mensual="{{$course->monthly_payment}}" fecha-pago="{{$course->monthly_payment_date}}">{{$course->course->name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -70,8 +70,8 @@
         <section class="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             <div class="mx-4 my-2">
                 <h3 class="text-sm mb-1 text-light_pink">Foto del capture</h3>
-                <input type="file" class="input w-full" id="voucher">
-                <input type="text" name="capture_photo" hidden id="capturePhoto">
+                <input type="file" class="input w-full" id="voucher" name="capture_photo">
+{{--                <input type="text" name="capture_photo" hidden id="capturePhoto">--}}
             </div>
             <div class="mx-4 my-2">
                 <h3 class="text-sm mb-1 text-light_pink">Fecha del capture</h3>
@@ -132,7 +132,7 @@
             montoAPagar.value = "";
             return;
         }
-        
+
         if (selectedPaymentType === 'Inscripción') {
             divGrupo.classList.add("hidden");
             divMontoMensual.classList.add("hidden");
@@ -156,7 +156,7 @@
             divFechaPago.classList.add("hidden");
             montoAPagar.value = "";
         }
-        
+
 
     }
 
@@ -251,12 +251,6 @@
         if (this.files[0].size > 2097152) {
             alert("La foto es muy grande. Debe ser menor a 2MB.");
             this.value = "";
-        } else {
-            const reader = new FileReader();
-            reader.onload = function() {
-                document.getElementById("capturePhoto").value = reader.result;
-            };
-            reader.readAsDataURL(this.files[0]);
         }
     };
 </script>

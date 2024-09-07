@@ -23,6 +23,6 @@ class Group extends Model
 
     public function student()
     {
-        return $this->hasMany(Student::class);
+        return $this->belongsTo(Student::class);
     }
 }

@@ -43,7 +43,7 @@ class InscriptionController extends Controller
 
         $studentId = null;
 
-        DB::transaction(function () use ($request) {
+        DB::transaction(function () use ($request, &$studentId) {
             // dd($request->all());
             $user = new User();
             $user->username = $request->username;
@@ -80,6 +80,6 @@ class InscriptionController extends Controller
             $studentId = $student->id;
         });
 
-        return redirect('/admin/estudiantes/' . $studentId);
+        return redirect()->route('admin.horarios', ['studentId' => $studentId]);
     }
 }

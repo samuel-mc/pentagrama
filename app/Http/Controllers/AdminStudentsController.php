@@ -13,6 +13,7 @@ use App\Models\StudentPaymentMethods;
 use App\Models\StudentPaymentType;
 use App\Models\StudentPaymentDoneItem;
 use App\Models\StudentsGroup;
+use Illuminate\Support\Str;
 
 class AdminStudentsController extends Controller
 {
@@ -109,10 +110,8 @@ class AdminStudentsController extends Controller
 
         $paymentTypes = count($hasInscriptionPayment) > 0 ? StudentPaymentType::where('active', true)->where('name', '!=', 'Inscripción')->get() : StudentPaymentType::where('active', true)->get();
         $paymentMethods = StudentPaymentMethods::where('active', true)->get();
-        $groupsByStudent = $student->studentsGroups->map(function ($group) {
-            $group->payment_date = Carbon::parse($group->payment_date)->format('d/m/Y');
-        });
-        return view('academia.admin.add-payment-student', compact('title', 'name', 'rol', 'links', 'student', 'paymentTypes', 'paymentMethods', 'groupsByStudent'));
+        $courseByStudent = Group::where('student_id', $id)->get();
+        return view('academia.admin.add-payment-student', compact('title', 'name', 'rol', 'links', 'student', 'paymentTypes', 'paymentMethods', 'courseByStudent'));
     }
 
     /**
@@ -139,9 +138,11 @@ class AdminStudentsController extends Controller
 
             $itm = new StudentPaymentDoneItem();
 
+            $fileName = Str::uuid() . '.' . $request->capture_photo->extension();
+            $request->capture_photo->move(public_path('img/users/students/payments'), $fileName);
             $itm->method_id = $request->payment_method;
             $itm->amount_paid = $request->montoPagado; // monto que ha sido pagado
-            $itm->voucher = $request->capture_photo;
+            $itm->voucher = $fileName;
             $itm->voucher_date = $request->capture_date;
             $itm->reference = $request->referencia;
             $itm->student_payment_done_id = $student_payment_done_id;
@@ -161,12 +162,15 @@ class AdminStudentsController extends Controller
     /**
      * Display the detail of the payment.
      */
-    public function detailPayment($paymentId) {
+    public function detailPayment($paymentId, Request $request) {
         // dd($paymentId);
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
         $title = 'Detalle de Pago';
-        $links = app('adminLinks');
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $payment = StudentPaymentDone::find($paymentId);
         $student = Student::find($payment->student_id);
 
@@ -182,7 +186,7 @@ class AdminStudentsController extends Controller
 
         $paymentTypes = StudentPaymentType::where('active', true)->get();
         $paymentMethods = StudentPaymentMethods::where('active', true)->get();
-        return view('academia.admin.detail-payment-student', compact('title', 'name', 'rol', 'links', 'payment', 'student', 'paymentTypes', 'paymentMethods'));
+        return view('academia.admin.detail-payment-student', compact('title', 'name', 'rol', 'links', 'payment', 'student', 'paymentTypes', 'paymentMethods', 'photo'));
     }
 
     /**

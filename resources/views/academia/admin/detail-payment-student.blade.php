@@ -127,7 +127,7 @@
                     <div class="mx-4 my-2">
                         <!-- imgbase64 -->
                         <h3 class="text-sm mb-1 text-light_pink">Foto del capture</h3>
-                        <img src="{{$item->voucher}}" alt="capture" class="w-full">
+                        <img src="{{'/img/users/students/payments/' . $item->voucher}}" alt="capture" class="w-full">
                     </div>
                 </div>
             </div>

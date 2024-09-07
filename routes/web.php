@@ -80,7 +80,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('{id}/pagos', [AdminStudentsController::class, 'studentPayments']);
         Route::get('{id}/pagos/agregar', [AdminStudentsController::class, 'addPayment']);
         Route::post('{id}/pagos/agregar', [AdminStudentsController::class, 'savePayment']);
-        Route::get('/pagos/detalle/{paymentId}', [AdminStudentsController::class, 'detailPayment']);
+        Route::get('/pagos/detalle/{paymentId}', [AdminStudentsController::class, 'detailPayment'])->middleware(['auth', 'user.role']);
         Route::get('/{id}/grupos', [AdminStudentsController::class, 'studentGroups']);
         Route::get('/{id}/grupos/agregar', [AdminStudentsController::class, 'addGroup']);
         Route::post('/{id}/grupos/agregar', [AdminStudentsController::class, 'saveGroup']);
@@ -113,6 +113,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/agregar', [AdminScheduleController::class, 'saveSchedule'])->name('admin.horarios.agregar');
         Route::get('/editar/{id}', [AdminScheduleController::class, 'editSchedule']);
         Route::post('/editar/{id}', [AdminScheduleController::class, 'updateSchedule']);
+        Route::get('goto', [AdminScheduleController::class, 'goTo']);
     });
     //course by teacher
     Route::group(['prefix' => 'cursos-por-profesor'], function () {

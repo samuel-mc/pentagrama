@@ -25,7 +25,7 @@
                                 @foreach($courses as $course)
                                     <div>
                                         @if($course == "")
-                                            <a href="{{route('admin.horarios.agregar', ["day" => $loop->parent->index, "hour" => $key])}}"
+                                            <a href="{{route('admin.horarios.agregar', ["day" => $loop->parent->index, "hour" => $key, 'selectedStudent' => $selectedStudent])}}"
                                                class="text-light_pink hover:text-purple_p transition-all">
                                                 Agregar
                                             </a>
