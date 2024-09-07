@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminScheduleController;
+use App\Http\Controllers\CourseByTeacherController;
 use App\Http\Controllers\ReceptionistScheduleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -72,8 +74,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/', [InscriptionController::class, 'save']);
     });
     Route::group(['prefix' => 'estudiantes'], function () {
-        Route::get('/', [AdminStudentsController::class, 'index']);
-        Route::get('/{id}', [AdminStudentsController::class, 'studentDetail']);
+        Route::get('/', [AdminStudentsController::class, 'index'])->middleware(['auth', 'user.role']);
+        Route::get('/{id}', [AdminStudentsController::class, 'studentDetail'])->middleware(['auth', 'user.role']);
         Route::post('/{id}/password', [AdminStudentsController::class, 'updatePassword'])->name('admin.estudiantes.password');
         Route::get('{id}/pagos', [AdminStudentsController::class, 'studentPayments']);
         Route::get('{id}/pagos/agregar', [AdminStudentsController::class, 'addPayment']);
@@ -92,6 +94,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/', [AdminGroupsController::class, 'index']);
         Route::get('/agregar', [AdminGroupsController::class, 'addGroup'])->name('admin.grupos.agregar');
         Route::post('/agregar', [AdminGroupsController::class, 'saveGroup']);
+        Route::get('/{studentId}/{teacherId}/{courseId}', [AdminGroupsController::class, 'getGroupByStudentTeacherCourse']);
     });
     // users
     Route::get('/usuarios', [AdminUsuariosController::class, 'index']);
@@ -99,11 +102,24 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/cuentas/{id}', [AdminStudentsController::class, 'accountDetail'])->name('admin.cuentas.detalle');
     Route::group(['prefix' => 'asistencia'], function () {
         Route::get('/', [ReceptionistAttendanceController::class, 'index']);
-        Route::post('/', [ReceptionistAttendanceController::class, 'registerAttendance']) ->name('admin.asistencia.registrar');
-        Route::post('/profesor', [ReceptionistAttendanceController::class, 'registerTeacherAttendance']) ->name('admin.asistencia.profesor');
-        Route::post('/suplente', [ReceptionistAttendanceController::class, 'addSubstituteTeacher']) ->name('admin.asistencia.suplente');
+        Route::post('/', [ReceptionistAttendanceController::class, 'registerAttendance'])->name('admin.asistencia.registrar');
+        Route::post('/profesor', [ReceptionistAttendanceController::class, 'registerTeacherAttendance'])->name('admin.asistencia.profesor');
+        Route::post('/suplente', [ReceptionistAttendanceController::class, 'addSubstituteTeacher'])->name('admin.asistencia.suplente');
     });
     Route::get('/recepcionista/horarios', [ReceptionistScheduleController::class, 'index']);
+    Route::group(['prefix'=>'/horarios'], function () {
+        Route::get('/', [AdminScheduleController::class, 'index'])->middleware(['auth', 'user.role'])->name('admin.horarios');
+        Route::get('/agregar', [AdminScheduleController::class, 'addSchedule'])->middleware(['auth', 'user.role'])->name('admin.horarios.agregar');
+        Route::post('/agregar', [AdminScheduleController::class, 'saveSchedule'])->name('admin.horarios.agregar');
+        Route::get('/editar/{id}', [AdminScheduleController::class, 'editSchedule']);
+        Route::post('/editar/{id}', [AdminScheduleController::class, 'updateSchedule']);
+    });
+    //course by teacher
+    Route::group(['prefix' => 'cursos-por-profesor'], function () {
+       Route::get('/{id}', [CourseByTeacherController::class, 'getCoursesByTeacher']);
+
+
+    });
 });
 
 Route::get('/login', [App\Http\Controllers\LoginController::class, 'index'])->name('login');

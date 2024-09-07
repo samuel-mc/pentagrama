@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Group;
@@ -61,5 +62,12 @@ class AdminGroupsController extends Controller
             }
         });
         return redirect('/admin/grupos');
+    }
+
+    public function getGroupByStudentTeacherCourse($studentId, $teacherId, $courseId): JsonResponse
+    {
+        $group = Group::where('student_id', $studentId)->where('teacher_id', $teacherId)->where('course_id', $courseId)->first();
+        return response()->json($group);
+
     }
 }

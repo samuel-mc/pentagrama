@@ -19,12 +19,13 @@ class AdminStudentsController extends Controller
     /**
      * Display the index.
      */
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Estudiantes';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
         $students = Student::orderBy('name', 'asc')->get();
         foreach ($students as $student) {
             $formatedPaymentDate = Carbon::parse($student->paymentsData->payment_date)->format('d/m');
@@ -32,7 +33,7 @@ class AdminStudentsController extends Controller
             $formattedCreatedAt = Carbon::parse($student->created_at)->format('d/m/Y');
             $student->formattedCreatedAt = $formattedCreatedAt;
         }
-        return view('academia.admin.students', compact('title', 'name', 'rol', 'links', 'students'));
+        return view('academia.admin.students', compact('title', 'name', 'rol', 'links', 'students', 'photo'));
     }
 
     public function updatePassword(Request $request) {
@@ -47,12 +48,13 @@ class AdminStudentsController extends Controller
     /**
      * Display the student detail.
      */
-    public function studentDetail($id)
+    public function studentDetail($id, Request $request)
     {
         $title = 'Detalle';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
         $student = Student::find($id);
         $formattedCreatedAt = Carbon::parse($student->created_at)->format('d/m/Y');
         $student->formattedCreatedAt = $formattedCreatedAt;
@@ -60,7 +62,7 @@ class AdminStudentsController extends Controller
         $student->formatedBirthdate = $formatedBirthdate;
         $formatedPaymentDate = Carbon::parse($student->paymentsData->payment_date)->format('d/m');
         $student->formatedPaymentDate = $formatedPaymentDate;
-        return view('academia.admin.detail-student', compact('title', 'name', 'rol', 'links', 'student'));
+        return view('academia.admin.detail-student', compact('title', 'name', 'rol', 'links', 'student', 'photo'));
     }
 
     /**
@@ -104,7 +106,7 @@ class AdminStudentsController extends Controller
         ->where('type.name', 'Inscripción')
         ->select('student_payment_done.*')
         ->get();
-        
+
         $paymentTypes = count($hasInscriptionPayment) > 0 ? StudentPaymentType::where('active', true)->where('name', '!=', 'Inscripción')->get() : StudentPaymentType::where('active', true)->get();
         $paymentMethods = StudentPaymentMethods::where('active', true)->get();
         $groupsByStudent = $student->studentsGroups->map(function ($group) {
@@ -285,5 +287,5 @@ class AdminStudentsController extends Controller
 
         return view('academia.admin.detail-account', compact('title', 'name', 'rol', 'links', 'student'));
     }
-        
+
 }

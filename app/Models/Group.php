@@ -17,15 +17,12 @@ class Group extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function age() {
-        return $this->belongsTo(Age::class);
-    }
-
-    public function studentsGroup() {
-        return $this->hasMany(StudentsGroup::class, 'id_group');
-    }
-
     public function schedules() {
         return $this->hasMany(Schedule::class);
+    }
+
+    public function student()
+    {
+        return $this->hasMany(Student::class);
     }
 }

@@ -3,11 +3,11 @@
 @section("content")
 <div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 px-4 py-10">
-        <a href="/admin/estudiantes/{{$student->id}}/grupos" class="w-full">
-            <button class="btn btn--primary w-full">
-                Grupos
-            </button>
-        </a>
+{{--        <a href="/admin/estudiantes/{{$student->id}}/grupos" class="w-full">--}}
+{{--            <button class="btn btn--primary w-full">--}}
+{{--                Grupos--}}
+{{--            </button>--}}
+{{--        </a>--}}
         <a href="/admin/estudiantes/{{$student->id}}/pagos" class="w-full">
             <button class="btn btn--primary w-full">
                 Pagos
@@ -26,7 +26,7 @@
         </div>
         <div class="mx-4 my-2">
             <h3 class="text-sm text-dark_pink">Usuario</h3>
-            <p class="text-xl text-black_p">{{$student->user->email}}</p>
+            <p class="text-xl text-black_p">{{$student->user->username}}</p>
         </div>
         <div class="mx-4 my-2">
             <h3 class="text-sm text-dark_pink">Nombre</h3>
