@@ -20,7 +20,7 @@ class UserRoleMiddleware
             $user = Auth::user();
             if ($user->personal) {
                 $name = $user->personal->name . ' ' . $user->personal->last_name;
-                $rol = 'Personal';
+                $rol = 'Administrador';
                 $links = app('adminLinks');
                 $photo = $user->personal->photo;
             } elseif ($user->student) {

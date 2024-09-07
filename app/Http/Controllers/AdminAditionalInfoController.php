@@ -19,42 +19,47 @@ class AdminAditionalInfoController extends Controller
     /**
      * Display the index.
      */
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Información adicional';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $linksAditionalInfo = [
             (object) ['url' => '/admin/info-adicional/catedras', 'name' => 'Cátedras', 'icon' => 'course.png'],
             (object) ['url' => '/admin/info-adicional/como-nos-encontraste', 'name' => '¿Cómo nos encontraste?', 'icon' => 'search.png'],
             (object) ['url' => '/admin/info-adicional/edades', 'name' => 'Edades', 'icon' => 'age.png'],
         ];
         $items = HowFoundUs::all();
-        return view('academia.admin.catalogs', compact('title', 'name', 'rol', 'links', 'linksAditionalInfo'));
+        return view('academia.admin.catalogs', compact('title', 'name', 'rol', 'links', 'linksAditionalInfo', 'photo'));
     }
 
     /**
      * Display the "¿Cómo nos encontraste?" index.
      */
-    public function comoNosEncontraste() {
+    public function comoNosEncontraste(Request $request) {
         $title = '¿Cómo nos encontraste?';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
         $items = HowFoundUs::orderBy('active', 'desc')->orderBy("how", 'asc')->get();
-        return view('academia.admin.how-found-us', compact('title', 'name', 'rol', 'links', 'items'));
+        return view('academia.admin.how-found-us', compact('title', 'name', 'rol', 'links', 'items', 'photo'));
     }
 
     /**
      * Display the form to add a new "¿Cómo nos encontraste?".
      */
-    public function addComoNosEncontraste() {
+    public function addComoNosEncontraste(Request $request) {
         $title = 'Agregar ¿Cómo nos encontraste?';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
-        return view('academia.admin.add-how-found-us', compact('title', 'name', 'rol', 'links'));
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+        return view('academia.admin.add-how-found-us', compact('title', 'name', 'rol', 'links', 'photo'));
     }
 
     /**
@@ -76,15 +81,16 @@ class AdminAditionalInfoController extends Controller
     /**
      * Display the form to edit a "¿Cómo nos encontraste?".
      */
-    public function editComoNosEncontraste($id) {
+    public function editComoNosEncontraste($id, Request $request) {
         $title = 'Editar ¿Cómo nos encontraste?';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
         $item = HowFoundUs::find($id);
-        return view('academia.admin.edit-how-found-us', compact('title', 'name', 'rol', 'links', 'item'));
+        return view('academia.admin.edit-how-found-us', compact('title', 'name', 'rol', 'links', 'item', 'photo'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
@@ -103,24 +109,28 @@ class AdminAditionalInfoController extends Controller
     /**
      * Display the "Catedrás" index.
      */
-    public function catedras() {
+    public function catedras(Request $request) {
         $title = 'Catedrás';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $items = Course::orderBy('name', 'asc')->get();
-        return view('academia.admin.courses', compact('title', 'name', 'rol', 'links', 'items'));
+        return view('academia.admin.courses', compact('title', 'name', 'rol', 'links', 'items', 'photo'));
     }
 
     /**
      * Display the form to add a new "Cátedra".
      */
-    public function addCatedra() {
+    public function addCatedra(Request $request) {
         $title = 'Agregar Cátedra';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
-        return view('academia.admin.add-course', compact('title', 'name', 'rol', 'links'));
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+        return view('academia.admin.add-course', compact('title', 'name', 'rol', 'links', 'photo'));
     }
 
     /**
@@ -143,13 +153,14 @@ class AdminAditionalInfoController extends Controller
     /**
      * Display the form to edit a "Cátedra".
      */
-    public function editCatedra($id) {
+    public function editCatedra($id, Request $request) {
         $title = 'Editar Cátedra';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
         $item = Course::find($id);
-        return view('academia.admin.edit-course', compact('title', 'name', 'rol', 'links', 'item'));
+        return view('academia.admin.edit-course', compact('title', 'name', 'rol', 'links', 'item', 'photo'));
     }
 
     /**
@@ -170,24 +181,26 @@ class AdminAditionalInfoController extends Controller
     /**
      * Display the "Edades" index.
      */
-    public function edades() {
+    public function edades(Request $request) {
         $title = 'Edades';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
         $items = Age::orderBy('min_age', 'asc')->get();
-        return view('academia.admin.ages', compact('title', 'name', 'rol', 'links', 'items'));
+        return view('academia.admin.ages', compact('title', 'name', 'rol', 'links', 'items', 'photo'));
     }
 
     /**
      * Display the form to add a new "Edad".
      */
-    public function addEdad() {
+    public function addEdad(Request $request) {
         $title = 'Agregar Edad';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
-        return view('academia.admin.add-age', compact('title', 'name', 'rol', 'links'));
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+        return view('academia.admin.add-age', compact('title', 'name', 'rol', 'links', 'photo'));
     }
 
     /**

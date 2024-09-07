@@ -239,29 +239,31 @@ class AdminStudentsController extends Controller
      */
 
     public function accounts(Request $request) {
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
         $title = 'Cuentas';
-        $links = app('adminLinks');
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
 
         $students = [];
 
-        $searchValue = $request->name ?? "";
+        $searchValue = $request->search ?? "";
 
-        if ($request->has("name")) {
-            $students = Student::where('name', 'like', '%' . $request->name . '%')->orWhere('last_name', 'like', '%' . $request->name . '%')->orderBy('last_name', 'asc')->get();
+        if ($request->has("search")) {
+            $students = Student::where('name', 'like', '%' . $request->search . '%')->orWhere('last_name', 'like', '%' . $request->search . '%')->orderBy('last_name', 'asc')->get();
         } else {
             $students = Student::orderBy('name', 'asc')->get();
         }
 
         $students->map(function ($student) {
-            $student->courses = join(', ', $student->studentsGroups->map(function ($group) {
-                return $group->group->course->name;
+            $student->courses = join(', ', $student->groups->map(function ($group) {
+                return $group->course->name;
             })->toArray());
             return $student;
         });
 
-        return view('academia.admin.accounts', compact('title', 'name', 'rol', 'links', 'students', 'searchValue'));
+        return view('academia.admin.accounts', compact('title', 'name', 'rol', 'links', 'students', 'searchValue', 'photo'));
     }
 
     public function accountDetail($id) {
@@ -273,11 +275,11 @@ class AdminStudentsController extends Controller
 
         $student->formatedBirthdate = Carbon::parse($student->birthdate)->format('d/m/Y');
         $student->age = Carbon::parse($student->birthdate)->age;
-        $student->courses = join(', ', $student->studentsGroups->map(function ($group) {
-            return $group->group->course->name;
+        $student->courses = join(', ', $student->groups->map(function ($group) {
+            return $group->course->name;
         })->toArray());
 
-        $student->studentsGroups = $student->studentsGroups->map(function ($group) {
+        $student->studentsGroups = $student->groups->map(function ($group) {
             $group->formattedPaymentDate = Carbon::parse($group->payment_date)->format('d/m/Y');
             return $group;
         });

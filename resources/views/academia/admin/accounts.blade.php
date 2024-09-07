@@ -6,7 +6,7 @@
     <div class="flex justify-between items-end">
             <div class="mx-2 my-2 w-full">
                 <h3 class="text-sm mb-1 text-light_pink">Nombre</h3>
-                <input type="text" name="name" class="input w-full" value="{{$searchValue}}">
+                <input type="text" name="search" class="input w-full" value="{{$searchValue}}">
             </div>
             <div class="mx-2 my-2">
                 <button type="submit" class="btn btn--primary">Buscar</button>

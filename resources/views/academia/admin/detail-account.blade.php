@@ -68,15 +68,11 @@
     </section>
     <section class="py-4">
         <h2 class="text-2xl not-serif-regular text-purple_p my-4">Datos de pago</h2>
-        @foreach ($student->studentsGroups as $group)
+        @foreach ($student->groups as $group)
         <div class="flex flex-wrap">
             <div class="mx-4 my-2">
-                <h3 class="text-sm text-dark_pink">Grupo</h3>
-                <p class="text-xl text-black_p">{{$group->group->name}}</p>
-            </div>
-            <div class="mx-4 my-2">
                 <h3 class="text-sm text-dark_pink">Cátedra</h3>
-                <p class="text-xl text-black_p">{{$group->group->course->name}}</p>
+                <p class="text-xl text-black_p">{{$group->course->name}}</p>
             </div>
             <div class="mx-4 my-2">
                 <h3 class="text-sm text-dark_pink">Monto</h3>
@@ -93,8 +89,8 @@
         <h2 class="text-2xl not-serif-regular text-purple_p my-4">Login</h2>
         <div class="flex flex-wrap">
             <div class="mx-4 my-2">
-                <h3 class="text-sm text-dark_pink">Correo</h3>
-                <p class="text-xl text-black_p">{{$student->user->email}}</p>
+                <h3 class="text-sm text-dark_pink">Username</h3>
+                <p class="text-xl text-black_p">{{$student->user->username}}</p>
             </div>
             <div class="mx-4 my-2">
                 <h3 class="text-sm text-dark_pink">Contraseña</h3>

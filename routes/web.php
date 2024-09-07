@@ -46,26 +46,26 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/dashboard', [DashboardController::class, 'displayTeacherDashboard'])->middleware(['auth', 'user.role']);
     });
     Route::group(['prefix' => 'info-adicional'], function () {
-        Route::get('/', [AdminAditionalInfoController::class, 'index']);
+        Route::get('/', [AdminAditionalInfoController::class, 'index'])->middleware(['auth', 'user.role']);
         Route::group(['prefix' => 'como-nos-encontraste'], function () {
-            Route::get('/', [AdminAditionalInfoController::class, 'comoNosEncontraste']);
-            Route::get('/agregar', [AdminAditionalInfoController::class, 'addComoNosEncontraste']);
+            Route::get('/', [AdminAditionalInfoController::class, 'comoNosEncontraste'])->middleware(['auth', 'user.role']);
+            Route::get('/agregar', [AdminAditionalInfoController::class, 'addComoNosEncontraste'])->middleware(['auth', 'user.role']);
             Route::post('/agregar', [AdminAditionalInfoController::class, 'saveComoNosEncontraste']);
-            Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editComoNosEncontraste']);
+            Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editComoNosEncontraste'])->middleware(['auth', 'user.role']);
             Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateComoNosEncontraste']);
         });
         Route::group(['prefix' => 'catedras'], function () {
-            Route::get('/', [AdminAditionalInfoController::class, 'catedras']);
-            Route::get('/agregar', [AdminAditionalInfoController::class, 'addCatedra']);
+            Route::get('/', [AdminAditionalInfoController::class, 'catedras'])->middleware(['auth', 'user.role']);
+            Route::get('/agregar', [AdminAditionalInfoController::class, 'addCatedra'])->middleware(['auth', 'user.role']);
             Route::post('/agregar', [AdminAditionalInfoController::class, 'saveCatedra']);
-            Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editCatedra']);
+            Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editCatedra'])->middleware(['auth', 'user.role']);
             Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateCatedra']);
         });
         Route::group(['prefix' => 'edades'], function () {
-            Route::get('/', [AdminAditionalInfoController::class, 'edades']);
-            Route::get('/agregar', [AdminAditionalInfoController::class, 'addEdad']);
+            Route::get('/', [AdminAditionalInfoController::class, 'edades'])->middleware(['auth', 'user.role']);
+            Route::get('/agregar', [AdminAditionalInfoController::class, 'addEdad'])->middleware(['auth', 'user.role']);
             Route::post('/agregar', [AdminAditionalInfoController::class, 'saveEdad']);
-            Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editEdad']);
+            Route::get('/editar/{id}', [AdminAditionalInfoController::class, 'editEdad'])->middleware(['auth', 'user.role']);
             Route::post('/editar/{id}', [AdminAditionalInfoController::class, 'updateEdad']);
         });
     });
@@ -98,7 +98,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
     // users
     Route::get('/usuarios', [AdminUsuariosController::class, 'index'])->middleware(['auth', 'user.role']);
-    Route::get('/cuentas', [AdminStudentsController::class, 'accounts'])->name('admin.cuentas');
+    Route::get('/cuentas', [AdminStudentsController::class, 'accounts'])->name('admin.cuentas')->middleware(['auth', 'user.role']);
     Route::get('/cuentas/{id}', [AdminStudentsController::class, 'accountDetail'])->name('admin.cuentas.detalle');
     Route::group(['prefix' => 'asistencia'], function () {
         Route::get('/', [ReceptionistAttendanceController::class, 'index']);
