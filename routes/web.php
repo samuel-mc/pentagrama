@@ -101,7 +101,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/cuentas', [AdminStudentsController::class, 'accounts'])->name('admin.cuentas')->middleware(['auth', 'user.role']);
     Route::get('/cuentas/{id}', [AdminStudentsController::class, 'accountDetail'])->name('admin.cuentas.detalle');
     Route::group(['prefix' => 'asistencia'], function () {
-        Route::get('/', [ReceptionistAttendanceController::class, 'index']);
+        Route::get('/', [ReceptionistAttendanceController::class, 'index'])->middleware(['auth', 'user.role']);
         Route::post('/', [ReceptionistAttendanceController::class, 'registerAttendance'])->name('admin.asistencia.registrar');
         Route::post('/profesor', [ReceptionistAttendanceController::class, 'registerTeacherAttendance'])->name('admin.asistencia.profesor');
         Route::post('/suplente', [ReceptionistAttendanceController::class, 'addSubstituteTeacher'])->name('admin.asistencia.suplente');
