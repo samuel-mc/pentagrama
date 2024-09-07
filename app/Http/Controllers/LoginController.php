@@ -18,6 +18,8 @@ class LoginController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
+            Auth::user()->last_login = now();
+            Auth::user()->save();
             return redirect()->route('admin.dashboard');
         }
 

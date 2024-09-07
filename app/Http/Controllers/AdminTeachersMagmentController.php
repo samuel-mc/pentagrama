@@ -21,31 +21,37 @@ class AdminTeachersMagmentController extends Controller
     /**
      * Display the teachers list.
      */
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Profesores';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = linksAdmin;
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $teachers = Teacher::where('active', 1)->get();
         $teachers->map(function ($teacher) {
             $teacher->courses = $teacher->groups->map(function ($group) {
                 return $group->course->name;
             })->unique()->implode(', ');
         });
-        return view('academia.admin.teachers', compact('title', 'name', 'rol', 'links', 'teachers'));
+        return view('academia.admin.teachers', compact('title', 'name', 'rol', 'links', 'teachers', 'photo'));
     }
 
     /**
      * Display the screen to add a new teacher.
      */
-    public function addTeacher()
+    public function addTeacher(Request $request)
     {
         $title = 'Agregar profesor';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = linksAdmin;
-        return view('academia.admin.add-teacher', compact('title', 'name', 'rol', 'links'));
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $photo = $request->photo;
+        $links = $request->links;
+
+        return view('academia.admin.add-teacher', compact('title', 'name', 'rol', 'links', 'photo'));
     }
 
     /**
@@ -84,16 +90,19 @@ class AdminTeachersMagmentController extends Controller
     /**
      * Display the screen to edit a teacher.
      */
-    public function editTeacher(string $id)
+    public function editTeacher(string $id, Request $request)
     {
         $title = 'Editar profesor';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = linksAdmin;
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $teacher = Teacher::find($id);
         $formattedBirthday = Carbon::parse($teacher->birthday)->format('Y-m-d');
         $teacher->formattedBirthday = $formattedBirthday;
-        return view('academia.admin.edit-teacher', compact('title', 'name', 'rol', 'links', 'teacher'));
+        return view('academia.admin.edit-teacher', compact('title', 'name', 'rol', 'links', 'teacher', 'photo'));
     }
 
     /**

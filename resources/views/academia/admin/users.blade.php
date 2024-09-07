@@ -7,7 +7,7 @@
             <tr class="roboto-bold text-lg">
                 <th class="py-2">Nombre</th>
                 <th class="py-2">Tipo</th>
-                <th class="py-2">Correo</th>
+                <th class="py-2">Username</th>
                 <th class="py-2">Ultima conexión</th>
                 <!-- <th class="py-2">Acciones</th>f -->
             </tr>
@@ -34,7 +34,7 @@
                     @endif
                 </td>
                 <td class="py-2">
-                    {{ $user->email }}
+                    {{ $user->username }}
                 </td>
                 <td class="py-2">
                     {{ $user->last_login }}

@@ -70,13 +70,16 @@ class AdminStudentsController extends Controller
      * Display the student payments.
      */
 
-    public function studentPayments($id)
+    public function studentPayments($id, Request $request)
     {
         $student = Student::find($id);
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
         $title = 'Pagos: ' . $student->name . ' ' . $student->last_name;
-        $links = app('adminLinks');
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $pagos = StudentPaymentDone::where('student_id', $id)->get();
         $pagos->map(function ($pago) {
             $pago->date = Carbon::parse($pago->created_at)->format('d/m/Y');
@@ -88,18 +91,21 @@ class AdminStudentsController extends Controller
             return $pago;
         });
         // dd($pagos->first()->studentPaymentType);
-        return view('academia.admin.payments-student', compact('title', 'name', 'rol', 'links', 'pagos', 'student'));
+        return view('academia.admin.payments-student', compact('title', 'name', 'rol', 'links', 'pagos', 'student', 'photo'));
     }
 
     /**
      * Display the add payment form.
      */
-    public function addPayment($id) {
+    public function addPayment($id, Request $request) {
         $student = Student::find($id);
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
         $title = 'Agregar Pago: ' . $student->name . ' ' . $student->last_name;
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $formattedPaymentDate = Carbon::parse($student->paymentsData->payment_date)->format('d/m');
         $student->formattedPaymentDate = $formattedPaymentDate;
 
@@ -111,7 +117,7 @@ class AdminStudentsController extends Controller
         $paymentTypes = count($hasInscriptionPayment) > 0 ? StudentPaymentType::where('active', true)->where('name', '!=', 'Inscripción')->get() : StudentPaymentType::where('active', true)->get();
         $paymentMethods = StudentPaymentMethods::where('active', true)->get();
         $courseByStudent = Group::where('student_id', $id)->get();
-        return view('academia.admin.add-payment-student', compact('title', 'name', 'rol', 'links', 'student', 'paymentTypes', 'paymentMethods', 'courseByStudent'));
+        return view('academia.admin.add-payment-student', compact('title', 'name', 'rol', 'links', 'student', 'paymentTypes', 'paymentMethods', 'courseByStudent', 'photo'));
     }
 
     /**

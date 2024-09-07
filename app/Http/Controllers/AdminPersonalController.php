@@ -10,24 +10,30 @@ use App\Models\User;
 
 class AdminPersonalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Personal';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $personal = Personal::orderBy('name', 'asc')->get();
-        return view('academia.admin.personal', compact('title', 'name', 'rol', 'links', 'personal'));
+        return view('academia.admin.personal', compact('title', 'name', 'rol', 'links', 'personal', 'photo'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $title = 'Agregar Personal';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $types = Role::orderBy('name', 'asc')->get();
-        return view('academia.admin.add-personal', compact('title', 'name', 'rol', 'links', 'types'));
+        return view('academia.admin.add-personal', compact('title', 'name', 'rol', 'links', 'types', 'photo'));
     }
 
     public function store(Request $request)

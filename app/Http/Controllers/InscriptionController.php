@@ -15,14 +15,17 @@ class InscriptionController extends Controller
     /**
      * Display the index.
      */
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Inscripción';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $howFoundUs = HowFoundUs::orderBy('how', 'desc')->where('active', 1)->get();
-        return view('academia.admin.inscription', compact('title', 'name', 'rol', 'links', 'howFoundUs'));
+        return view('academia.admin.inscription', compact('title', 'name', 'rol', 'links', 'howFoundUs', 'photo'));
     }
 
     private function setFirstLettersUpper($text) {

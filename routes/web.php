@@ -38,12 +38,12 @@ Route::get('/about', [HomeController::class, 'about']);
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', [AdminDashboarController::class, 'index'])->middleware(['auth', 'user.role'])->name('admin.dashboard');
     Route::group(['prefix' => 'profesores'], function () {
-        Route::get('/', [AdminTeachersMagmentController::class, 'index']);
-        Route::get('/agregar', [AdminTeachersMagmentController::class, 'addTeacher']);
+        Route::get('/', [AdminTeachersMagmentController::class, 'index'])->middleware(['auth', 'user.role']);
+        Route::get('/agregar', [AdminTeachersMagmentController::class, 'addTeacher'])->middleware(['auth', 'user.role']);
         Route::post('/agregar', [AdminTeachersMagmentController::class, 'saveTeacher']);
-        Route::get('/editar/{id}', [AdminTeachersMagmentController::class, 'editTeacher']);
+        Route::get('/editar/{id}', [AdminTeachersMagmentController::class, 'editTeacher'])->middleware(['auth', 'user.role']);
         Route::post('/editar/{id}', [AdminTeachersMagmentController::class, 'updateTeacher']);
-        Route::get('/dashboard', [DashboardController::class, 'displayTeacherDashboard']);
+        Route::get('/dashboard', [DashboardController::class, 'displayTeacherDashboard'])->middleware(['auth', 'user.role']);
     });
     Route::group(['prefix' => 'info-adicional'], function () {
         Route::get('/', [AdminAditionalInfoController::class, 'index']);
@@ -70,15 +70,15 @@ Route::group(['prefix' => 'admin'], function () {
         });
     });
     Route::group(['prefix' => 'inscripcion'], function () {
-        Route::get('/', [InscriptionController::class, 'index']);
+        Route::get('/', [InscriptionController::class, 'index'])->middleware(['auth', 'user.role']);
         Route::post('/', [InscriptionController::class, 'save']);
     });
     Route::group(['prefix' => 'estudiantes'], function () {
         Route::get('/', [AdminStudentsController::class, 'index'])->middleware(['auth', 'user.role']);
         Route::get('/{id}', [AdminStudentsController::class, 'studentDetail'])->middleware(['auth', 'user.role']);
         Route::post('/{id}/password', [AdminStudentsController::class, 'updatePassword'])->name('admin.estudiantes.password');
-        Route::get('{id}/pagos', [AdminStudentsController::class, 'studentPayments']);
-        Route::get('{id}/pagos/agregar', [AdminStudentsController::class, 'addPayment']);
+        Route::get('{id}/pagos', [AdminStudentsController::class, 'studentPayments'])->middleware(['auth', 'user.role']);
+        Route::get('{id}/pagos/agregar', [AdminStudentsController::class, 'addPayment'])->middleware(['auth', 'user.role']);
         Route::post('{id}/pagos/agregar', [AdminStudentsController::class, 'savePayment']);
         Route::get('/pagos/detalle/{paymentId}', [AdminStudentsController::class, 'detailPayment'])->middleware(['auth', 'user.role']);
         Route::get('/{id}/grupos', [AdminStudentsController::class, 'studentGroups']);
@@ -86,8 +86,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/{id}/grupos/agregar', [AdminStudentsController::class, 'saveGroup']);
     });
     Route::group(['prefix' => 'personal'], function () {
-        Route::get('/', [AdminPersonalController::class, 'index']);
-        Route::get('/agregar', [AdminPersonalController::class, 'create']);
+        Route::get('/', [AdminPersonalController::class, 'index'])->middleware(['auth', 'user.role']);
+        Route::get('/agregar', [AdminPersonalController::class, 'create'])->middleware(['auth', 'user.role']);
         Route::post('/agregar', [AdminPersonalController::class, 'store']);
     });
     Route::group(['prefix' => 'grupos'], function () {
@@ -97,7 +97,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/{studentId}/{teacherId}/{courseId}', [AdminGroupsController::class, 'getGroupByStudentTeacherCourse']);
     });
     // users
-    Route::get('/usuarios', [AdminUsuariosController::class, 'index']);
+    Route::get('/usuarios', [AdminUsuariosController::class, 'index'])->middleware(['auth', 'user.role']);
     Route::get('/cuentas', [AdminStudentsController::class, 'accounts'])->name('admin.cuentas');
     Route::get('/cuentas/{id}', [AdminStudentsController::class, 'accountDetail'])->name('admin.cuentas.detalle');
     Route::group(['prefix' => 'asistencia'], function () {

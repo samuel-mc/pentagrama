@@ -10,12 +10,15 @@ class AdminUsuariosController extends Controller
     /**
      * Listado de usuarios.
      */
-    public function index() {
+    public function index(Request $request) {
         $title = 'Usuarios';
-        $name = 'Elias Cordova';
-        $rol = 'Admin';
-        $links = app('adminLinks');
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
         $users = User::all();
-        return view('academia.admin.users', compact('title', 'name', 'rol', 'links', 'users'));
+        return view('academia.admin.users', compact('title', 'name', 'rol', 'links', 'users', 'photo'));
     }
 }
