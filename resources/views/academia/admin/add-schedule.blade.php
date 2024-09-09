@@ -44,7 +44,12 @@
             </div>
             <div>
                 <h3 class="text-sm mb-1 text-light_pink">Hora de inicio</h3>
-                <input type="time" name="start_time" class="input w-full" placeholder="Hora de inicio" value="{{$selectedHour}}">
+                <select name="time_slot_id" id="timeSlotId" class="input w-full">
+                    <option value="">Seleccione una hora</option>
+                    @foreach($timeSlots as $timeSlot)
+                        <option value="{{$timeSlot->id}}" {{$timeSlot->id == $selectedHour ? 'selected' : ''}}>{{$timeSlot->time}}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-6 hidden" id="paymentDiv">
@@ -111,7 +116,7 @@
             if (!formData.get('day')) {
                 errors.push('El día es requerido.');
             }
-            if (!formData.get('start_time')) {
+            if (!formData.get('time_slot_id')) {
                 errors.push('La hora de inicio es requerida.');
             }
             if (!formData.get('monthly_payment') && formData.get('groupExists') === 'false') {

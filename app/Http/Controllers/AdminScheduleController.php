@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Group;
 use App\Models\Schedule;
 use App\Models\Student;
+use App\Models\TimeSlots;
 use App\Services\ScheduleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,7 @@ class AdminScheduleController extends Controller
         $selectedStudent = $request->studentId;
 
         $schedule = $this->scheduleService->getScheduleAdmin();
+//        dd($schedule);
         $days = $this->scheduleService->getScheduleDays();
 
         return view('academia.admin.admin-schedules', compact('title', 'name', 'rol', 'links', 'photo', 'schedule', 'days', 'selectedStudent'));
@@ -54,13 +56,22 @@ class AdminScheduleController extends Controller
         $courses = Course::where('active', 1)->orderBy('name', 'ASC')->get();
         $days = $this->scheduleService->getSheduleDaysAsObject();
 
+
         $selectedDay = $request->day + 1;
         $selectedHour = $request->hour;
         $selectedStudent = $request->selectedStudent;
 
+        $timeSlots = TimeSlots::all()->sortBy('hour')->sortBy('minute');
+        $timeSlots = $timeSlots->map(function ($item) {
+            $item->hour = str_pad($item->hour, 2, '0', STR_PAD_LEFT);
+            $item->minute = str_pad($item->minute, 2, '0', STR_PAD_LEFT);
+            $item->time = $item->hour . ':' . $item->minute;
+            return $item;
+        });
+//        dd($timeSlots);
 //        dd($selectedDay, $selectedHour);
 
-        return view('academia.admin.add-schedule', compact('title', 'name', 'rol', 'links', 'photo', 'students', 'courses', 'days', 'selectedDay', 'selectedHour', 'selectedStudent'));
+        return view('academia.admin.add-schedule', compact('title', 'name', 'rol', 'links', 'photo', 'students', 'courses', 'days', 'selectedDay', 'selectedHour', 'selectedStudent', 'timeSlots'));
     }
 
     public function saveSchedule(Request $request)
@@ -80,7 +91,7 @@ class AdminScheduleController extends Controller
 
             $schedule = new Schedule();
             $schedule->group_id = $group->id;
-            $schedule->start_hour = $request->start_time;
+            $schedule->time_slot_id = $request->time_slot_id;
             $schedule->day_of_week = $request->day;
             $schedule->save();
         });

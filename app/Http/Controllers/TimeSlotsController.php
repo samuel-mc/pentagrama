@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Schedule;
 use App\Models\TimeSlots;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -76,6 +77,12 @@ class TimeSlotsController extends Controller
         $horario->minute = $request->minute;
         $horario->save();
 
+        return redirect()->route('admin.horarios-disponibles');
+    }
+
+    public function deleteTimeSlot( $id): RedirectResponse
+    {
+        TimeSlots::destroy($id);
         return redirect()->route('admin.horarios-disponibles');
     }
 }

@@ -73,6 +73,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [TimeSlotsController::class, 'index'])->middleware(['auth', 'user.role'])->name('admin.horarios-disponibles');
             Route::get('/agregar', [TimeSlotsController::class, 'addCatalogoHorario'])->middleware(['auth', 'user.role']);
             Route::post('/agregar', [TimeSlotsController::class, 'saveCatalogoHorario']);
+            Route::get('/eliminar/{id}', [TimeSlotsController::class, 'deleteTimeSlot']);
         });
     });
     Route::group(['prefix' => 'inscripcion'], function () {

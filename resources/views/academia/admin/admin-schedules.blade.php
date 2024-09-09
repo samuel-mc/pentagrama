@@ -24,14 +24,14 @@
                                 {{-- Se itera sobre los cursos de cada hora --}}
                                 @foreach($courses as $course)
                                     <div>
-                                        @if($course == "")
-                                            <a href="{{route('admin.horarios.agregar', ["day" => $loop->parent->index, "hour" => $key, 'selectedStudent' => $selectedStudent])}}"
+                                        @if($course->name == "")
+                                            <a href="{{route('admin.horarios.agregar', ["day" => $loop->parent->index, "hour" => $course->id, 'selectedStudent' => $selectedStudent])}}"
                                                class="text-light_pink hover:text-purple_p transition-all">
                                                 Agregar
                                             </a>
                                         @else
                                             <span>
-                                                {{$course}}
+                                                {{$course->name}}
                                             </span>
                                         @endif
                                     </div>
