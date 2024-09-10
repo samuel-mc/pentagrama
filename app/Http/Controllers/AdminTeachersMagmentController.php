@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TimeSlotByTeacher;
+use App\Services\ScheduleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
@@ -17,6 +19,13 @@ define("linksAdmin", [
 
 class AdminTeachersMagmentController extends Controller
 {
+
+    protected ScheduleService $scheduleService;
+
+    public function __construct(ScheduleService $scheduleService)
+    {
+        $this->scheduleService = $scheduleService;
+    }
 
     /**
      * Display the teachers list.
@@ -127,5 +136,51 @@ class AdminTeachersMagmentController extends Controller
         });
 
         return redirect('/admin/profesores');
+    }
+
+    public function teacherSchedule(Request $request)
+    {
+        $title = 'Horarios disponibles';
+
+        $name = $request->name;
+        $rol = $request->rol;
+        $links = $request->links;
+        $photo = $request->photo;
+
+//        $teacherId = $request->teacherId;
+        $teacherId = 1; // TODO: Cambiar por el id del profesor logueado
+
+        if ($teacherId) {
+            $availableSchedules = $this->scheduleService->getAvailabilyScheduleByTeacher($teacherId);
+        } else {
+            return redirect('/admin/profesores/dashboard');
+        }
+
+        $days = $this->scheduleService->getScheduleDays();
+        return view('academia.teacher.available-schedule', compact('title', 'name', 'rol', 'links', 'photo', 'availableSchedules', 'days', 'teacherId'));
+
+    }
+
+    public function setTeacherTimeSlot(Request $request) {
+        $teacherId = $request->teacherId;
+        $timeSlotId = $request->timeSlotId;
+        $day = $request->day;
+//        dd($teacherId, $timeSlotId, $day);
+        $timeSlot = TimeSlotByTeacher::where('teacher_id', $teacherId)
+            ->where('time_slot_id', $timeSlotId)
+            ->where('day_of_week', $day)
+            ->first();
+
+        if ($timeSlot) {
+            $timeSlot->delete();
+        } else {
+            $timeSlot = new TimeSlotByTeacher();
+            $timeSlot->teacher_id = $teacherId;
+            $timeSlot->time_slot_id = $timeSlotId;
+            $timeSlot->day_of_week = $day;
+            $timeSlot->save();
+        }
+
+        return redirect(route('admin.profesores.horarios-disponibles'));
     }
 }

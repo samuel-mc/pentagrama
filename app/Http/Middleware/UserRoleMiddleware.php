@@ -33,6 +33,7 @@ class UserRoleMiddleware
                 $rol = 'Profesor';
                 $links = app('teacherLinks');
                 $photo = 'img/users/teachers/' . $user->teacher->photo;
+                $teacherId = $user->teacher->id;
             }
 
             $request->merge([
@@ -40,6 +41,7 @@ class UserRoleMiddleware
                 'rol' => $rol,
                 'links' => $links,
                 'photo' => $photo,
+                'teacherId' => $teacherId ?? null,
             ]);
         }
 

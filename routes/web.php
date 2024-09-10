@@ -45,6 +45,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/editar/{id}', [AdminTeachersMagmentController::class, 'editTeacher'])->middleware(['auth', 'user.role']);
         Route::post('/editar/{id}', [AdminTeachersMagmentController::class, 'updateTeacher']);
         Route::get('/dashboard', [DashboardController::class, 'displayTeacherDashboard'])->middleware(['auth', 'user.role']);
+
+        Route::get('/horarios-disponibles', [AdminTeachersMagmentController::class, 'teacherSchedule'])->middleware(['auth', 'user.role'])->name('admin.profesores.horarios-disponibles');
+        Route::get('/horarios-disponibles/agregar', [AdminTeachersMagmentController::class, 'setTeacherTimeSlot'])->name('admin.profesores.horarios-disponibles.agregar');
     });
     Route::group(['prefix' => 'info-adicional'], function () {
         Route::get('/', [AdminAditionalInfoController::class, 'index'])->middleware(['auth', 'user.role']);

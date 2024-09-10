@@ -5,7 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TeacherAvailability extends Model
+class TimeSlotByTeacher extends Model
 {
     use HasFactory;
+
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
 }

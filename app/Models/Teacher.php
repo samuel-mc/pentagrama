@@ -12,4 +12,8 @@ class Teacher extends Model
     public function groups() {
         return $this->hasMany(Group::class);
     }
+
+    public function timeSlots() {
+        return $this->hasMany(TimeSlotByTeacher::class);
+    }
 }
