@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TimeSlotByTeacher;
+use App\Services\CourseByTeacherService;
 use App\Services\ScheduleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,10 +22,12 @@ class AdminTeachersMagmentController extends Controller
 {
 
     protected ScheduleService $scheduleService;
+    protected CourseByTeacherService $courseByTeacherService;
 
-    public function __construct(ScheduleService $scheduleService)
+    public function __construct(ScheduleService $scheduleService, CourseByTeacherService $courseByTeacherService)
     {
         $this->scheduleService = $scheduleService;
+        $this->courseByTeacherService = $courseByTeacherService;
     }
 
     /**
@@ -152,12 +155,13 @@ class AdminTeachersMagmentController extends Controller
 
         if ($teacherId) {
             $availableSchedules = $this->scheduleService->getAvailabilyScheduleByTeacher($teacherId);
+            $courses = $this->courseByTeacherService->getCoursesByTeacher($teacherId);
         } else {
             return redirect('/admin/profesores/dashboard');
         }
 
         $days = $this->scheduleService->getScheduleDays();
-        return view('academia.teacher.available-schedule', compact('title', 'name', 'rol', 'links', 'photo', 'availableSchedules', 'days', 'teacherId'));
+        return view('academia.teacher.available-schedule', compact('title', 'name', 'rol', 'links', 'photo', 'availableSchedules', 'days', 'teacherId', 'courses'));
 
     }
 
@@ -165,7 +169,7 @@ class AdminTeachersMagmentController extends Controller
         $teacherId = $request->teacherId;
         $timeSlotId = $request->timeSlotId;
         $day = $request->day;
-//        dd($teacherId, $timeSlotId, $day);
+
         $timeSlot = TimeSlotByTeacher::where('teacher_id', $teacherId)
             ->where('time_slot_id', $timeSlotId)
             ->where('day_of_week', $day)

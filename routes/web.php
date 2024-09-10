@@ -117,7 +117,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/suplente', [ReceptionistAttendanceController::class, 'addSubstituteTeacher'])->name('admin.asistencia.suplente');
     });
     Route::get('/recepcionista/horarios', [ReceptionistScheduleController::class, 'index']);
-    Route::group(['prefix'=>'/horarios'], function () {
+    Route::group(['prefix' => '/horarios'], function () {
         Route::get('/', [AdminScheduleController::class, 'index'])->middleware(['auth', 'user.role'])->name('admin.horarios');
         Route::get('/agregar', [AdminScheduleController::class, 'addSchedule'])->middleware(['auth', 'user.role'])->name('admin.horarios.agregar');
         Route::post('/agregar', [AdminScheduleController::class, 'saveSchedule'])->name('admin.horarios.agregar');
@@ -127,9 +127,8 @@ Route::group(['prefix' => 'admin'], function () {
     });
     //course by teacher
     Route::group(['prefix' => 'cursos-por-profesor'], function () {
-       Route::get('/{id}', [CourseByTeacherController::class, 'getCoursesByTeacher']);
-
-
+        Route::get('/{id}', [CourseByTeacherController::class, 'getCoursesByTeacher']);
+        Route::get('/profesores/agregar', [CourseByTeacherController::class, 'setCourseByTeacher'])->name('admin.cursos-por-profesor.agregar');
     });
 });
 

@@ -44,5 +44,18 @@
                 @endforeach
             </table>
         </section>
+        <section class="py-6">
+            <h2 class="text-2xl my-4">Cátedras que puede dar</h2>
+            <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-8">
+                @foreach($courses as $course)
+                    <li>
+                        <a href="{{route('admin.cursos-por-profesor.agregar', ['teacherId'=>$teacherId, 'courseId'=>$course->id])}}"
+                           class="{{$course->selected ? "text-green-500 hover:text-green-700" : "text-red-500 hover:text-red-700"}} hover:underline transition-all">
+                            {{$course->name}}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </section>
     </div>
 @endsection

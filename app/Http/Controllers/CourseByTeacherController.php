@@ -20,4 +20,24 @@ class CourseByTeacherController extends Controller
         });
         return response()->json($teachers);
     }
+
+    public function setCourseByTeacher(Request $request)
+    {
+        $teacherId = $request->teacherId;
+        $courseId = $request->courseId;
+
+        $course = CourseByTeacher::where('teacher_id', $teacherId)->where('course_id', $courseId)->first();
+
+        if ($course) {
+            $course->delete();
+        } else {
+            $courseByTeacher = new CourseByTeacher();
+            $courseByTeacher->teacher_id = $teacherId;
+            $courseByTeacher->course_id = $courseId;
+            $courseByTeacher->save();
+        }
+
+        return redirect(route('admin.profesores.horarios-disponibles'));
+    }
+
 }

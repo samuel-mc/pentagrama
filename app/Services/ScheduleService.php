@@ -64,7 +64,7 @@ class ScheduleService
 
     }
 
-    public function getAvailabilyScheduleByTeacher($id)
+    public function getAvailabilyScheduleByTeacher($id): array
     {
         $availableSchedules = TimeSlotByTeacher::where('teacher_id', $id)->get();
         $groupsByTeacher = Group::where('teacher_id', $id)->get();
