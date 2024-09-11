@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminScheduleController;
 use App\Http\Controllers\CourseByTeacherController;
+use App\Http\Controllers\EstudentsByTeacherController;
 use App\Http\Controllers\ReceptionistScheduleController;
 use App\Http\Controllers\TimeSlotsController;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/horarios-disponibles', [AdminTeachersMagmentController::class, 'teacherSchedule'])->middleware(['auth', 'user.role'])->name('admin.profesores.horarios-disponibles');
         Route::get('/horarios-disponibles/agregar', [AdminTeachersMagmentController::class, 'setTeacherTimeSlot'])->name('admin.profesores.horarios-disponibles.agregar');
+
+        Route::get('/mis-estudiantes', [EstudentsByTeacherController::class, 'index'])->middleware(['auth', 'user.role']);
     });
     Route::group(['prefix' => 'info-adicional'], function () {
         Route::get('/', [AdminAditionalInfoController::class, 'index'])->middleware(['auth', 'user.role']);

@@ -14,7 +14,7 @@ class CourseByTeacherController extends Controller
         $teachers = CourseByTeacher::where('course_id', $id)->where('active', 1)->get();
         $teachers = $teachers->map(function ($teacher) {
             return [
-                'id' => $teacher->id,
+                'id' => $teacher->teacher->id,
                 'name' => $teacher->teacher->name . ' ' . $teacher->teacher->last_name,
             ];
         });

@@ -150,8 +150,8 @@ class AdminTeachersMagmentController extends Controller
         $links = $request->links;
         $photo = $request->photo;
 
-//        $teacherId = $request->teacherId;
-        $teacherId = 1; // TODO: Cambiar por el id del profesor logueado
+        $teacherId = $request->teacherId;
+//        $teacherId = 1; // TODO: Cambiar por el id del profesor logueado
 
         if ($teacherId) {
             $availableSchedules = $this->scheduleService->getAvailabilyScheduleByTeacher($teacherId);
