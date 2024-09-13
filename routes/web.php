@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminScheduleController;
 use App\Http\Controllers\CourseByTeacherController;
 use App\Http\Controllers\EstudentsByTeacherController;
+use App\Http\Controllers\LogbookTeacherController;
 use App\Http\Controllers\ReceptionistScheduleController;
 use App\Http\Controllers\TimeSlotsController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,12 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/horarios-disponibles/agregar', [AdminTeachersMagmentController::class, 'setTeacherTimeSlot'])->name('admin.profesores.horarios-disponibles.agregar');
 
         Route::get('/mis-estudiantes', [EstudentsByTeacherController::class, 'index'])->middleware(['auth', 'user.role']);
+
+        Route::get('/bitacora', [LogbookTeacherController::class, 'index'])->middleware(['auth', 'user.role'])->name('admin.profesores.bitacora');
+        Route::get('/bitacora/agregar', [LogbookTeacherController::class, 'addLogbook'])->middleware(['auth', 'user.role'])->name('admin.profesores.bitacora.agregar');
+        Route::post('/bitacora/agregar', [LogbookTeacherController::class, 'saveLogbook'])->name('admin.bitacora.save');
+        Route::get('/bitacora/agrega-imagen/{logbookId}', [LogbookTeacherController::class, 'addImage'])->middleware(['auth', 'user.role'])->name('admin.profesores.bitacora.agrega-imagen');
+        Route::post('/bitacora/agrega-imagen', [LogbookTeacherController::class, 'saveImage'])->name('admin.profesores.bitacora.save-imagen');
     });
     Route::group(['prefix' => 'info-adicional'], function () {
         Route::get('/', [AdminAditionalInfoController::class, 'index'])->middleware(['auth', 'user.role']);

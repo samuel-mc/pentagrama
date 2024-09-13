@@ -25,4 +25,9 @@ class Group extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function logbookStudent()
+    {
+        return $this->hasMany(LogbookStudent::class);
+    }
 }
