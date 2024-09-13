@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminScheduleController;
 use App\Http\Controllers\CourseByTeacherController;
 use App\Http\Controllers\EstudentsByTeacherController;
+use App\Http\Controllers\LogbookStudentController;
 use App\Http\Controllers\LogbookTeacherController;
 use App\Http\Controllers\ReceptionistScheduleController;
 use App\Http\Controllers\TimeSlotsController;
@@ -104,6 +105,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/{id}/grupos', [AdminStudentsController::class, 'studentGroups']);
         Route::get('/{id}/grupos/agregar', [AdminStudentsController::class, 'addGroup']);
         Route::post('/{id}/grupos/agregar', [AdminStudentsController::class, 'saveGroup']);
+        Route::get('/mi-bitacora/consulta', [LogbookStudentController::class, 'index'])->middleware(['auth', 'user.role']);
     });
     Route::group(['prefix' => 'personal'], function () {
         Route::get('/', [AdminPersonalController::class, 'index'])->middleware(['auth', 'user.role']);

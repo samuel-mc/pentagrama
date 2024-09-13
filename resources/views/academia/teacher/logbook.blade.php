@@ -25,7 +25,7 @@
             <tbody>
             @foreach($logbooks as $logbook)
                 <tr class="border-b border-light_pink">
-                    <td class="py-2">{{$logbook->group->teacher->name}}</td>
+                    <td class="py-2">{{$logbook->group->student->name}} {{$logbook->group->student->last_name}}</td>
                     <td class="py-2">{{$logbook->group->course->name}}</td>
                     <td class="py-2">{{$logbook->date}}</td>
                     <td class="py-2">{{$logbook->title}}</td>

@@ -28,6 +28,7 @@ class UserRoleMiddleware
                 $rol = 'Estudiante';
                 $links = app('studentLinks');
                 $photo = $user->student->photo;
+                $studentId = $user->student->id;
             } elseif ($user->teacher) {
                 $name = $user->teacher->name . ' ' . $user->teacher->last_name;
                 $rol = 'Profesor';
@@ -42,6 +43,7 @@ class UserRoleMiddleware
                 'links' => $links,
                 'photo' => $photo,
                 'teacherId' => $teacherId ?? null,
+                'studentId' => $studentId ?? null,
             ]);
         }
 

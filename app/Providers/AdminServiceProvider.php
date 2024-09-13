@@ -48,6 +48,14 @@ class AdminServiceProvider extends ServiceProvider
                 (object) ['url' => '/logout', 'name' => 'Cerrar sesión', 'icon' => 'logout.png'],
            ];
         });
+
+        $this->app->singleton('studentLinks', function() {
+            return [
+                (object) ['url' => '/admin/estudiantes/dashboard', 'name' => 'Dashboard', 'icon' => 'home.png'],
+                (object) ['url' => '/admin/estudiantes/mi-bitacora/consulta', 'name' => 'Bitácora', 'icon' => 'log.png'],
+                (object) ['url' => '/logout', 'name' => 'Cerrar sesión', 'icon' => 'logout.png'],
+            ];
+        });
     }
 
     /**
