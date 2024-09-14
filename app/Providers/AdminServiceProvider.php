@@ -51,8 +51,9 @@ class AdminServiceProvider extends ServiceProvider
 
         $this->app->singleton('studentLinks', function() {
             return [
-                (object) ['url' => '/admin/estudiantes/dashboard', 'name' => 'Dashboard', 'icon' => 'home.png'],
+            (object) ['url' => '/admin/dashboard-estudiantes', 'name' => 'Dashboard', 'icon' => 'home.png'],
                 (object) ['url' => '/admin/estudiantes/mi-bitacora/consulta', 'name' => 'Bitácora', 'icon' => 'log.png'],
+                (object) ['url' => '/admin/estudiantes/mis-pagos/consulta', 'name' => 'Registrar pago', 'icon' => 'addPayment.png'],
                 (object) ['url' => '/logout', 'name' => 'Cerrar sesión', 'icon' => 'logout.png'],
             ];
         });

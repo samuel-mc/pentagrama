@@ -111,6 +111,7 @@ class AdminStudentsController extends Controller
 
         $hasInscriptionPayment = StudentPaymentDone::join('student_payment_types as type', 'type.id', '=', 'student_payment_done.type_id')
         ->where('type.name', 'Inscripción')
+        ->where('student_payment_done.student_id', $id)
         ->select('student_payment_done.*')
         ->get();
 

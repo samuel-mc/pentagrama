@@ -18,7 +18,6 @@
                 <th class="py-2 text-start">Fecha</th>
                 <th class="py-2 text-start">Tema</th>
                 <th class="py-2 text-start">Canciones</th>
-
                 <th class="py-2 text-start">Imagen</th>
             </tr>
             </thead>

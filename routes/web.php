@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddPaymentStudentController;
 use App\Http\Controllers\AdminScheduleController;
 use App\Http\Controllers\CourseByTeacherController;
 use App\Http\Controllers\EstudentsByTeacherController;
@@ -106,6 +107,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/{id}/grupos/agregar', [AdminStudentsController::class, 'addGroup']);
         Route::post('/{id}/grupos/agregar', [AdminStudentsController::class, 'saveGroup']);
         Route::get('/mi-bitacora/consulta', [LogbookStudentController::class, 'index'])->middleware(['auth', 'user.role']);
+        Route::get('/mis-pagos/consulta', [AddPaymentStudentController::class, 'myPayments'])->middleware(['auth', 'user.role'])->name('admin.estudiantes.pagos');
+        Route::get('/mis-pagos/agregar-pago', [AddPaymentStudentController::class, 'addPayment'])->middleware(['auth', 'user.role'])->name('admin.estudiantes.pagos.agregar');
+        Route::post('/mis-pagos/agregar-pago', [AddPaymentStudentController::class, 'savePayment'])->middleware(['auth', 'user.role'])->name('admin.estudiantes.pagos.agregar');
     });
     Route::group(['prefix' => 'personal'], function () {
         Route::get('/', [AdminPersonalController::class, 'index'])->middleware(['auth', 'user.role']);
