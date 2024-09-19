@@ -13,7 +13,7 @@ class AdminServiceProvider extends ServiceProvider
     {
         $this->app->singleton('adminLinks', function () {
             return [
-                (object) ['url' => '/admin', 'name' => 'Dashboard', 'icon' => 'home.png'],
+                (object) ['url' => '/admin/dashboard-admin', 'name' => 'Dashboard', 'icon' => 'home.png'],
                 (object) ['url' => '/admin/inscripcion', 'name' => 'Incripción', 'icon' => 'inscripcion.png'],
                 (object) ['url' => '/admin/estudiantes', 'name' => 'Estudiantes', 'icon' => 'students.png'],
                 (object) ['url' => '/admin/profesores', 'name' => 'Profesores', 'icon' => 'profesor.png'],
@@ -30,10 +30,12 @@ class AdminServiceProvider extends ServiceProvider
 
         $this->app->singleton('receptionistLinks', function() {
             return [
-                (object) ['url' => '/admin', 'name' => 'Dashboard', 'icon' => 'home.png'],
+                (object) ['url' => '/admin/dashboard-recepcion', 'name' => 'Dashboard', 'icon' => 'home.png'],
                 (object) ['url' => '/admin/estudiantes', 'name' => 'Estudiantes', 'icon' => 'students.png'],
                 (object) ['url' => '/admin/asistencia', 'name' => 'Asistencia', 'icon' => 'attendence.png'],
                 (object) ['url' => '/admin/inscripcion', 'name' => 'Incripción', 'icon' => 'inscripcion.png'],
+                (object) ['url' => '/admin/horarios', 'name' => 'Horarios', 'icon' => 'schedule.png'],
+                (object) ['url' => '/admin/cuentas', 'name' => 'Cuentas', 'icon' => 'acount.png'],
                 (object) ['url' => '/logout', 'name' => 'Cerrar sesión', 'icon' => 'logout.png'],
 
             ];

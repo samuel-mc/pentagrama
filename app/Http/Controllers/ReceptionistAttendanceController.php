@@ -32,10 +32,11 @@ class ReceptionistAttendanceController extends Controller
             ->join('courses as c', 'g.course_id', '=', 'c.id')
             ->join('students as s2', 's2.id', '=', 'g.student_id')
             ->join('teachers as t', 'g.teacher_id', '=', 't.id')
+            ->join('time_slots as ts', 's.time_slot_id', '=', 'ts.id')
             ->where('s.day_of_week', $currentDayOfWeek)
             ->where('s2.active', 1)
             ->select(
-                's.start_hour as hour',
+                DB::raw('CONCAT(LPAD(ts.hour, 2, "0"), ":", LPAD(ts.minute, 2, "0")) as hour'),
                 'g.id as course_id',
                 DB::raw('CONCAT(c.name) as course'),
                 's2.id as student_id',
@@ -58,17 +59,19 @@ class ReceptionistAttendanceController extends Controller
                 ) THEN (
         	        SELECT CONCAT(t.name, " ", t.last_name) FROM teachers t2 WHERE t2.id = t.id) ELSE null END as substitute')
             )
-            ->orderBy('s.start_hour')
+            ->orderBy('ts.hour')
+            ->orderBy('ts.minute')
             ->get();
 
         $resultsTeaches = DB::table('schedules as s')
             ->join('groups as g', 'g.id', '=', 's.group_id')
             ->join('courses as c', 'g.course_id', '=', 'c.id')
             ->join('teachers as t', 'g.teacher_id', '=', 't.id')
+            ->join('time_slots as ts', 's.time_slot_id', '=', 'ts.id')
             ->where('s.day_of_week', $currentDayOfWeek)
             ->where('t.active', 1)
             ->select(
-                's.start_hour as hour',
+                DB::raw('CONCAT(LPAD(ts.hour, 2, "0"), ":", LPAD(ts.minute, 2, "0")) as hour'),
                 'g.id as course_id',
                 DB::raw('CONCAT(c.name) as course'),
                 't.id as teacher_id',
@@ -87,7 +90,7 @@ class ReceptionistAttendanceController extends Controller
                     AND ts.date = "' . $currentDay . '"
                 ) THEN (
         	        SELECT CONCAT(t.name, " ", t.last_name) FROM teachers t2 WHERE t2.id = t.id) ELSE null END as substitute'))
-            ->orderBy('s.start_hour')
+            ->orderBy('ts.hour')
             ->get();
 
         $studentsToday = $resultsStudents->map(function ($item) {

@@ -20,8 +20,14 @@ class UserRoleMiddleware
             $user = Auth::user();
             if ($user->personal) {
                 $name = $user->personal->name . ' ' . $user->personal->last_name;
-                $rol = 'Administrador';
-                $links = app('adminLinks');
+                if ($user->personal->role_id == 1) {
+                    $rol = 'Administrador';
+                    $links = app('adminLinks');
+                    $isAdmin = true;
+                } elseif ($user->personal->role_id == 2) {
+                    $rol = 'Recepcionista';
+                    $links = app('receptionistLinks');
+                }
                 $photo = $user->personal->photo;
             } elseif ($user->student) {
                 $name = $user->student->name . ' ' . $user->student->last_name;
@@ -44,6 +50,7 @@ class UserRoleMiddleware
                 'photo' => $photo,
                 'teacherId' => $teacherId ?? null,
                 'studentId' => $studentId ?? null,
+                'isAdmin' => $isAdmin ?? false,
             ]);
         }
 
