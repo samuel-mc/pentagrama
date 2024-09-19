@@ -23,4 +23,9 @@ class RequestStudentPayment extends Model
     {
         return $this->belongsTo(Group::class, 'group_id');
     }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
 }

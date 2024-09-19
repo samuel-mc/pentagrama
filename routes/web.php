@@ -110,6 +110,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/mis-pagos/consulta', [AddPaymentStudentController::class, 'myPayments'])->middleware(['auth', 'user.role'])->name('admin.estudiantes.pagos');
         Route::get('/mis-pagos/agregar-pago', [AddPaymentStudentController::class, 'addPayment'])->middleware(['auth', 'user.role'])->name('admin.estudiantes.pagos.agregar');
         Route::post('/mis-pagos/agregar-pago', [AddPaymentStudentController::class, 'savePayment'])->middleware(['auth', 'user.role'])->name('admin.estudiantes.pagos.agregar');
+        Route::post('/mis-pagos/aprobar-pago', [AddPaymentStudentController::class, 'approvePayment'])->name('admin.estudiantes.pagos.aprobar');
     });
     Route::group(['prefix' => 'personal'], function () {
         Route::get('/', [AdminPersonalController::class, 'index'])->middleware(['auth', 'user.role']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Group;
+use App\Models\RequestStudentPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -81,6 +82,14 @@ class AdminStudentsController extends Controller
         $photo = $request->photo;
 
         $pagos = StudentPaymentDone::where('student_id', $id)->get();
+
+        $paymentsRequest = RequestStudentPayment::where('student_id', $id)->get();
+        $paymentsRequest = $paymentsRequest->map(function ($payment) {
+            $formattedCreatedAt = Carbon::parse($payment->created_at)->format('d/m/Y');
+            $payment->formattedCreatedAt = $formattedCreatedAt;
+            return $payment;
+        });
+
         $pagos->map(function ($pago) {
             $pago->date = Carbon::parse($pago->created_at)->format('d/m/Y');
             if ($pago->due_date != null) {
@@ -91,7 +100,7 @@ class AdminStudentsController extends Controller
             return $pago;
         });
         // dd($pagos->first()->studentPaymentType);
-        return view('academia.admin.payments-student', compact('title', 'name', 'rol', 'links', 'pagos', 'student', 'photo'));
+        return view('academia.admin.payments-student', compact('title', 'name', 'rol', 'links', 'pagos', 'student', 'photo', 'paymentsRequest'));
     }
 
     /**

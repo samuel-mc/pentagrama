@@ -6,9 +6,11 @@ use App\Models\Group;
 use App\Models\RequestStudentPayment;
 use App\Models\Student;
 use App\Models\StudentPaymentDone;
+use App\Models\StudentPaymentDoneItem;
 use App\Models\StudentPaymentMethods;
 use App\Models\StudentPaymentType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class AddPaymentStudentController extends Controller
@@ -81,4 +83,43 @@ class AddPaymentStudentController extends Controller
 
         return redirect()->route('admin.estudiantes.pagos');
     }
+
+    public function approvePayment(Request $request)
+    {
+        $id = $request->id;
+        $requestStudentPayment = RequestStudentPayment::find($id);
+        if ($requestStudentPayment->accepted) {
+            return response()->json(['success' => false]);
+        }
+
+        // dd($request->all());
+        DB::transaction(function () use ($requestStudentPayment) {
+            $studentPaymentDone = new StudentPaymentDone();
+            $studentPaymentDone->amount = $requestStudentPayment->amount_to_pay; // monto a pagar
+            $studentPaymentDone->student_id = $requestStudentPayment->student_id;
+            $studentPaymentDone->type_id = $requestStudentPayment->payment_type_id;
+            $studentPaymentDone->rate = $requestStudentPayment->rate;
+            $montoRestante = $requestStudentPayment->amount_to_pay - $requestStudentPayment->amount_paid;
+            $studentPaymentDone->is_paid = $montoRestante == 0 || $requestStudentPayment->payment_type_id == 3;
+            $studentPaymentDone->due_date = $requestStudentPayment->due_date;
+            $studentPaymentDone->group_id = $requestStudentPayment->group_id;
+            $studentPaymentDone->save();
+            $student_payment_done_id = $studentPaymentDone->id;
+
+            $itm = new StudentPaymentDoneItem();
+
+            $itm->method_id = $requestStudentPayment->payment_method_id;
+            $itm->amount_paid = $requestStudentPayment->amount_paid; // monto que ha sido pagado
+            $itm->voucher = $requestStudentPayment->voucher;
+            $itm->voucher_date = $requestStudentPayment->voucher_date;
+            $itm->reference = $requestStudentPayment->reference;
+            $itm->student_payment_done_id = $student_payment_done_id;
+            $itm->save();
+
+            $requestStudentPayment->accepted = true;
+            $requestStudentPayment->save();
+        });
+        return response()->json(['success' => true]);
+    }
+
 }
