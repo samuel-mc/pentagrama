@@ -79,6 +79,7 @@ class AddPaymentStudentController extends Controller
         $requestStudentPayment->voucher = $fileName;
         $requestStudentPayment->voucher_date = $request->voucher_date;
         $requestStudentPayment->reference = $request->reference;
+        $requestStudentPayment->payment_origin = $request->payment_origin;
         $requestStudentPayment->save();
 
         return redirect()->route('admin.estudiantes.pagos');

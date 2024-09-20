@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseByTeacherController;
 use App\Http\Controllers\EstudentsByTeacherController;
 use App\Http\Controllers\LogbookStudentController;
 use App\Http\Controllers\LogbookTeacherController;
+use App\Http\Controllers\ReceptionistModulesController;
 use App\Http\Controllers\ReceptionistScheduleController;
 use App\Http\Controllers\TimeSlotsController;
 use Illuminate\Support\Facades\Route;
@@ -111,6 +112,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/mis-pagos/agregar-pago', [AddPaymentStudentController::class, 'addPayment'])->middleware(['auth', 'user.role'])->name('admin.estudiantes.pagos.agregar');
         Route::post('/mis-pagos/agregar-pago', [AddPaymentStudentController::class, 'savePayment'])->middleware(['auth', 'user.role'])->name('admin.estudiantes.pagos.agregar');
         Route::post('/mis-pagos/aprobar-pago', [AddPaymentStudentController::class, 'approvePayment'])->name('admin.estudiantes.pagos.aprobar');
+        Route::get('/tipos-de-pago/{id}', [ReceptionistModulesController::class, 'obtenerTiposDePagoPorEstudiante']);
+        Route::get('/grupos/{id}', [ReceptionistModulesController::class, 'obtenerGruposPorEstudiante']);
     });
     Route::group(['prefix' => 'personal'], function () {
         Route::get('/', [AdminPersonalController::class, 'index'])->middleware(['auth', 'user.role']);
@@ -134,6 +137,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/suplente', [ReceptionistAttendanceController::class, 'addSubstituteTeacher'])->name('admin.asistencia.suplente');
     });
     Route::get('/recepcionista/horarios', [ReceptionistScheduleController::class, 'index']);
+    Route::group(['prefix' => 'recepcionista'], function () {
+        Route::get('/registrar-pago', [ReceptionistModulesController::class, 'registerPayment'])->name('admin.recepcionista.registrar-pago')->middleware(['auth', 'user.role']);
+    });
     Route::group(['prefix' => '/horarios'], function () {
         Route::get('/', [AdminScheduleController::class, 'index'])->middleware(['auth', 'user.role'])->name('admin.horarios');
         Route::get('/agregar', [AdminScheduleController::class, 'addSchedule'])->middleware(['auth', 'user.role'])->name('admin.horarios.agregar');

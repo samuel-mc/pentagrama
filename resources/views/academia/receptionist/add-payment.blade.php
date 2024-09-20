@@ -6,13 +6,17 @@
         </div>
         <form action="{{route('admin.estudiantes.pagos.agregar')}}" method="post" id="formPaymentStudent" enctype="multipart/form-data">
             @csrf
-            <input name="payment_origin" value="estudiante" hidden>
+            <input name="payment_origin" value="recepcion" hidden>
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                <input type="text" name="student_id" value="{{$student->id}}" hidden>
                 <input type="text" id="montoAPagar" name="amount_to_pay" hidden>
                 <div class="mx-4 my-2">
                     <h3 class="text-sm mb-1 text-light_pink">Estudiante</h3>
-                    <input type="text" placeholder="Estudiante" name="nombreEstudiante" class="input h-fit" disabled id="fechaPagpStudent" value="{{$student->name}} {{$student->last_name}}">
+                    <select name="student_id" class="input w-full" onchange="handleChangeStudent()" id="selectStudentId">
+                        <option value="">Estudiante</option>
+                        @foreach($students as $student)
+                            <option value="{{ $student->id }}">{{ $student->name }} {{ $student->last_name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="mx-4 my-2">
                     <h3 class="text-sm mb-1 text-light_pink">Tipo de pago</h3>
@@ -24,7 +28,7 @@
                     </select>
                 </div>
                 <div class="mx-4 my-2 hidden" id="divGrupo">
-                    <h3 class="text-sm mb-1 text-light_pink">Grupo</h3>
+                    <h3 class="text-sm mb-1 text-light_pink">Cátedra</h3>
                     <select name="group_id" id="grupoAPagar" class="input w-full" onchange="handleChangeGroup()">
                         <option value="">Seleccionar un grupo</option>
                         @foreach ($courseByStudent as $course)
@@ -81,7 +85,7 @@
             <section class="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-end">
                 <div class="mx-4 my-2">
                     <h3 class="text-sm mb-1 text-light_pink">Monto restante</h3>
-                    <input type="text" placeholder="Monto restante" name="montoRestante" class="input w-full" readonly id="montoRestante" value="0">
+                    <input type="text" placeholder="Monto restante" name="montoRestante" class="input w-full" readonly id="montoRestante" value="">
                 </div>
                 <div class="mx-4 my-2">
                     <h3 class="text-sm mb-1 text-light_pink">Pagar antes del</h3>
@@ -100,8 +104,6 @@
             const selectPaymentType = document.getElementById("selectPaymentType");
             const selectedPaymentType = selectPaymentType.options[selectPaymentType.selectedIndex].getAttribute("value-name");
 
-            console.log(selectedPaymentType);
-
             const divGrupo = document.getElementById("divGrupo");
             const divMontoMensual = document.getElementById("divMontoMensual");
             const divInscripcion = document.getElementById("divInscripcion");
@@ -113,7 +115,7 @@
             const fechaPagoStudent = document.getElementById("fechaPagoStudent");
             const grupoAPagar = document.getElementById("grupoAPagar");
 
-            montoPagado.value = 0;
+            montoPagado.value = "";
             montoRestante.value = 0;
             fechaPagoStudent.value = "";
             grupoAPagar.value = "";
@@ -156,7 +158,8 @@
         }
 
         const handleMontoRestante = () => {
-            let montoAPagar = document.getElementById("montoAPagar").value;
+            console.log("handleMontoRestante");
+            const montoAPagar = document.getElementById("montoAPagar").value;
             let montoPagado = document.getElementById("montoPagado").value;
             let montoRestante = document.getElementById("montoRestante");
 
@@ -215,21 +218,86 @@
                 return;
             }
 
-
-
-            // $requestStudentPayment->amount_to_pay = $request->amount_to_pay; √
-            // $requestStudentPayment->amount_paid = $request->amount_paid; √
-            // $requestStudentPayment->due_date = $request->due_date; √
-            // $requestStudentPayment->student_id = $request->student_id; √
-            // $requestStudentPayment->group_id = $request->group_id; √
-            // $requestStudentPayment->rate = $request->rate; √
-            // $requestStudentPayment->is_paid = $request->is_paid; // se calcula en el backend
-            // $requestStudentPayment->payment_type_id = $request->payment_type_id; √
-            // $requestStudentPayment->payment_method_id = $request->payment_method_id; √
-            // $requestStudentPayment->voucher = $request->voucher;
-            // $requestStudentPayment->voucher_date = $request->voucher_date;
-            // $requestStudentPayment->reference = $request->reference;
             this.submit();
         })
+
+        const handleChangeStudent = () => {
+            const selectStudentId = document.getElementById("selectStudentId");
+            const studentId = selectStudentId.options[selectStudentId.selectedIndex].value;
+            console.log(studentId);
+            obtenerTiposDePagoPorEstudiante(studentId);
+            obtenerGruposPorEstudiante(studentId);
+
+            const divGrupo = document.getElementById("divGrupo");
+            const divMontoMensual = document.getElementById("divMontoMensual");
+            const divInscripcion = document.getElementById("divInscripcion");
+            const divFechaPago = document.getElementById("divFechaPago");
+            divGrupo.classList.add("hidden");
+            divMontoMensual.classList.add("hidden");
+            divInscripcion.classList.add("hidden");
+            divFechaPago.classList.add("hidden");
+            const montoAPagar = document.getElementById("montoAPagar");
+            montoAPagar.value = "";
+            const montoPagado = document.getElementById("montoPagado");
+            montoPagado.value = "";
+            const montoRestante = document.getElementById("montoRestante");
+            montoRestante.value = "";
+            const fechaPagoStudent = document.getElementById("fechaPagoStudent");
+            fechaPagoStudent.value = "";
+            const grupoAPagar = document.getElementById("grupoAPagar");
+            grupoAPagar.value = "";
+            grupoAPagar.innerHTML = "";
+
+        }
+
+        const obtenerTiposDePagoPorEstudiante = async (studentId) => {
+            const response = await fetch(`/admin/estudiantes/tipos-de-pago/${studentId}`);
+            const data = await response.json();
+            console.log(data);
+            const selectPaymentType = document.getElementById("selectPaymentType");
+            selectPaymentType.innerHTML = "";
+            const option = document.createElement("option");
+            option.textContent = "Tipo de pago";
+            option.value = "";
+            selectPaymentType.appendChild(option);
+            data.forEach(function(paymentType) {
+                const option = document.createElement("option");
+                option.textContent = paymentType.name;
+                option.value = paymentType.id;
+                option.setAttribute("value-name", paymentType.name);
+                selectPaymentType.appendChild(option);
+            });
+        }
+
+        const obtenerGruposPorEstudiante = async (studentId) => {
+            const response = await fetch(`/admin/estudiantes/grupos/${studentId}`);
+            const data = await response.json();
+            console.log(data);
+            const grupoAPagar = document.getElementById("grupoAPagar");
+            grupoAPagar.innerHTML = "";
+            const option = document.createElement("option");
+            option.textContent = "Seleccionar un grupo";
+            option.value = "";
+            grupoAPagar.appendChild(option);
+            data.forEach(function(group) {
+                const option = document.createElement("option");
+                option.textContent = group.course.name;
+                option.value = group.id;
+                option.setAttribute("monto-mensual", group.monthly_payment);
+                option.setAttribute("fecha-pago", group.formattedPaymentDate);
+                grupoAPagar.appendChild(option);
+            });
+        }
+
+        const handleChangeGroup = () => {
+            const grupoAPagar = document.getElementById("grupoAPagar");
+            const montoMensualStudent = document.getElementById("montoMensualStudent");
+            const fechaPagoStudent = document.getElementById("fechaPagoStudent");
+            const montoAPagar = document.getElementById("montoAPagar");
+
+            montoMensualStudent.value = grupoAPagar.options[grupoAPagar.selectedIndex].getAttribute("monto-mensual");
+            fechaPagoStudent.value = grupoAPagar.options[grupoAPagar.selectedIndex].getAttribute("fecha-pago");
+            montoAPagar.value = grupoAPagar.options[grupoAPagar.selectedIndex].getAttribute("monto-mensual");
+        }
     </script>
 @endsection
