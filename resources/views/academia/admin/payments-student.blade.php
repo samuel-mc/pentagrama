@@ -61,6 +61,7 @@
                         <tr class="roboto-bold text-lg">
                             <th class="py-2">Estudiante</th>
                             <th class="py-2">Representante</th>
+                            <th class="py-2">Origen</th>
                             <th class="py-2">Método de pago</th>
                             <th class="py-2">Monto</th>
                             <th class="py-2">Monto que debio pagar</th>
@@ -74,6 +75,7 @@
                             <tr class="roboto-regular text-center text-lg">
                                 <td class="py-2">{{$paymentRequest->student->name}}</td>
                                 <td class="py-2">{{$paymentRequest->student->representative->name}}</td>
+                                <td class="py-2">{{$paymentRequest->payment_origin}}</td>
                                 <td class="py-2">{{$paymentRequest->method->name}}</td>
                                 <td class="py-2">{{$paymentRequest->amount_paid}}</td>
                                 <td class="py-2">{{$paymentRequest->amount_to_pay}}</td>

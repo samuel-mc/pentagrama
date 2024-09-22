@@ -96,7 +96,7 @@ class AdminStudentsController extends Controller
                 $pago->due_date = Carbon::parse($pago->due_date)->format('d/m/Y');
             }
             $pago->amountPaid = $pago->studentPaymentDoneItems->sum('amount_paid');
-            $pago->amountDue = $pago->amount - $pago->amountPaid;
+            $pago->amountDue = $pago->amount - $pago->amountPaid > 0 ? $pago->amount - $pago->amountPaid : 0;
             return $pago;
         });
         // dd($pagos->first()->studentPaymentType);

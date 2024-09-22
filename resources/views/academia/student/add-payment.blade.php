@@ -57,11 +57,17 @@
                 </div>
                 <div class="mx-4 my-2">
                     <h3 class="text-sm mb-1 text-light_pink">Monto que paga</h3>
-                    <input type="number" placeholder="Monto que paga" name="amount_paid"  step="0.1" id="montoPagado" class="input w-full" onkeyup="handleMontoRestante()">
+                    <div class="flex items-center">
+                        <input type="number" name="amount_paid"  step="0.01" id="montoPagado" class="input w-full" onkeyup="handleMontoRestante()">
+                        <span class="mx-1">=</span>
+                        <input type="text" class="input" disabled value="0.0 VES" id="montoEnVes">
+                    </div>
+
+
                 </div>
                 <div class="mx-2 my-2">
                     <h3 class="text-sm mb-1 text-light_pink">Tasa en bs</h3>
-                    <input type="number" step="0.1" placeholder="Tasa en bs" name="rate" class="input">
+                    <input type="number" step="0.1" placeholder="Tasa en bs" name="rate" class="input" id="tasa" onkeyup="handleChangeRate()">
                 </div>
                 <div class="mx-2 my-2">
                     <h3 class="text-sm mb-1 text-light_pink">Referencia</h3>
@@ -161,6 +167,7 @@
             let montoRestante = document.getElementById("montoRestante");
 
             montoRestante.value = (montoAPagar - montoPagado) > 0 ? montoAPagar - montoPagado : 0;
+            handleChangeRate();
         }
 
         const formPaymentStudent = document.getElementById("formPaymentStudent");
@@ -215,21 +222,27 @@
                 return;
             }
 
-
-
-            // $requestStudentPayment->amount_to_pay = $request->amount_to_pay; √
-            // $requestStudentPayment->amount_paid = $request->amount_paid; √
-            // $requestStudentPayment->due_date = $request->due_date; √
-            // $requestStudentPayment->student_id = $request->student_id; √
-            // $requestStudentPayment->group_id = $request->group_id; √
-            // $requestStudentPayment->rate = $request->rate; √
-            // $requestStudentPayment->is_paid = $request->is_paid; // se calcula en el backend
-            // $requestStudentPayment->payment_type_id = $request->payment_type_id; √
-            // $requestStudentPayment->payment_method_id = $request->payment_method_id; √
-            // $requestStudentPayment->voucher = $request->voucher;
-            // $requestStudentPayment->voucher_date = $request->voucher_date;
-            // $requestStudentPayment->reference = $request->reference;
             this.submit();
         })
+
+        const handleChangeRate = () => {
+            const montoPagado = document.getElementById("montoPagado");
+            const tasa = document.getElementById("tasa");
+            const montoEnVes = document.getElementById("montoEnVes");
+
+            const monto = montoPagado.value * tasa.value;
+            montoEnVes.value = monto + " VES";
+        }
+
+        const handleChangeGroup = () => {
+            const grupoAPagar = document.getElementById("grupoAPagar");
+            const montoMensualStudent = document.getElementById("montoMensualStudent");
+            const fechaPagoStudent = document.getElementById("fechaPagoStudent");
+            const montoAPagar = document.getElementById("montoAPagar");
+
+            montoMensualStudent.value = grupoAPagar.options[grupoAPagar.selectedIndex].getAttribute("monto-mensual");
+            fechaPagoStudent.value = grupoAPagar.options[grupoAPagar.selectedIndex].getAttribute("fecha-pago");
+            montoAPagar.value = grupoAPagar.options[grupoAPagar.selectedIndex].getAttribute("monto-mensual");
+        }
     </script>
 @endsection
