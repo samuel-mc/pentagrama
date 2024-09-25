@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\Schedule;
 use App\Models\TimeSlotByTeacher;
 use App\Models\TimeSlots;
+use Illuminate\Support\Facades\Log;
 
 class ScheduleService
 {
@@ -114,5 +115,45 @@ class ScheduleService
         }
 
         return $scheduleResponse;
+    }
+
+    public function getScheduleByStudent($id)
+    {
+        $groups = Group::where('student_id', $id)->get();
+        $hours = $this->getScheduleHours();
+        $days = $this->getScheduleDays();
+        $scheduleResponse = [];
+
+        $schedulesByGroup = [];
+
+        foreach ($groups as $group) {
+            foreach ($group->schedules as $schedule) {
+                $schedulesByGroup[] = (object)[
+                    'id' => $group->id,
+                    'course' => $group->course->name,
+                    'time_slot_id' => $schedule->time_slot_id,
+                    'day_of_week' => $schedule->day_of_week
+                ];
+            }
+        }
+
+        $schedulesByGroup = collect($schedulesByGroup);
+
+        for ($i = 0; $i < count($hours); $i++) {
+            $scheduleResponse[$hours[$i][0]] = [];
+            for ($j = 1; $j < count($days); $j++) {
+                $course = $schedulesByGroup->filter(function ($item) use ($hours, $i, $j) {
+                    return $item->time_slot_id == $hours[$i][1] && $item->day_of_week == $j;
+                });
+                $scheduleResponse[$hours[$i][0]][$days[$j]] = $course->map(function ($item) {
+                    return (object)['name' => $item->course, 'id' => $item->id];
+                })->first();
+            }
+        }
+
+
+
+        return $scheduleResponse;
+
     }
 }
