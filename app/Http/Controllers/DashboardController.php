@@ -21,33 +21,23 @@ class DashboardController extends Controller
     /**
      * Display the teacher dashboard.
      */
-    public function displayTeacherDashboard()
+    public function displayTeacherDashboard(Request $request)
     {
         $title = 'Dashboard';
-        $name = 'Elias Cordova';
-        $rol = 'Teacher';
+        $name = $request->name;
+        $rol = $request->rol;
         $links = app('teacherLinks');
+        $photo = $request->photo;
 
-        Carbon::setLocale('es');
-        $fecha = Carbon::now();
-        $dayName = $fecha->isoFormat('dddd');
-        $dayName = ucfirst($dayName);
+        $dayName = Carbon::now()->dayName;
 
-//        dd($dayName);
-        $groups = Group::where('teacher_id', 1)->get();
+        $teacherId = $request->teacherId;
 
-        $schedule = $groups->map(function ($item) {
-            return $item->schedules;
-        });
+        $schedule = $this->scheduleService->getScheduleByTeacherAndDay($teacherId);
 
-        dd($schedule);
+        $studentsByDay = $this->scheduleService->getStudentsByDay($teacherId);
 
-        $hours = $schedule->map(function ($item) {
-            return $item->start_hour;
-        })->unique()->sort();
-        $days = ['', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
-//        dd($groups);
-        return view('academia.dashboard.teacher', compact('title', 'name', 'rol', 'links', 'dayName', 'groups'));
+        return view('academia.dashboard.teacher', compact('title', 'name', 'rol', 'links', 'photo', 'dayName', 'schedule', 'studentsByDay'));
 
     }
 

@@ -43,7 +43,7 @@ class AdminServiceProvider extends ServiceProvider
 
         $this->app->singleton('teacherLinks', function() {
             return [
-                (object) ['url' => '/admin/profesores', 'name' => 'Dashboard', 'icon' => 'home.png'],
+                (object) ['url' => '/admin/dashboard-profesores', 'name' => 'Dashboard', 'icon' => 'home.png'],
                 (object) ['url' => '/admin/profesores/horarios-disponibles', 'name' => 'Horarios', 'icon' => 'schedule.png'], // Ruta a la pantalla que muestra los horarios y cursos disponibles
                 (object) ['url' => '/admin/profesores/mis-estudiantes', 'name' => 'Estudiantes', 'icon' => 'students.png'], // Ruta a la pantalla que muestra los cursos asignados al profesor
                 (object) ['url' => '/admin/profesores/bitacora', 'name' => 'Bitácora', 'icon' => 'log.png'], // Ruta a la pantalla que muestra la bitácora del profesor

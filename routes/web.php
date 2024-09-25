@@ -44,6 +44,7 @@ Route::get('/about', [HomeController::class, 'about']);
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', [AdminDashboarController::class, 'index'])->middleware(['auth', 'user.role'])->name('admin.dashboard');
     Route::get('/dashboard-estudiantes', [DashboardController::class, 'displayStudentDashboard'])->middleware(['auth', 'user.role']);
+    Route::get('/dashboard-profesores', [DashboardController::class, 'displayTeacherDashboard'])->middleware(['auth', 'user.role']);
     Route::group(['prefix' => 'profesores'], function () {
         Route::get('/', [AdminTeachersMagmentController::class, 'index'])->middleware(['auth', 'user.role']);
         Route::get('/agregar', [AdminTeachersMagmentController::class, 'addTeacher'])->middleware(['auth', 'user.role']);

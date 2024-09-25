@@ -6,10 +6,22 @@ use App\Models\Group;
 use App\Models\Schedule;
 use App\Models\TimeSlotByTeacher;
 use App\Models\TimeSlots;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+
+
 
 class ScheduleService
 {
+    protected array $days = [
+        1 => 'Lunes',
+        2 => 'Martes',
+        3 => 'Miercoles',
+        4 => 'Jueves',
+        5 => 'Viernes',
+        6 => 'Sabado',
+    ];
+
     public function getScheduleAdmin(): array
     {
         $schedule = Schedule::where('active', 1)->get();
@@ -152,8 +164,68 @@ class ScheduleService
         }
 
 
-
         return $scheduleResponse;
 
+    }
+
+    public function getScheduleByTeacherAndDay($id): Collection
+    {
+        $hours = collect($this->getScheduleHours());
+        $nowDay = now()->dayOfWeek;
+
+        $groups = Group::with(['course', 'schedules.timeSlot'])->where('teacher_id', $id)->get();
+
+        $schedulesForToday = $groups->flatMap(function ($group) use ($nowDay) {
+            return $group->schedules->filter(function ($schedule) use ($nowDay) {
+                return $schedule->day_of_week == $nowDay;
+            })->map(function ($schedule) use ($group) {
+                return (object)[
+                    'course' => $group->course->name,
+                    'time_slot_id' => $schedule->time_slot_id,
+                ];
+            });
+        })->values();
+
+        return $hours->mapWithKeys(function ($hour) use ($schedulesForToday) {
+            $matchedSchedule = $schedulesForToday->firstWhere('time_slot_id', $hour[1]);
+
+            return [$hour[0] => $matchedSchedule ? $matchedSchedule->course : null];
+        });
+    }
+
+    public function getStudentsByDay($teacherId) {
+        $today = now()->dayOfWeek;
+
+        $groups = Group::with(['course', 'teacher', 'student', 'schedules.timeSlot'])
+            ->where('teacher_id', $teacherId)
+            ->get();
+
+        $schedules = $groups->filter(function ($group) use ($today) {
+            return $group->schedules->contains('day_of_week', $today);
+        })->map(function ($group) use ($today) {
+            return (object) [
+                'course' => $group->course->name,
+                'teacher' => $group->teacher->name . ' ' . $group->teacher->last_name,
+                'student' => $group->student->name . ' ' . $group->student->last_name,
+                'schedule' => $this->getScheduleCourseString($group->schedules),
+            ];
+        });
+
+        return $schedules->sortBy('schedule');
+    }
+
+    private function fillCeros($number): string
+    {
+        return str_pad($number, 2, '0', STR_PAD_LEFT);
+    }
+
+    private function getScheduleCourseString($schedules): string
+    {
+        $days = $this->days;
+        return $schedules->sortBy('day_of_week')
+            ->map(function ($schedule) use ($days) {
+                return $days[$schedule->day_of_week] . ' ' . $this->fillCeros($schedule->timeSlot->hour) . ':' . $this->fillCeros($schedule->timeSlot->minute);
+            })
+            ->implode(', ');
     }
 }
